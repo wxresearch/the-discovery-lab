@@ -98,28 +98,37 @@ function startMashAnimation(){
  pouring=true;
  const bench=content.querySelector('#workbench');
  const masher=bench&&bench.querySelector('.lab-tool.masher');
- if(!masher){pouring=false;applyAction('mash');return;}
- // Calculate the target from the actual bowl and masher positions rather than
- // using fixed pixel offsets (which miss the bowl on different screen sizes).
- const bowl=bench.querySelector('.mash-bowl');
- const head=masher.querySelector('.tool-base');
- if(bowl&&head){
-  const bowlRect=bowl.getBoundingClientRect();
-  const headRect=head.getBoundingClientRect();
-  const targetX=bowlRect.left+bowlRect.width*.5;
-  // The berry mixture is in the lower half of the SVG bowl, not at its rim.
-  const targetY=bowlRect.top+bowlRect.height*.56;
-  const headX=headRect.left+headRect.width*.5;
-  const headY=headRect.top+headRect.height*.5;
-  masher.style.setProperty('--mash-dx',(targetX-headX).toFixed(1)+'px');
-  masher.style.setProperty('--mash-dy',(targetY-headY).toFixed(1)+'px');
- }
- masher.classList.add('auto-mash');
+ const bowl=bench&&bench.querySelector('.mash-bowl');
+ const head=masher&&masher.querySelector('.tool-base');
+ if(!bench||!masher||!bowl||!head){pouring=false;applyAction('mash');return;}
+ const b=bowl.getBoundingClientRect();
+ const h=head.getBoundingClientRect();
+ // Use the same translated-and-tilted tool movement as pointer dragging.
+ // Target the middle of the pink mixture, which starts below the bowl rim.
+ const dx=b.left+b.width*.5-(h.left+h.width*.5);
+ const dy=b.top+b.height*.65-(h.top+h.height*.5);
+ const pose=(x,y)=>'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate(-12deg)';
+ const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const duration=reduce?1:900;
+ const motion=masher.animate([
+  {transform:'translate(0px,0px) rotate(0deg)',offset:0},
+  {transform:pose(dx*.88,dy*.75),offset:.24},
+  {transform:pose(dx,dy),offset:.40},
+  {transform:pose(dx-12,dy-6),offset:.55},
+  {transform:pose(dx+10,dy+2),offset:.70},
+  {transform:pose(dx,dy),offset:.81},
+  {transform:'translate(0px,0px) rotate(0deg)',offset:1}
+ ],{duration,easing:'ease-in-out',fill:'none'});
  bench.classList.add('mash-in-progress');
- let finished=false;
- const finish=()=>{if(finished)return;finished=true;pouring=false;applyAction('mash')};
- masher.addEventListener('animationend',finish,{once:true});
- setTimeout(finish,920);
+ const chunks=bench.querySelectorAll('.pulp-chunks,.pulp-fibers');
+ chunks.forEach(el=>{el.animate([
+  {transform:'translateX(0px)',offset:0},
+  {transform:'translateX(-7px)',offset:.4},
+  {transform:'translateX(7px)',offset:.7},
+  {transform:'translateX(0px)',offset:1}
+ ],{duration,easing:'ease-in-out'});});
+ motion.onfinish=()=>{pouring=false;applyAction('mash')};
+ motion.oncancel=()=>{pouring=false};
 }
 function bowlContact(bench, tool, xRatio=.5, yRatio=.44, anchor='bottom'){
  const bowl=bench.querySelector('.mash-bowl');
