@@ -42,7 +42,7 @@ The first exhibit introduces the process of extracting DNA from a strawberry thr
 
 1. **Investigate:** Predict where DNA is found inside a strawberry.
 2. **Mash:** Drag the masher through the bowl until the strawberry pulp is fully mashed.
-3. **Release:** Drag a detergent bottle and salt shaker into the extraction mixture, in that order.
+3. **Release:** Keep the strawberry pulp in the same glass bowl. Drag the dish soap bottle into the bowl, then the salt shaker; visible foam and salt grains confirm each addition.
 4. **Filter:** Drag the strawberry mixture over a funnel to filter out the pulp.
 5. **Precipitate:** Drag the alcohol bottle to the vessel and gradually add cold alcohol.
 6. **Discover:** Examine the whitish clumps that contain many DNA molecules.
