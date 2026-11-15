@@ -140,7 +140,7 @@ function runIngredientAnimation(type){
  const bottle=bench&&bench.querySelector('[data-tool="'+type+'"]');
  if(!bottle){applyAction(type);return;}
  pouring=true;
- bowlContact(bench,bottle,type==='soap'?.43:.58,.36);
+ bowlContact(bench,bottle,type==='soap'?.43:.58,.27);
  bench.classList.add('adding-'+type);
  bottle.classList.add('ingredient-animating');
  let finished=false;
@@ -154,7 +154,7 @@ function startStirAnimation(){
  const bench=content.querySelector('#workbench');
  const stirrer=bench&&bench.querySelector('.lab-stirrer');
  if(!stirrer){pouring=false;applyAction('stir');return;}
- bowlContact(bench,stirrer,.51,.54);
+ bowlContact(bench,stirrer,.51,.69);
  stirrer.classList.add('auto-stir');
  bench.classList.add('stir-in-progress');
  let called=false;
