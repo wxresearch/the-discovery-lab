@@ -15,13 +15,14 @@ const backBtn=document.getElementById('backBtn');
 const steps=[
  {name:'Investigate',heading:'What’s hiding inside a strawberry?',sub:'Every strawberry is made of cells, and those cells contain DNA. Before we begin, make a prediction.'},
  {name:'Mash',heading:'First, mash the strawberry',sub:'Crushing the fruit breaks apart the soft tissue and exposes more cells. The DNA is still too small to see.'},
- {name:'Release',heading:'Mix in soap and salt',sub:'Soap helps disrupt cell membranes, releasing cellular contents. Salt helps DNA collect together during extraction.'},
+ {name:'Release',heading:'Add detergent, salt, then stir',sub:'Add dish soap and salt to the mashed strawberry. Then stir gently to mix the ingredients before filtering. Soap helps disrupt cell membranes, while salt supports DNA precipitation later.'},
  {name:'Filter',heading:'Separate the solid pulp',sub:'Pour the strawberry mixture through a coffee filter. Larger bits of fruit remain behind while liquid carrying DNA passes through.'},
  {name:'Precipitate',heading:'Carefully add cold alcohol',sub:'Gently layer cold rubbing alcohol over the filtered strawberry liquid. DNA is less soluble in alcohol and begins to gather at the boundary.'},
- {name:'Discover',heading:'Look for cloudy, white strands',sub:'The cloudy strings are clumps containing many DNA molecules, along with possible impurities. A single DNA helix is far too tiny to see.'},
+ {name:'Discover',heading:'Watch the DNA appear',sub:'Keep the alcohol and strawberry extract in separate layers: do not stir them together. Look at the interface as cloudy DNA-rich strands precipitate and become visible.'},
  {name:'Reflect',heading:'Think like a scientist',sub:'Why did adding cold alcohol make the DNA easier to see?'}
 ];
-let stage=0,prediction=null,answer=null,completed=false;
+let stage=0,prediction=null,answer=null,completed=false,dnaRevealed=false,pouring=false;
+let mixStirs=0;const requiredStirs=4;
 const q1=['DNA is only found in animals','DNA is found inside strawberry cells','DNA is only found in strawberry seeds'];
 const q2=['DNA does not dissolve well in alcohol, so it clumps together','Alcohol creates new DNA','Alcohol turns strawberry juice into DNA'];
 const svgStart='<svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Detailed illustration of a strawberry DNA extraction experiment"><defs><radialGradient id="scene" cx=".5" cy=".35" r=".85"><stop stop-color="#334b73"/><stop offset="1" stop-color="#131f3b"/></radialGradient><linearGradient id="glass" x1="0" x2="1"><stop stop-color="#cff4ff" stop-opacity=".44"/><stop offset=".45" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#c6eafa" stop-opacity=".45"/></linearGradient><linearGradient id="straw" x1=".1" y1=".1" x2=".9" y2=".9"><stop stop-color="#ff7481"/><stop offset=".45" stop-color="#db294e"/><stop offset="1" stop-color="#781936"/></linearGradient><linearGradient id="juice" x1="0" x2=".8" y1="0" y2="1"><stop stop-color="#f7a1b5"/><stop offset=".7" stop-color="#b43c69"/><stop offset="1" stop-color="#702c52"/></linearGradient><linearGradient id="alcohol" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#effdff" stop-opacity=".8"/><stop offset="1" stop-color="#b9e6ff" stop-opacity=".3"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5"/></filter><filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="11" flood-color="#000" flood-opacity=".5"/></filter></defs><rect width="480" height="380" rx="20" fill="url(#scene)"/><ellipse cx="243" cy="327" rx="147" ry="19" fill="#06112d" opacity=".45"/><path d="M25 304H455" stroke="#91adca" stroke-opacity=".24"/>';
@@ -60,11 +61,11 @@ const actions={mash:0,soap:false,salt:false,filter:false,alcohol:0};
 const maxMash=7,maxPour=5;
 const labStates={
  1:{id:'mash',title:'Drag the masher over the fruit',tip:'Press and move the masher around the bowl. Each stroke breaks down more strawberry tissue.'},
- 2:{id:'mix',title:'Pour in detergent, then add salt',tip:'Drag the soap bottle to the jar. When it has been added, drag the salt shaker.'},
+ 2:{id:'mix',title:'Add soap, add salt, and stir',tip:'Add soap and salt to the SAME bowl, then stir gently four times before filtering.'},
  3:{id:'filter',title:'Filter the prepared strawberry mixture',tip:'You already added dish soap and salt. Drag the mixed extract onto the paper-lined funnel. Pulp stays in the filter; the liquid passes into the jar.'},
- 4:{id:'alcohol',title:'Carefully layer the cold alcohol',tip:'Drag the alcohol bottle to the jar, then move it gently to pour. This is a simulation; handle real alcohol only with adult supervision.'}
+ 4:{id:'alcohol',title:'Carefully layer the cold alcohol',tip:'Tap “Pour a little alcohol” to see an actual pouring animation, or drag the bottle to the jar. Keep the two layers separate; do not stir. Real rubbing alcohol requires adult supervision.'}
 };
-function stageReady(){return stage===0?prediction!==null:stage===1?actions.mash>=maxMash:stage===2?actions.soap&&actions.salt:stage===3?actions.filter:stage===4?actions.alcohol>=maxPour:stage===6?answer!==null:true;}
+function stageReady(){return stage===0?prediction!==null:stage===1?actions.mash>=maxMash:stage===2?actions.soap&&actions.salt&&mixStirs>=requiredStirs:stage===3?actions.filter:stage===4?actions.alcohol>=maxPour:stage===5?dnaRevealed:stage===6?answer!==null:true;}
 function pct(n,d){return Math.round(n/d*100);}
 function bowlScene(mode){
  return '<div class="lab-vessel mash-bowl" data-dropzone="'+(mode==='mash'?'mash':'mix')+'"><svg class="mash-scene" viewBox="0 0 260 250" role="img" aria-label="Glass bowl with strawberry pieces and mashed pulp contained inside"><defs><linearGradient id="bowlGlass" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d8f4ff" stop-opacity=".3"/><stop offset=".42" stop-color="#c6eafd" stop-opacity=".05"/><stop offset="1" stop-color="#92bedf" stop-opacity=".32"/></linearGradient><linearGradient id="pulpGradient" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f8778c"/><stop offset=".53" stop-color="#d63a5e"/><stop offset="1" stop-color="#982049"/></linearGradient><clipPath id="bowlInner"><path d="M21 48 Q29 185 56 212 Q83 239 130 239 Q177 239 204 212 Q232 177 239 48Z"/></clipPath></defs><ellipse cx="131" cy="242" rx="99" ry="7" fill="#07112b" opacity=".45"/><path d="M18 48 Q23 188 55 216 Q85 244 130 244 Q177 244 207 216 Q238 181 242 48Z" fill="url(#bowlGlass)" stroke="none"/><path d="M18 48 Q23 188 55 216 Q85 244 130 244 Q177 244 207 216 Q238 181 242 48" fill="none" stroke="#b5d4e9" stroke-width="5"/><g clip-path="url(#bowlInner)"><path d="M21 138 Q70 129 130 137 Q182 128 239 138 L245 258H15Z" fill="url(#pulpGradient)"/><path d="M21 139 Q75 128 130 136 Q192 128 239 138" stroke="#ffb4bb" stroke-width="5" opacity=".75" fill="none"/><g class="pulp-chunks" style="--mash:'+(actions.mash/maxMash)+'">'+Array.from({length:17},(_,i)=>{const x=40+(i*43)%183,y=149+(i*37)%71;return '<ellipse cx="'+x+'" cy="'+y+'" rx="'+(6+i%4*2)+'" ry="'+(4+i%3*2)+'" fill="'+(i%3===0?'#ff98a3':i%3===1?'#bd244d':'#f66579')+'" opacity=".8"/>'}).join('')+'</g><g class="pulp-fibers" style="--mash:'+(actions.mash/maxMash)+'">'+Array.from({length:24},(_,i)=>{let x=36+(i*47)%188,y=150+(i*23)%76;return '<path d="M'+x+' '+y+'q8-5 13 2" stroke="'+(i%2?'#ffadb5':'#9a1943')+'" fill="none" stroke-width="2" opacity=".65"/>'}).join('')+'</g><path d="M40 78L49 203" stroke="#eefbff" stroke-width="8" opacity=".12" stroke-linecap="round"/></g><path d="M18 48 Q23 188 55 216 Q85 244 130 244 Q177 244 207 216 Q238 181 242 48" fill="none" stroke="#dcf7ff" stroke-opacity=".43" stroke-width="4"/><ellipse cx="130" cy="48" rx="113" ry="23" fill="#b2d7ed" fill-opacity=".09" stroke="#d1edf8" stroke-width="7"/><path d="M36 46 Q125 19 225 44" stroke="white" stroke-opacity=".35" stroke-width="3" fill="none"/>'+(mode==='mix'&&actions.soap?'<g class="soap-foam"><ellipse cx="131" cy="136" rx="101" ry="12" fill="#ffe7eb" fill-opacity=".48"/><circle cx="75" cy="133" r="8" fill="#fffafc" fill-opacity=".82"/><circle cx="112" cy="130" r="6" fill="#fffafc" fill-opacity=".72"/><circle cx="163" cy="130" r="9" fill="#fffafc" fill-opacity=".84"/><circle cx="198" cy="134" r="5" fill="#fffafc" fill-opacity=".78"/></g>':'')+(mode==='mix'&&actions.salt?'<g class="salt-fall"><circle cx="85" cy="148" r="2.3" fill="#fff8e5"/><circle cx="111" cy="153" r="1.8" fill="#fff8e5"/><circle cx="138" cy="161" r="2" fill="#fff8e5"/><circle cx="164" cy="148" r="2.3" fill="#fff8e5"/><circle cx="185" cy="162" r="1.8" fill="#fff8e5"/></g>':'')+'</svg></div>';
@@ -72,24 +73,41 @@ function bowlScene(mode){
 function labMarkup(){
  if(!labStates[stage])return '';
  const item=labStates[stage];
- const progress=stage===1?pct(actions.mash,maxMash):stage===2?(actions.soap?50:0)+(actions.salt?50:0):stage===3?(actions.filter?100:0):pct(actions.alcohol,maxPour);
+ const progress=stage===1?pct(actions.mash,maxMash):stage===2?Math.round((Number(actions.soap)+Number(actions.salt)+mixStirs/requiredStirs)/3*100):stage===3?(actions.filter?100:0):pct(actions.alcohol,maxPour);
  const ready=progress===100;
  const tool=stage===1?'<div class="lab-tool masher" role="button" tabindex="0" aria-label="Drag masher through the strawberry pulp" data-tool="mash"><span class="tool-top"></span><span class="tool-shaft"></span><span class="tool-base"></span></div>':
- stage===2?'<div class="lab-tool reagent-tool soap-prop '+(actions.soap?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag dish soap into the bowl" data-tool="soap"><svg viewBox="0 0 88 166" aria-hidden="true"><defs><linearGradient id="soapBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3c9ba8"/><stop offset=".5" stop-color="#a5e6de"/><stop offset="1" stop-color="#357f90"/></linearGradient></defs><path d="M36 23V12h17V5h23v12H57v9" fill="none" stroke="#c7e8ef" stroke-width="7" stroke-linecap="round"/><rect x="18" y="24" width="53" height="132" rx="18" fill="url(#soapBody)" stroke="#d3f4f1" stroke-width="2"/><rect x="23" y="78" width="43" height="46" rx="7" fill="#f2faf5"/><text x="44" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">DISH</text><text x="44" y="115" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">SOAP</text><path d="M27 38Q34 30 40 35" stroke="#f2ffff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/></svg></div><div class="lab-tool reagent-tool salt-prop '+(actions.salt?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag salt into the bowl" data-tool="salt"><svg viewBox="0 0 74 126" aria-hidden="true"><defs><linearGradient id="saltBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#dae6ee"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#c5d7df"/></linearGradient></defs><rect x="12" y="32" width="50" height="89" rx="12" fill="url(#saltBody)" stroke="#cfe4eb" stroke-width="3"/><rect x="8" y="19" width="58" height="20" rx="6" fill="#a9c2cf" stroke="#e6f1f7" stroke-width="3"/><circle cx="24" cy="27" r="2.2" fill="#536f80"/><circle cx="37" cy="27" r="2.2" fill="#536f80"/><circle cx="50" cy="27" r="2.2" fill="#536f80"/><rect x="17" y="61" width="40" height="36" rx="5" fill="#fff8ef"/><text x="37" y="83" font-size="17" font-weight="bold" fill="#304758" text-anchor="middle">SALT</text></svg></div>':
+ stage===2?'<div class="lab-tool reagent-tool soap-prop '+(actions.soap?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag dish soap into the bowl" data-tool="soap"><svg viewBox="0 0 88 166" aria-hidden="true"><defs><linearGradient id="soapBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3c9ba8"/><stop offset=".5" stop-color="#a5e6de"/><stop offset="1" stop-color="#357f90"/></linearGradient></defs><path d="M36 23V12h17V5h23v12H57v9" fill="none" stroke="#c7e8ef" stroke-width="7" stroke-linecap="round"/><rect x="18" y="24" width="53" height="132" rx="18" fill="url(#soapBody)" stroke="#d3f4f1" stroke-width="2"/><rect x="23" y="78" width="43" height="46" rx="7" fill="#f2faf5"/><text x="44" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">DISH</text><text x="44" y="115" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">SOAP</text><path d="M27 38Q34 30 40 35" stroke="#f2ffff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/></svg></div><div class="lab-tool reagent-tool salt-prop '+(actions.salt?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag salt into the bowl" data-tool="salt"><svg viewBox="0 0 74 126" aria-hidden="true"><defs><linearGradient id="saltBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#dae6ee"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#c5d7df"/></linearGradient></defs><rect x="12" y="32" width="50" height="89" rx="12" fill="url(#saltBody)" stroke="#cfe4eb" stroke-width="3"/><rect x="8" y="19" width="58" height="20" rx="6" fill="#a9c2cf" stroke="#e6f1f7" stroke-width="3"/><circle cx="24" cy="27" r="2.2" fill="#536f80"/><circle cx="37" cy="27" r="2.2" fill="#536f80"/><circle cx="50" cy="27" r="2.2" fill="#536f80"/><rect x="17" y="61" width="40" height="36" rx="5" fill="#fff8ef"/><text x="37" y="83" font-size="17" font-weight="bold" fill="#304758" text-anchor="middle">SALT</text></svg></div>'+((actions.soap&&actions.salt)?'<div class="lab-tool lab-stirrer" role="button" tabindex="0" aria-label="Stir the strawberry mixture" data-tool="stir"><span class="stir-handle"></span><span class="stir-head"></span></div>':''):
  stage===3?'<div class="lab-tool mixing-cup '+(actions.filter?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour the strawberry mixture containing soap and salt through the filter" data-tool="filter"><span class="cup-mixture"></span><span class="cup-label">MIXED<br>EXTRACT</span></div>':
  '<div class="lab-tool bottle alcohol '+(ready?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour cold alcohol into jar" data-tool="alcohol"><span class="lid"></span><span class="bottle-label">COLD<br>ALCOHOL</span></div>';
  const vessel=(stage===1||stage===2)?bowlScene(stage===1?'mash':'mix'):
  stage===3?'<div class="lab-vessel filter-station" data-dropzone="filter"><svg class="filter-scene" viewBox="0 0 290 310" role="img" aria-label="Coffee filter in a funnel above a glass receiving jar. '+(actions.filter?'Strawberry residue remains in the filter and filtered extract collects in the jar.':'The filter is ready, and the receiving jar is still empty.')+'"><defs><linearGradient id="filGlass" x1="0" x2="1"><stop stop-color="#b7e4ff" stop-opacity=".32"/><stop offset=".5" stop-color="#cfeeff" stop-opacity=".06"/><stop offset="1" stop-color="#c4eaff" stop-opacity=".4"/></linearGradient><linearGradient id="filLiquid" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#d77b9e"/><stop offset="1" stop-color="#a33d71"/></linearGradient><clipPath id="jarInterior"><path d="M93 174H204L200 283Q200 296 187 298H110Q99 297 98 284Z"/></clipPath></defs><ellipse cx="151" cy="298" rx="101" ry="10" fill="#050f2e" opacity=".37"/><path d="M87 170H210L204 284Q202 302 187 303H109Q94 302 92 284Z" fill="url(#filGlass)" stroke="#d5edfc" stroke-width="5"/><g clip-path="url(#jarInterior)">'+(actions.filter?'<path d="M96 253Q148 250 205 253V313H96Z" fill="url(#filLiquid)"/><path d="M95 253Q151 248 205 253" fill="none" stroke="#f6b1c1" stroke-width="3"/>':'')+'</g><ellipse cx="148" cy="170" rx="61" ry="9" fill="#bfe8fb" fill-opacity=".13" stroke="#d5edfc" stroke-width="4"/><path d="M64 42H232L167 157H129Z" fill="#acd1df" fill-opacity=".37" stroke="#bedfee" stroke-width="5" stroke-linejoin="round"/><path d="M82 51H215L164 141H131Z" fill="#f5ebd8" stroke="#fff5e4" stroke-width="3" stroke-linejoin="round"/><path d="M86 64Q148 77 211 64" stroke="#d2c7af" stroke-width="2" fill="none"/>'+(actions.filter?'<path d="M91 72Q147 67 205 72L184 107Q166 113 147 108Q126 115 107 106Z" fill="#9e3f5e"/><path d="M111 82Q126 76 141 84T174 82" stroke="#da7b87" stroke-width="6" fill="none" opacity=".7"/><circle cx="145" cy="92" r="5" fill="#7a2a48"/><circle cx="164" cy="100" r="4" fill="#cc6b7f"/>':'')+'<path d="M148 153V170" stroke="#c1e0ef" stroke-width="5" opacity=".7"/>'+(actions.filter?'<path d="M148 155v18" stroke="#e1a6b7" stroke-width="3" stroke-dasharray="3 4"/>':'')+'</svg><span class="filter-residue-label">'+(actions.filter?'PULP REMAINS IN FILTER':'FILTER READY')+'</span></div>':
  '<div class="lab-vessel glass-vessel" data-dropzone="alcohol"><div class="glass-rim"></div><div class="pink-solution"></div><div class="foam '+(actions.soap?'visible':'')+'"></div><div class="salt-grains '+(actions.salt?'visible':'')+'">✦ ✧ ✦</div><div class="clear-layer" style="height:'+(actions.alcohol/maxPour*34)+'%"></div><div class="dna-threads '+(actions.alcohol===maxPour?'visible':'')+'">〰 〰</div></div>';
- return '<div class="hands-on"><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+'</div><div class="workbench-caption">'+(stage===3?'DRAG THE MIXED EXTRACT TO THE FILTER':stage===1?'MOVE THE MASHER THROUGH THE BOWL':stage===2?'ADD SOAP, THEN SALT TO THE SAME BOWL':'ADD COLD ALCOHOL TO THE JAR')+'</div><div class="interaction-heading">'+item.title+'</div><div class="interaction-hint">'+item.tip+'</div><div class="activity-meter"><span>Experiment progress</span><strong id="activityValue">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?'Add salt':'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step completed! Continue to the next stage.':'Move a tool onto the vessel, or use the button.')+'</span></div></div>';
+ return '<div class="hands-on"><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+(stage===4?'<div class="pour-stream" aria-hidden="true"></div>':'')+'</div><div class="workbench-caption">'+(stage===3?'DRAG THE MIXED EXTRACT TO THE FILTER':stage===1?'MOVE THE MASHER THROUGH THE BOWL':stage===2?'SOAP → SALT → STIR TO MIX':'LAYER ALCOHOL GENTLY · DO NOT STIR')+'</div><div class="interaction-heading">'+item.title+'</div><div class="interaction-hint">'+item.tip+'</div><div class="activity-meter"><span>Experiment progress</span><strong id="activityValue">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?(actions.salt?'Stir mixture': 'Add salt'):'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step completed! Continue to the next stage.':'Move a tool onto the vessel, or use the button.')+'</span></div></div>';
 }
 function applyAction(type){
  if(type==='mash')actions.mash=Math.min(maxMash,actions.mash+1);
  if(type==='soap')actions.soap=true;
  if(type==='salt'&&actions.soap)actions.salt=true;
+ if(type==='stir'&&actions.soap&&actions.salt)mixStirs=Math.min(requiredStirs,mixStirs+1);
  if(type==='filter')actions.filter=true;
  if(type==='alcohol')actions.alcohol=Math.min(maxPour,actions.alcohol+1);
  render(true);
+}
+function startPourAnimation(){
+ if(pouring||stage!==4||actions.alcohol>=maxPour)return;
+ pouring=true;
+ const bench=content.querySelector('#workbench');
+ if(!bench){pouring=false;applyAction('alcohol');return;}
+ const bottle=bench.querySelector('.lab-tool.alcohol');
+ const stream=bench.querySelector('.pour-stream');
+ bench.classList.add('is-pouring');
+ if(stream)stream.classList.add('visible');
+ if(bottle)bottle.classList.add('pour-tilt');
+ const done=()=>{pouring=false;applyAction('alcohol')};
+ // The animation finishes before the pouring action changes the liquid level.
+ const target=stream||bottle;
+ if(target){let ended=false;const finish=()=>{if(ended)return;ended=true;done()};target.addEventListener('animationend',finish,{once:true});setTimeout(finish,1050);}
+ else done();
 }
 function bindHandsOn(){
  const bench=content.querySelector('#workbench');
@@ -97,9 +115,9 @@ function bindHandsOn(){
  const assist=content.querySelector('#assistBtn');
  assist.addEventListener('click',()=>{
   if(stage===1)applyAction('mash');
-  else if(stage===2)applyAction(actions.soap?'salt':'soap');
+  else if(stage===2)applyAction(!actions.soap?'soap':!actions.salt?'salt':'stir');
   else if(stage===3)applyAction('filter');
-  else applyAction('alcohol');
+  else startPourAnimation();
  });
  bench.querySelectorAll('.lab-tool').forEach(el=>{
   let dragging=false,originX=0,originY=0,last=0,strokes=0;
@@ -112,6 +130,7 @@ function bindHandsOn(){
   el.addEventListener('pointerdown',e=>{
    if(el.classList.contains('tool-done'))return;
    if(type==='salt'&&!actions.soap)return;
+   if(type==='stir'&&!(actions.soap&&actions.salt))return;
    e.preventDefault();dragging=true;last=0;strokes=0;
    originX=e.clientX;originY=e.clientY;
    el.setPointerCapture(e.pointerId);el.classList.add('dragging');
@@ -134,12 +153,13 @@ function bindHandsOn(){
    el.classList.remove('dragging');bench.classList.remove('target-active');el.style.transform='';
    if(hit){
     if(type==='mash'){actions.mash=Math.min(maxMash,actions.mash+Math.max(1,strokes));render(true);}
+    else if(type==='alcohol')startPourAnimation();
     else applyAction(type);
    }
   }
   el.addEventListener('pointerup',finish);
   el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
-  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type!=='salt'||actions.soap)applyAction(type)}});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type!=='salt'||actions.soap)applyAction(type)}});
  });
 }
 function render(preserveScroll=false){
@@ -153,12 +173,13 @@ function render(preserveScroll=false){
  nextBtn.textContent=completed?'Close exhibit':stage===6?'Finish exhibit →':'Next step →';
  let left='<div class="stage-copy"><span class="stage-kicker">STEP '+String(stage+1).padStart(2,'0')+' / '+String(steps.length).padStart(2,'0')+'</span><h2 id="exhibitTitle">'+s.heading+'</h2><p>'+s.sub+'</p>';
  if(stage===0)left+=options(q1,prediction)+(prediction!==null?'<div class="feedback" role="status">'+(prediction===1?'That’s right!':'Interesting prediction!')+' Strawberry cells contain DNA, mainly inside their nuclei.</div>':'');
- if(stage===5)left+='<div class="lab-tip"><strong>What you actually see:</strong> Many DNA molecules clumped together, not an individual double helix. The extract can contain other material too.</div>';
+ if(stage===5)left+='<div class="lab-tip"><strong>What you actually see:</strong> Many DNA molecules clumped together, not an individual double helix. The extract can contain other material too. Do not stir the alcohol into the strawberry liquid.</div>';
  if(stage===6)left+=options(q2,answer)+(answer!==null?'<div class="feedback" role="status">'+(answer===0?'Correct! ':'Not quite. ')+'Cold alcohol causes DNA to precipitate from the watery mixture.</div>':'');
  if(completed)left='<div class="stage-copy"><span class="stage-kicker">EXHIBIT COMPLETE</span><h2 id="exhibitTitle">You’re a DNA detective!</h2><p>You mashed the fruit, released the DNA, filtered the pulp, and made DNA precipitate. Every successful scientist starts with careful observations.</p><button class="button secondary" id="restartBtn" type="button">↺ Restart experiment</button></div>';
  else left+='</div>';
  let right;
  if(completed)right=labScene('dna');
+ else if(stage===5)right='<div class="dna-reveal-scene"><div class="dna-layered-vessel"><div class="dna-pink-layer"></div><div class="dna-clear-layer"></div><div class="dna-precipitate '+(dnaRevealed?'shown':'')+'"><i></i><i></i><i></i><i></i><i></i></div><div class="dna-glass-rim"></div></div><p class="dna-stage-caption">'+(dnaRevealed?'Cloudy strands collect at the interface.':'Two layers, not stirred together.')+'</p><button type="button" class="button primary" id="revealDna" '+(dnaRevealed?'disabled':'')+'>'+(dnaRevealed?'DNA visible ✓':'Watch DNA precipitate')+'</button></div>';
  else if(labStates[stage])right=labMarkup();
  else right=labScene(stage===0?'fruit':stage===6?'cell':'dna');
  content.innerHTML='<div class="stage-layout enhanced-stage '+(labStates[stage]?'interactive-layout':'')+'">'+left+'<div class="science-visual refined-visual '+(labStates[stage]?'interactive-visual':'')+'">'+right+'</div></div>';
@@ -166,8 +187,9 @@ function render(preserveScroll=false){
  content.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(stage===0)prediction=+b.dataset.answer;else answer=+b.dataset.answer;render()}));
  const restart=content.querySelector('#restartBtn');if(restart)restart.addEventListener('click',reset);
  bindHandsOn();
+ const reveal=content.querySelector('#revealDna');if(reveal)reveal.addEventListener('click',()=>{dnaRevealed=true;render(true)});
 }
-function reset(){stage=0;prediction=null;answer=null;completed=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;render()}
+function reset(){stage=0;prediction=null;answer=null;completed=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
 function openModal(){reset();modal.hidden=false;document.body.classList.add('modal-open');document.getElementById('closeModal').focus()}
 function closeModal(){modal.hidden=true;document.body.classList.remove('modal-open');document.getElementById('launchBtn').focus()}
 document.getElementById('launchBtn').addEventListener('click',openModal);
