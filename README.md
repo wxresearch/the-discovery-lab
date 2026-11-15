@@ -7,10 +7,10 @@ Rather than presenting science as a collection of facts to memorize, The Discove
 ## Features
 
 - **Interactive Science Museum:** Explore a digital museum with a futuristic visual style and exhibit-based navigation.
-- **Strawberry DNA Exhibit:** Work through a four-stage simulation of DNA extraction.
+- **Strawberry DNA Exhibit:** Follow a seven-stage guided simulation of DNA extraction in the correct sequence.
 - **Scientific Investigation:** Examine a strawberry and predict where its DNA is located.
-- **Virtual Experimentation:** Select crushing, soap, salt, and cold alcohol to learn what each contributes to DNA extraction.
-- **Visual Explanations:** Explore illustrated experimental results and the science behind DNA precipitation.
+- **Virtual Experimentation:** Follow mashing, detergent-and-salt treatment, filtration, and cold-alcohol precipitation in order.
+- **Visual Explanations:** Explore detailed SVG illustrations of strawberries, glassware, filtration, and DNA precipitation.
 - **Knowledge Checks:** Answer questions and receive immediate explanations.
 - **Guided Learning:** Follow the investigate, experiment, discover, and think-like-a-scientist stages.
 - **Future Exhibit Previews:** Browse planned physics and mathematics exhibit concepts.
@@ -38,12 +38,15 @@ https://wxresearch.github.io/the-discovery-lab/
 
 ## Interactive DNA Experiment
 
-The first exhibit introduces the process of extracting DNA from a strawberry through four stages:
+The first exhibit introduces the process of extracting DNA from a strawberry through seven stages:
 
-1. **Investigate:** Explore strawberry cells and predict where DNA is found.
-2. **Experiment:** Select experimental materials and discover how crushing, soap, salt, and cold alcohol contribute to DNA extraction.
-3. **Discover:** Observe a visual representation of DNA precipitation and learn why DNA appears as whitish strands.
-4. **Think Like a Scientist:** Answer a question about the experiment and complete the exhibit.
+1. **Investigate:** Predict where DNA is found inside a strawberry.
+2. **Mash:** Crush strawberry tissue to expose its cells.
+3. **Release:** Add soap and salt to help release and collect DNA.
+4. **Filter:** Separate fruit pulp from the liquid extract.
+5. **Precipitate:** Gently layer cold alcohol over the filtered liquid.
+6. **Discover:** Examine the whitish clumps that contain many DNA molecules.
+7. **Reflect:** Answer a question about why DNA precipitates.
 
 The activity is a guided educational simulation rather than a physical laboratory procedure. Its explanations are intended for introductory science learning, not experimental measurement or assessment of laboratory technique.
 
