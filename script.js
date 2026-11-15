@@ -154,7 +154,7 @@ function startStirAnimation(){
  const bench=content.querySelector('#workbench');
  const stirrer=bench&&bench.querySelector('.lab-stirrer');
  if(!stirrer){pouring=false;applyAction('stir');return;}
- bowlContact(bench,stirrer,.51,.69);
+ // The stirrer is already positioned inside the pulp at rest. Stir in place.
  stirrer.classList.add('auto-stir');
  bench.classList.add('stir-in-progress');
  let called=false;
@@ -178,9 +178,23 @@ function startPourAnimation(){
  if(target){let ended=false;const finish=()=>{if(ended)return;ended=true;done()};target.addEventListener('animationend',finish,{once:true});setTimeout(finish,1050);}
  else done();
 }
+function placeStirrerInBowl(bench){
+ const bowl=bench.querySelector('.mash-bowl');
+ const stirrer=bench.querySelector('.lab-stirrer');
+ if(!bowl||!stirrer)return;
+ // Align the rod's lower tip to the strawberry pulp, not to the SVG canvas edge.
+ const b=bowl.getBoundingClientRect();
+ const w=bench.getBoundingClientRect();
+ const rodHeight=stirrer.getBoundingClientRect().height;
+ const x=b.left-w.left+b.width*.51;
+ const pulpY=b.top-w.top+b.height*.73;
+ stirrer.style.left=(x-15)+'px';
+ stirrer.style.top=(pulpY-rodHeight+8)+'px';
+}
 function bindHandsOn(){
  const bench=content.querySelector('#workbench');
  if(!bench)return;
+ placeStirrerInBowl(bench);
  const controls=content.querySelector('.lab-controls');
  if(controls){bench.appendChild(controls);controls.classList.add('bench-controls');}
  const assist=content.querySelector('#assistBtn');
