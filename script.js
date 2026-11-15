@@ -108,7 +108,7 @@ function startMashAnimation(){
   const headRect=head.getBoundingClientRect();
   const targetX=bowlRect.left+bowlRect.width*.5;
   // The berry mixture is in the lower half of the SVG bowl, not at its rim.
-  const targetY=bowlRect.top+bowlRect.height*.76;
+  const targetY=bowlRect.top+bowlRect.height*.56;
   const headX=headRect.left+headRect.width*.5;
   const headY=headRect.top+headRect.height*.5;
   masher.style.setProperty('--mash-dx',(targetX-headX).toFixed(1)+'px');
@@ -225,7 +225,14 @@ function render(preserveScroll=false){
  else if(labStates[stage])right=labMarkup();
  else right=labScene(stage===0?'fruit':stage===6?'cell':'dna');
  content.innerHTML='<div class="stage-layout enhanced-stage '+(labStates[stage]?'interactive-layout':'')+'">'+left+'<div class="science-visual refined-visual '+(labStates[stage]?'interactive-visual':'')+'">'+right+'</div></div>';
- content.scrollTop=preserveScroll?Math.min(prior,content.scrollHeight-content.clientHeight):0;
+ // Put instructions and progress with the explanatory text, BESIDE the workbench.
+ // This is consistent for mash, ingredients, filtration and alcohol.
+ if(labStates[stage]){
+  const status=content.querySelector('.lab-status');
+  const copy=content.querySelector('.stage-copy');
+  if(status&&copy)copy.appendChild(status);
+ }
+ content.scrollTop=preserveScroll?Math.min(prior,Math.max(0,content.scrollHeight-content.clientHeight)):0;
  content.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(stage===0)prediction=+b.dataset.answer;else answer=+b.dataset.answer;render()}));
  const restart=content.querySelector('#restartBtn');if(restart)restart.addEventListener('click',reset);
  bindHandsOn();
