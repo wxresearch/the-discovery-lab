@@ -890,3 +890,68 @@
 @media(prefers-reduced-motion:reduce){
  .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-to-center .01s both}
 }
+
+/* Consistent side-by-side lab layout: explanation + progress on the left,
+   interactive workbench and action button on the right. */
+.exhibit-modal .stage-layout.enhanced-stage.interactive-layout{
+ display:grid!important;
+ grid-template-columns:minmax(0,.85fr) minmax(0,1.45fr)!important;
+ gap:18px!important;
+ align-items:start!important;
+}
+.exhibit-modal .interactive-layout .stage-copy{
+ order:0!important;
+ min-width:0;
+ align-self:start;
+}
+.exhibit-modal .interactive-layout .interactive-visual{
+ order:1!important;
+ width:100%;
+ min-width:0;
+}
+.exhibit-modal .interactive-layout .stage-copy h2{font-size:clamp(24px,2.9vw,34px);line-height:1.1}
+.exhibit-modal .interactive-layout .stage-copy p{font-size:13px;line-height:1.6}
+.exhibit-modal .interactive-layout .stage-copy .lab-status{
+ margin-top:20px;
+ display:flex;
+ gap:8px;
+ flex-direction:column;
+ background:#1a2b49;
+ border:1px solid #6383b354;
+ border-radius:12px;
+ padding:14px;
+}
+.exhibit-modal .interactive-layout .stage-copy .lab-instruction{font-size:12px;line-height:1.55}
+.exhibit-modal .interactive-layout .interactive-visual .hands-on{padding:8px}
+.exhibit-modal .interactive-layout .interactive-visual .lab-workbench{
+ height:clamp(270px,47dvh,360px)!important;
+ min-height:260px!important;
+}
+.exhibit-modal .lab-workbench .masher.auto-mash{
+ animation:mash-precise .82s ease-in-out both!important;
+}
+@keyframes mash-precise{
+ 0%,100%{transform:translate(0,0)}
+ 32%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 18px))}
+ 54%{transform:translate(var(--mash-dx),var(--mash-dy))}
+ 70%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 10px))}
+ 84%{transform:translate(var(--mash-dx),var(--mash-dy))}
+}
+@media(max-width:570px){
+ .exhibit-modal .stage-layout.enhanced-stage.interactive-layout{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:12px!important;
+ }
+ .exhibit-modal .interactive-layout .stage-copy .lab-status{
+  margin-top:10px;padding:10px;
+ }
+ .exhibit-modal .interactive-layout .stage-copy h2{font-size:24px}
+ .exhibit-modal .interactive-layout .stage-copy p{font-size:12px}
+ .exhibit-modal .interactive-layout .interactive-visual .lab-workbench{
+  height:clamp(190px,33dvh,265px)!important;
+  min-height:190px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-precise .01s both!important}
+}
