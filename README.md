@@ -1,22 +1,76 @@
-# The Discovery Lab
+# The Discovery Lab — Interactive Science Museum and Hands-On STEM Learning
 
-A static, interactive science museum website designed for students aged 8–12. Built using HTML, CSS, and vanilla JavaScript.
+The Discovery Lab is a web-based interactive science museum designed to help elementary and middle school students explore scientific concepts through **virtual experiments**, **visual learning**, and **inquiry-based discovery**. Inspired by modern science museums, the website turns science topics into guided exhibits where students can investigate questions, make predictions, and discover how everyday phenomena work.
 
-## What's included
-- Responsive, museum-inspired homepage with a custom generated DNA illustration
-- Exhibit gallery and future-exhibit previews
-- Full four-stage interactive strawberry DNA extraction exhibit: investigate, experiment, discover, and quiz
-- Keyboard-accessible controls, reduced-motion support, and clear, age-appropriate explanations
-- No account, backend, or build step required
+Rather than presenting science as a collection of facts to memorize, The Discovery Lab encourages students to learn through observation and experimentation. Its first exhibit explores strawberry DNA extraction, explaining how cells contain genetic information and why common materials can help make DNA visible.
 
-## Run locally
-Open `index.html` in a browser. The site uses Google Fonts when internet access is available; system-font fallbacks are included.
+## Features
 
-## Deploy to GitHub Pages
-1. Create a GitHub repository named `the-discovery-lab` (or use an existing repository).
-2. Upload `index.html`, `styles.css`, and `script.js` into the repository root.
-3. In **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/ (root)`, and save.
-4. Once the deployment finishes, open the Pages URL GitHub provides.
+- **Interactive Science Museum:** Explore a digital museum with a futuristic visual style and exhibit-based navigation.
+- **Strawberry DNA Exhibit:** Work through a four-stage simulation of DNA extraction.
+- **Scientific Investigation:** Examine a strawberry and predict where its DNA is located.
+- **Virtual Experimentation:** Select crushing, soap, salt, and cold alcohol to learn what each contributes to DNA extraction.
+- **Visual Explanations:** Explore illustrated experimental results and the science behind DNA precipitation.
+- **Knowledge Checks:** Answer questions and receive immediate explanations.
+- **Guided Learning:** Follow the investigate, experiment, discover, and think-like-a-scientist stages.
+- **Future Exhibit Previews:** Browse planned physics and mathematics exhibit concepts.
+- **Accessible Design:** Use keyboard-friendly controls and reduced-motion support.
+- **Responsive Interface:** Explore the museum on desktops, school Chromebooks, tablets, and smaller screens.
 
-## Scientific note
-The experiment is an educational simulation, not a real laboratory activity. Visible DNA precipitate contains many DNA molecules and may include impurities. If running the physical experiment with children, use age-appropriate safety supervision; avoid tasting reagents or handling alcohol without adult guidance.
+## Getting Started
+
+The Discovery Lab is a static HTML, CSS, and JavaScript website. No installation, account, API key, or build tools are required.
+
+Clone the repository:
+
+```bash
+git clone https://github.com/wxresearch/the-discovery-lab.git
+cd the-discovery-lab
+```
+
+Open `index.html` in a web browser, then select **Enter the exhibit** to explore the strawberry DNA experiment.
+
+## Online Website
+
+The Discovery Lab is structured for deployment through GitHub Pages:
+
+https://wxresearch.github.io/the-discovery-lab/
+
+To publish the website, open the repository's **Settings → Pages**, select **Deploy from a branch**, and choose `main` and `/ (root)`. The URL above becomes available after GitHub Pages deployment succeeds.
+
+## Interactive DNA Experiment
+
+The first exhibit introduces the process of extracting DNA from a strawberry through four stages:
+
+1. **Investigate:** Explore strawberry cells and predict where DNA is found.
+2. **Experiment:** Select experimental materials and discover how crushing, soap, salt, and cold alcohol contribute to DNA extraction.
+3. **Discover:** Observe a visual representation of DNA precipitation and learn why DNA appears as whitish strands.
+4. **Think Like a Scientist:** Answer a question about the experiment and complete the exhibit.
+
+The activity is a guided educational simulation rather than a physical laboratory procedure. Its explanations are intended for introductory science learning, not experimental measurement or assessment of laboratory technique.
+
+## Educational Goals
+
+The Discovery Lab aims to make science more approachable for young learners by encouraging them to:
+
+- Ask questions about familiar objects and natural phenomena.
+- Form predictions before seeing experimental results.
+- Connect experimental steps to underlying scientific concepts.
+- Interpret observations rather than memorize isolated facts.
+- Build curiosity and confidence in STEM exploration.
+
+The project is intended for independent exploration, introductory classroom activities, and youth STEM outreach.
+
+## Project Scope
+
+The Discovery Lab is an early-stage educational prototype. The current release includes one interactive strawberry DNA exhibit and previews of future physics and mathematics topics. It is not yet a complete virtual science museum or a fully open-ended laboratory simulator.
+
+The DNA activity uses guided selections and illustrations rather than a scientific simulation of molecular interactions. It does not require or store student accounts. Physical DNA extraction, if performed separately, requires appropriate adult supervision and safe handling of materials, especially alcohol.
+
+## Technologies and Topics
+
+**HTML · CSS · JavaScript · Web development · Interactive science museum · STEM education · Educational technology (EdTech) · Inquiry-based learning · Virtual experiments · Biology education · DNA extraction · Scientific literacy · Science outreach · Responsive design · Accessible web design · GitHub Pages**
+
+## Project Repository
+
+https://github.com/wxresearch/the-discovery-lab
