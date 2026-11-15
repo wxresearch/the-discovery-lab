@@ -152,6 +152,8 @@ function startPourAnimation(){
 function bindHandsOn(){
  const bench=content.querySelector('#workbench');
  if(!bench)return;
+ const controls=content.querySelector('.lab-controls');
+ if(controls){bench.appendChild(controls);controls.classList.add('bench-controls');}
  const assist=content.querySelector('#assistBtn');
  assist.addEventListener('click',()=>{
   if(stage===1)startMashAnimation();
