@@ -42,10 +42,10 @@ The first exhibit introduces the process of extracting DNA from a strawberry thr
 
 1. **Investigate:** Predict where DNA is found inside a strawberry.
 2. **Mash:** Drag the masher through the bowl until the strawberry pulp is fully mashed.
-3. **Release:** Keep the strawberry pulp in the same glass bowl. Drag the dish soap bottle into the bowl, then the salt shaker; visible foam and salt grains confirm each addition.
+3. **Release and mix:** Keep the pulp in the same bowl. Add dish soap, then salt, and stir gently four times. Visible foam and salt grains confirm additions before stirring.
 4. **Filter:** Drag the strawberry mixture over a funnel to filter out the pulp.
-5. **Precipitate:** Drag the alcohol bottle to the vessel and gradually add cold alcohol.
-6. **Discover:** Examine the whitish clumps that contain many DNA molecules.
+5. **Precipitate:** Add cold alcohol gradually using drag or the Pour button. Each button press plays a brief pour animation before the liquid level changes. Keep the alcohol and extract in separate layers; do not stir them together.
+6. **Discover:** Select **Watch DNA precipitate** to see whitish DNA-rich clumps gradually appear at the alcohol–extract interface.
 7. **Reflect:** Answer a question about why DNA precipitates.
 
 Advancing through the experimental stages requires completing the corresponding interaction. Each interactive action also has a clickable alternative for keyboards and touch devices. The activity is a guided educational simulation rather than a physical laboratory procedure. Its explanations are intended for introductory science learning, not experimental measurement or assessment of laboratory technique.
