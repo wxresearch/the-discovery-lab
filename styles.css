@@ -356,3 +356,75 @@
 @media(max-width:450px){
  .exhibit-modal .lab-workbench .lab-vessel.mash-bowl{left:34%!important;width:59%!important}
 }
+
+/* v3 - consistent glass mixing bowl across mash and reagent stages */
+.exhibit-modal .lab-workbench .unified-bowl,
+.exhibit-modal .lab-workbench .lab-vessel.mash-bowl.unified-bowl{
+ left:26%!important;
+ width:52%!important;
+ bottom:8%!important;
+ height:78%!important;
+ z-index:2;
+ pointer-events:none;
+}
+.exhibit-modal .lab-workbench .reagent-tool{
+ position:absolute;
+ z-index:4;
+ width:72px;
+ height:auto;
+ top:31%;
+ left:2%;
+ border:0;
+ border-radius:0;
+ background:none;
+ box-shadow:none;
+ cursor:grab;
+ user-select:none;
+ touch-action:none;
+ filter:drop-shadow(0 12px 7px #0412289a);
+}
+.exhibit-modal .lab-workbench .reagent-tool svg{
+ display:block;
+ width:100%;
+ height:auto;
+ overflow:visible;
+ pointer-events:none;
+}
+.exhibit-modal .lab-workbench .reagent-tool.salt-prop{
+ left:auto;
+ right:2%;
+ top:51%;
+ width:65px;
+}
+.exhibit-modal .lab-workbench .reagent-tool.dragging{
+ z-index:10;
+ cursor:grabbing;
+ filter:drop-shadow(0 15px 14px #041228b0);
+}
+.exhibit-modal .lab-workbench .reagent-tool.tool-done{
+ opacity:.44;
+ cursor:default;
+}
+.exhibit-modal .lab-workbench .masher{left:8%;top:14%}
+.exhibit-modal .mash-scene .soap-foam{
+ opacity:1;
+ animation:foam-enter .35s ease-out both;
+}
+.exhibit-modal .mash-scene .salt-fall{
+ opacity:1;
+ animation:salt-enter .45s ease-out both;
+}
+@keyframes foam-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes salt-enter{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:500px){
+ .exhibit-modal .lab-workbench .unified-bowl,
+ .exhibit-modal .lab-workbench .lab-vessel.mash-bowl.unified-bowl{
+  left:24%!important;width:56%!important;
+ }
+ .exhibit-modal .lab-workbench .reagent-tool{left:0;width:56px;top:35%}
+ .exhibit-modal .lab-workbench .reagent-tool.salt-prop{right:0;width:52px;top:55%}
+ .exhibit-modal .lab-workbench .masher{left:4%;top:15%}
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .mash-scene .soap-foam,.exhibit-modal .mash-scene .salt-fall{animation:none}
+}
