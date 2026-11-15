@@ -540,3 +540,99 @@
   .exhibit-modal .lab-workbench .mixing-cup{left:4%;width:82px;height:104px}
   .exhibit-modal .filter-residue-label{font-size:9px}
 }
+
+/* Stage refinements: ingredient placement and tactile mixing */
+.exhibit-modal .lab-workbench .reagent-tool.soap-prop{
+  left:0!important;top:10%!important;width:106px!important;
+}
+.exhibit-modal .lab-workbench .reagent-tool.salt-prop{
+  left:1%!important;right:auto!important;top:58%!important;width:85px!important;
+}
+.exhibit-modal .lab-workbench .unified-bowl,
+.exhibit-modal .lab-workbench .lab-vessel.mash-bowl.unified-bowl{
+  left:31%!important;width:61%!important;
+}
+.exhibit-modal .lab-workbench .lab-stirrer{
+  top:5%;left:19%;width:35px;height:152px;
+  z-index:5;filter:drop-shadow(0 6px 7px #07162a);
+}
+.lab-stirrer .stir-handle{display:block;margin:auto;width:10px;height:130px;border-radius:5px;background:linear-gradient(90deg,#a5d1e3,#e5f8ff,#82aebd);transform:rotate(-13deg)}
+.lab-stirrer .stir-head{position:absolute;bottom:0;left:1px;width:23px;height:11px;border:3px solid #cce6f0;border-radius:50%;transform:rotate(-13deg)}
+.exhibit-modal .mash-scene .pulp-fibers{transform-origin:50% 65%}
+.exhibit-modal .lab-workbench:has(.lab-stirrer.dragging) .pulp-fibers{animation:swirl-pulp .55s ease-in-out infinite alternate}
+@keyframes swirl-pulp{to{transform:translateX(9px) rotate(2deg)}}
+@media(max-width:650px){
+  .exhibit-modal .lab-workbench .reagent-tool.soap-prop{width:clamp(75px,21vw,100px)!important;left:-2%!important;top:10%!important}
+  .exhibit-modal .lab-workbench .reagent-tool.salt-prop{width:clamp(64px,17vw,82px)!important;left:0!important;right:auto!important;top:60%!important}
+  .exhibit-modal .lab-workbench .unified-bowl,
+  .exhibit-modal .lab-workbench .lab-vessel.mash-bowl.unified-bowl{left:32%!important;width:62%!important}
+  .exhibit-modal .lab-workbench .lab-stirrer{left:21%;top:9%}
+}
+/* Button-triggered alcohol animation; hidden until the pouring action starts */
+.exhibit-modal .lab-workbench .pour-stream{
+ position:absolute;z-index:6;left:43%;top:31%;width:5px;height:0;
+ border-radius:12px;background:linear-gradient(#ecfdff,#8ccaf0);
+ opacity:0;pointer-events:none;transform:rotate(-16deg);transform-origin:top;
+}
+.exhibit-modal .lab-workbench.is-pouring .pour-stream.visible{
+ opacity:1;animation:pour-flow .85s ease-in-out both;
+}
+.exhibit-modal .lab-workbench .alcohol.pour-tilt{
+ animation:tip-bottle .85s ease-in-out both;z-index:7;
+}
+@keyframes tip-bottle{
+ 0%,100%{transform:rotate(0) translate(0,0)}
+ 25%,75%{transform:rotate(45deg) translate(35px,-22px)}
+}
+@keyframes pour-flow{
+ 0%,10%{height:0;opacity:0}
+ 35%,72%{height:85px;opacity:.93}
+ 100%{height:0;opacity:0}
+}
+/* DNA precipitation is a separate observation, not stirring the alcohol */
+.exhibit-modal .dna-reveal-scene{
+ display:flex;flex-direction:column;align-items:center;gap:12px;
+ padding:18px 14px 24px;width:100%;min-width:0;
+}
+.exhibit-modal .dna-layered-vessel{
+ position:relative;width:min(58%,190px);height:245px;
+ border:5px solid #b9def0;border-top:0;border-radius:7px 7px 38px 38px;
+ box-shadow:inset 9px 0 12px #d1efff25,0 12px 24px #050b227a;
+ background:linear-gradient(90deg,#b9e2fc28,#effbff09,#cbeaf73b);
+ overflow:visible;
+}
+.exhibit-modal .dna-glass-rim{
+ position:absolute;top:-10px;left:-5%;width:110%;height:18px;
+ border-radius:50%;border:5px solid #c9ecf6;background:#b3d6f624;
+}
+.exhibit-modal .dna-pink-layer{
+ position:absolute;left:4%;right:4%;bottom:3%;height:45%;
+ background:linear-gradient(#e789a8cc,#a83a68);
+ border-radius:0 0 30px 30px;
+}
+.exhibit-modal .dna-clear-layer{
+ position:absolute;left:4%;right:4%;bottom:48%;height:42%;
+ background:linear-gradient(#caeff79c,#c0dfee77);
+}
+.exhibit-modal .dna-precipitate{
+ position:absolute;z-index:3;left:16%;right:16%;bottom:45%;height:28%;
+ opacity:0;pointer-events:none;
+}
+.exhibit-modal .dna-precipitate.shown{animation:dna-form 1.55s ease-out both}
+.exhibit-modal .dna-precipitate i{
+ position:absolute;display:block;width:7px;height:58px;border-radius:70%;
+ border-left:4px solid #fffbe8;filter:drop-shadow(0 0 3px #fff9e9);
+ transform:rotate(20deg);
+}
+.exhibit-modal .dna-precipitate i:nth-child(2){left:24%;top:17%;height:42px;transform:rotate(-25deg)}
+.exhibit-modal .dna-precipitate i:nth-child(3){left:45%;top:-5%;height:52px;transform:rotate(29deg)}
+.exhibit-modal .dna-precipitate i:nth-child(4){left:68%;top:12%;height:45px;transform:rotate(-19deg)}
+.exhibit-modal .dna-precipitate i:nth-child(5){left:84%;top:5%;height:59px;transform:rotate(14deg)}
+@keyframes dna-form{0%{opacity:0;transform:translateY(14px) scale(.75)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.exhibit-modal .dna-stage-caption{font-size:12px;color:#b9d5ee;text-align:center;line-height:1.5}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench.is-pouring .pour-stream.visible{animation:pour-flow .01s both}
+ .exhibit-modal .lab-workbench .alcohol.pour-tilt{animation:tip-bottle .01s both}
+ .exhibit-modal .dna-precipitate.shown{animation:none;opacity:1}
+ .exhibit-modal .lab-workbench:has(.lab-stirrer.dragging) .pulp-fibers{animation:none}
+}
