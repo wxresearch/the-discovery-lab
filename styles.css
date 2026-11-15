@@ -171,3 +171,62 @@
 .strawberry-art::after{background:linear-gradient(90deg,#09112350,transparent 50%)}
 .specimen-photo{background:#080b14}
 .specimen-photo img{object-fit:contain;object-position:center;background:#080b14}
+
+/* Fix the missing workbench: the generic .science-visual grid had been
+   constraining the taller, interactive content and clipping its main scene. */
+.exhibit-modal .refined-visual.interactive-visual{
+  display:block !important;
+  height:auto !important;
+  min-height:unset !important;
+  max-height:none !important;
+  overflow:visible !important;
+  align-self:start;
+  position:static !important;
+}
+.exhibit-modal .interactive-visual .hands-on{
+  display:block;
+  width:100%;
+  min-width:0;
+  height:auto;
+  padding:16px;
+}
+.exhibit-modal .interactive-visual .lab-workbench{
+  display:block;
+  width:100%;
+  height:330px;
+  min-height:330px;
+  margin:0 0 16px;
+  overflow:hidden;
+  background:radial-gradient(ellipse at 52% 52%,#46648a,#1e2d4d 68%,#101d32 100%);
+}
+.exhibit-modal .interactive-visual .lab-workbench .lab-vessel,
+.exhibit-modal .interactive-visual .lab-workbench .lab-tool{visibility:visible;opacity:1}
+.exhibit-modal .interactive-visual .lab-workbench .lab-tool.tool-done{opacity:.5}
+.exhibit-modal .interaction-heading{margin:5px 0 3px;font-size:18px}
+.exhibit-modal .interaction-hint{min-height:0;margin:3px 0 14px;font-size:12px}
+.exhibit-modal .workbench-caption{
+ position:absolute;z-index:0;left:15px;bottom:13px;
+ font-size:10px;font-weight:700;letter-spacing:1.4px;color:#d2e5ff;
+ background:#0b1834bb;border:1px solid #a2c7f94a;border-radius:7px;padding:7px 10px
+}
+.exhibit-modal .mash-bowl{left:37%;width:47%;bottom:12%;height:45%}
+.exhibit-modal .masher{left:14%;top:13%}
+.exhibit-modal .fruit-pulp{
+ background:radial-gradient(ellipse at 38% 35%,#ff899a 0%,#e64869 30%,#b52e51 69%,#772341 100%);
+ box-shadow:inset -15px -13px 22px #74213990,inset 9px 4px 18px #ffa3b46a;
+}
+.exhibit-modal .fruit-pulp::before{
+ content:"";position:absolute;left:15%;top:8%;width:70%;height:50%;
+ background:radial-gradient(ellipse at 28% 36%,#ffccac 0 2px,transparent 3px),
+ radial-gradient(ellipse at 72% 25%,#ffe0b4 0 2px,transparent 3px),
+ radial-gradient(ellipse at 50% 76%,#ffcfab 0 2px,transparent 3px),
+ radial-gradient(ellipse at 83% 74%,#ffcfab 0 2px,transparent 3px);
+}
+@media(max-width:850px){
+ .exhibit-modal .refined-visual.interactive-visual{width:100%}
+ .exhibit-modal .interactive-visual .lab-workbench{height:300px;min-height:300px}
+}
+@media(max-width:450px){
+ .exhibit-modal .interactive-visual .lab-workbench{height:270px;min-height:270px}
+ .exhibit-modal .interactive-visual .hands-on{padding:10px}
+}
