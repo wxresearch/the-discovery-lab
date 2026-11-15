@@ -1061,3 +1061,34 @@
   left:32%;width:62%;
  }
 }
+
+/* The stirring rod begins INSIDE the bowl. It moves only within the pulp,
+   rather than flying from the left side to a target when Stir is pressed. */
+.exhibit-modal .lab-workbench .lab-stirrer{
+  top:auto;
+  left:auto;
+  height:124px;
+  width:30px;
+  z-index:7;
+  transform:none;
+}
+.exhibit-modal .lab-workbench .lab-stirrer .stir-handle{
+  height:120px;
+  width:11px;
+  transform:none;
+}
+.exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
+  animation:stir-anchored .72s ease-in-out both!important;
+}
+@keyframes stir-anchored{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  20%{transform:translate(-12px,3px) rotate(-6deg)}
+  45%{transform:translate(12px,8px) rotate(6deg)}
+  70%{transform:translate(-9px,6px) rotate(-5deg)}
+  88%{transform:translate(7px,3px) rotate(3deg)}
+}
+@media(prefers-reduced-motion:reduce){
+  .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
+    animation:stir-anchored .01s both!important;
+  }
+}
