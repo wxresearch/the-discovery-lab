@@ -230,3 +230,84 @@
  .exhibit-modal .interactive-visual .lab-workbench{height:270px;min-height:270px}
  .exhibit-modal .interactive-visual .hands-on{padding:10px}
 }
+
+/* Bowl anatomy: keep the fruit strictly inside the transparent vessel.
+   No rectangular fills or repeating concentric rings. */
+.exhibit-modal .lab-workbench .mash-bowl{
+  overflow:hidden;
+  isolation:isolate;
+  border:0;
+  border-radius:0 0 46% 46% / 0 0 58% 58%;
+  background:transparent;
+  box-shadow:none;
+  left:34%;
+  width:51%;
+  bottom:10%;
+  height:48%;
+}
+.exhibit-modal .mash-bowl::before{
+  content:"";
+  position:absolute;
+  inset:10% 3% 1%;
+  border-radius:4% 4% 46% 46% / 4% 4% 64% 64%;
+  background:linear-gradient(105deg,#e8f6ff38,#93c8ee19 35%,#dff6ff31 84%);
+  border:5px solid #c8e8fab0;
+  border-top:0;
+  box-shadow:inset 12px 4px 16px #ccefff29,0 14px 19px #051126a8;
+  z-index:2;
+  pointer-events:none;
+}
+.exhibit-modal .mash-bowl .fruit-pulp{
+  position:absolute;
+  left:10%;
+  right:10%;
+  top:29%;
+  bottom:8%;
+  inset:auto;
+  width:80%;
+  height:63%;
+  border-radius:35% 35% 49% 49% / 15% 15% 65% 65%;
+  clip-path:ellipse(49% 49% at 50% 50%);
+  background:
+    radial-gradient(circle at 20% 32%,#f5a9b0 0 4px,transparent 5px),
+    radial-gradient(circle at 66% 57%,#ae244d 0 8px,transparent 9px),
+    radial-gradient(circle at 40% 72%,#f994a3 0 6px,transparent 7px),
+    radial-gradient(circle at 81% 38%,#f8c2b7 0 3px,transparent 4px),
+    radial-gradient(ellipse at 42% 38%,#ed687b 0%,#d53b61 39%,#a7224b 79%,#791c3f 100%);
+  box-shadow:inset 9px 8px 13px #ffacb166,inset -11px -13px 20px #5e153c8c;
+  opacity:.98;
+  transform:scale(calc(1 + var(--mash)*.08),calc(1 - var(--mash)*.1));
+  transition:transform .16s;
+  z-index:1;
+}
+.exhibit-modal .mash-bowl .fruit-pulp::before{
+  content:"";
+  position:absolute;
+  inset:9%;
+  border-radius:inherit;
+  background:
+    radial-gradient(circle at 25% 23%,#ffe4c0 0 2px,transparent 3px),
+    radial-gradient(circle at 67% 22%,#ffe0b3 0 2px,transparent 3px),
+    radial-gradient(circle at 34% 56%,#f7c7a2 0 3px,transparent 4px),
+    radial-gradient(circle at 79% 68%,#f7c7a2 0 2px,transparent 3px),
+    radial-gradient(circle at 53% 75%,#f9d7b8 0 2px,transparent 3px);
+  opacity:calc(.9 - var(--mash)*.6);
+}
+.exhibit-modal .mash-bowl .fruit-pulp::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:repeating-linear-gradient(17deg,transparent 0 11px,#ffb2ae2b 12px 14px,transparent 15px 28px);
+  opacity:calc(.05 + var(--mash)*.6);
+}
+.exhibit-modal .mash-bowl .bowl-rim{
+  position:absolute;
+  z-index:4;
+  left:1%;
+  top:8%;
+  width:98%;
+  height:26%;
+  border-radius:50%;
+  border:6px solid #d8f0f9e0;
+  box-shadow:0 2px 7px #03183188,inset 0 2px 5px #d3f3ff55;
+  background:transparent;
+  pointer-events:none;
+}
