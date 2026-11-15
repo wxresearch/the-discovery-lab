@@ -653,3 +653,78 @@
 @media(prefers-reduced-motion:reduce){
  .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation:stir-action .01s both}
 }
+
+/* Alcohol-stage vessel is a true open-topped SVG, not the old CSS beaker.
+   The pour stream terminates at the OPENING, above the glass wall. */
+.exhibit-modal .lab-workbench .alcohol-station{
+ position:absolute;
+ left:31%;
+ top:5%;
+ bottom:auto;
+ width:65%;
+ height:89%;
+ z-index:2;
+ pointer-events:none;
+ background:none;
+ border:0;
+ box-shadow:none;
+ overflow:visible;
+ transform:none;
+}
+.exhibit-modal .lab-workbench .alcohol-scene{
+ display:block;
+ width:100%;
+ height:100%;
+ overflow:visible;
+ filter:drop-shadow(0 12px 10px #07142a88);
+}
+.exhibit-modal .lab-workbench .lab-tool.alcohol{
+ left:7%;
+ top:3%;
+ transform-origin:80% 14%;
+ z-index:5;
+}
+.exhibit-modal .lab-workbench .pour-stream{
+ left:60%;
+ top:9%;
+ width:4px;
+ height:0;
+ transform:none;
+ transform-origin:top center;
+ background:linear-gradient(#f5ffff,#9ed9f1);
+ border-radius:4px;
+ z-index:6;
+}
+.exhibit-modal .lab-workbench.is-pouring .pour-stream.visible{
+ animation:pour-into-opening .85s ease-in-out both;
+}
+.exhibit-modal .lab-workbench .alcohol.pour-tilt{
+ animation:alcohol-bottle-tilt .85s ease-in-out both;
+}
+@keyframes alcohol-bottle-tilt{
+ 0%,100%{transform:translate(0,0) rotate(0)}
+ 27%,72%{transform:translate(88px,-12px) rotate(65deg)}
+}
+@keyframes pour-into-opening{
+ 0%,12%{height:0;opacity:0}
+ 32%,69%{height:37px;opacity:.95}
+ 100%{height:0;opacity:0}
+}
+@media(max-width:600px){
+ .exhibit-modal .lab-workbench .alcohol-station{left:31%;width:67%;top:5%;height:89%}
+ .exhibit-modal .lab-workbench .lab-tool.alcohol{left:5%;top:4%}
+ .exhibit-modal .lab-workbench .pour-stream{left:60%;top:9%}
+ @keyframes alcohol-bottle-tilt{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  27%,72%{transform:translate(63px,-10px) rotate(65deg)}
+ }
+ @keyframes pour-into-opening{
+  0%,12%{height:0;opacity:0}
+  32%,69%{height:29px;opacity:.95}
+  100%{height:0;opacity:0}
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench.is-pouring .pour-stream.visible{animation:pour-into-opening .01s both}
+ .exhibit-modal .lab-workbench .alcohol.pour-tilt{animation:alcohol-bottle-tilt .01s both}
+}
