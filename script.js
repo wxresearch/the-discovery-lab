@@ -53,36 +53,123 @@ const labScene=(kind)=>{
  return svgStart+'<circle cx="240" cy="172" r="145" fill="#7fb8ff" opacity=".07" filter="url(#glow)"/>'+obj+'<text x="240" y="354" text-anchor="middle" fill="#b4cae9" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">'+({fruit:'FRESH STRAWBERRY',mash:'CRUSH THE FRUIT',mix:'LYSE THE CELLS',filter:'SEPARATE THE PULP',alcohol:'PRECIPITATE DNA',dna:'VISIBLE DNA CLUMPS',cell:'DNA INSIDE THE CELL'}[kind])+'</text></svg>';
 };
 function options(answers,selected){return '<div class="choices" role="group" aria-label="Choose an answer">'+answers.map((a,i)=>'<button type="button" class="choice '+(selected===i?'selected':'')+'" data-answer="'+i+'">'+a+'</button>').join('')+'</div>';}
-function render(){
+
+/* Hands-on lab interactions: native pointer events work with mouse, pen and touch.
+   A button alternative makes every stage usable without dragging. */
+const actions={mash:0,soap:false,salt:false,filter:false,alcohol:0};
+const maxMash=7,maxPour=5;
+const labStates={
+ 1:{id:'mash',title:'Drag the masher over the fruit',tip:'Press and move the masher around the bowl. Each stroke breaks down more strawberry tissue.'},
+ 2:{id:'mix',title:'Pour in detergent, then add salt',tip:'Drag the soap bottle to the jar. When it has been added, drag the salt shaker.'},
+ 3:{id:'filter',title:'Pour the mixture into the filter',tip:'Drag the mixing cup over the funnel to separate pulp from the liquid.'},
+ 4:{id:'alcohol',title:'Carefully layer the cold alcohol',tip:'Drag the alcohol bottle to the jar, then move it gently to pour. This is a simulation; handle real alcohol only with adult supervision.'}
+};
+function stageReady(){return stage===0?prediction!==null:stage===1?actions.mash>=maxMash:stage===2?actions.soap&&actions.salt:stage===3?actions.filter:stage===4?actions.alcohol>=maxPour:stage===6?answer!==null:true;}
+function pct(n,d){return Math.round(n/d*100);}
+function labMarkup(){
+ if(!labStates[stage])return '';
+ const item=labStates[stage];
+ const progress=stage===1?pct(actions.mash,maxMash):stage===2?(actions.soap?50:0)+(actions.salt?50:0):stage===3?(actions.filter?100:0):pct(actions.alcohol,maxPour);
+ const ready=progress===100;
+ const tool=stage===1?'<div class="lab-tool masher" role="button" tabindex="0" aria-label="Drag masher through the strawberry pulp" data-tool="mash"><span class="tool-top"></span><span class="tool-shaft"></span><span class="tool-base"></span></div>':
+ stage===2?'<div class="lab-tool bottle soap '+(actions.soap?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour detergent into beaker" data-tool="soap"><span class="lid"></span><span class="bottle-label">DETERGENT</span></div><div class="lab-tool shaker salt '+(actions.salt?'tool-done':'')+'" role="button" tabindex="0" aria-label="Add salt to beaker" data-tool="salt"><span class="shaker-cap"></span><span class="bottle-label">SALT</span></div>':
+ stage===3?'<div class="lab-tool mixing-cup '+(actions.filter?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour strawberry mixture through filter" data-tool="filter"><span class="cup-mixture"></span><span class="cup-label">MIXTURE</span></div>':
+ '<div class="lab-tool bottle alcohol '+(ready?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour cold alcohol into jar" data-tool="alcohol"><span class="lid"></span><span class="bottle-label">COLD<br>ALCOHOL</span></div>';
+ const vessel=stage===1?'<div class="lab-vessel mash-bowl" data-dropzone="mash"><div class="fruit-pulp" style="--mash:'+(actions.mash/maxMash)+'"></div><div class="bowl-rim"></div></div>':
+ stage===3?'<div class="lab-vessel filter-vessel" data-dropzone="filter"><div class="funnel"></div><div class="filter-paper"></div><div class="filter-flask"><div class="filtrate '+(actions.filter?'visible':'')+'"></div></div></div>':
+ '<div class="lab-vessel glass-vessel" data-dropzone="'+(stage===2?'mix':'alcohol')+'"><div class="glass-rim"></div><div class="pink-solution"></div><div class="foam '+(actions.soap?'visible':'')+'"></div><div class="salt-grains '+(actions.salt?'visible':'')+'">✦ ✧ ✦</div><div class="clear-layer" style="height:'+(actions.alcohol/maxPour*34)+'%"></div><div class="dna-threads '+(actions.alcohol===maxPour?'visible':'')+'">〰 〰</div></div>';
+ return '<div class="hands-on"><div class="interaction-heading">'+item.title+'</div><div class="interaction-hint">'+item.tip+'</div><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+'</div><div class="activity-meter"><span>Experiment progress</span><strong id="activityValue">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?'Add salt':'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step completed! Continue to the next stage.':'Move a tool onto the vessel, or use the button.')+'</span></div></div>';
+}
+function applyAction(type){
+ if(type==='mash')actions.mash=Math.min(maxMash,actions.mash+1);
+ if(type==='soap')actions.soap=true;
+ if(type==='salt'&&actions.soap)actions.salt=true;
+ if(type==='filter')actions.filter=true;
+ if(type==='alcohol')actions.alcohol=Math.min(maxPour,actions.alcohol+1);
+ render(true);
+}
+function bindHandsOn(){
+ const bench=content.querySelector('#workbench');
+ if(!bench)return;
+ const assist=content.querySelector('#assistBtn');
+ assist.addEventListener('click',()=>{
+  if(stage===1)applyAction('mash');
+  else if(stage===2)applyAction(actions.soap?'salt':'soap');
+  else if(stage===3)applyAction('filter');
+  else applyAction('alcohol');
+ });
+ bench.querySelectorAll('.lab-tool').forEach(el=>{
+  let dragging=false,originX=0,originY=0,last=0,strokes=0;
+  const type=el.dataset.tool;
+  const target=bench.querySelector('[data-dropzone]');
+  const inside=(x,y)=>{
+   const box=target.getBoundingClientRect();
+   return x>=box.left-12&&x<=box.right+12&&y>=box.top-15&&y<=box.bottom+15;
+  };
+  el.addEventListener('pointerdown',e=>{
+   if(el.classList.contains('tool-done'))return;
+   if(type==='salt'&&!actions.soap)return;
+   e.preventDefault();dragging=true;last=0;strokes=0;
+   originX=e.clientX;originY=e.clientY;
+   el.setPointerCapture(e.pointerId);el.classList.add('dragging');
+  });
+  el.addEventListener('pointermove',e=>{
+   if(!dragging)return;
+   const dx=e.clientX-originX,dy=e.clientY-originY;
+   el.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(type==='mash'?-12:dx>10?25:0)+'deg)';
+   const isInside=inside(e.clientX,e.clientY);
+   bench.classList.toggle('target-active',isInside);
+   if(type==='mash'&&isInside&&Math.hypot(dx,dy)>22&&Date.now()-last>240){
+    last=Date.now();strokes++;const ratio=Math.min(1,strokes/maxMash);
+    const pulp=bench.querySelector('.fruit-pulp');if(pulp)pulp.style.setProperty('--mash',ratio);
+   }
+  });
+  function finish(e){
+   if(!dragging)return;
+   dragging=false;
+   const hit=inside(e.clientX,e.clientY);
+   el.classList.remove('dragging');bench.classList.remove('target-active');el.style.transform='';
+   if(hit){
+    if(type==='mash'){actions.mash=Math.min(maxMash,actions.mash+Math.max(1,strokes));render(true);}
+    else applyAction(type);
+   }
+  }
+  el.addEventListener('pointerup',finish);
+  el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type!=='salt'||actions.soap)applyAction(type)}});
+ });
+}
+function render(preserveScroll=false){
+ const prior=content.scrollTop;
  const s=steps[stage];
  document.getElementById('progressStages').innerHTML=steps.map((x,i)=>'<span class="'+(i===stage?'active':'')+'">'+(i+1)+'. '+x.name+'</span>').join('');
  document.getElementById('progressBar').style.width=(((stage+1)/steps.length)*100)+'%';
  document.getElementById('stageCounter').textContent=(stage+1)+' of '+steps.length;
  backBtn.disabled=stage===0;
- nextBtn.disabled=(stage===0&&prediction===null)||(stage===6&&answer===null&&!completed);
+ nextBtn.disabled=!stageReady();
  nextBtn.textContent=completed?'Close exhibit':stage===6?'Finish exhibit →':'Next step →';
  let left='<div class="stage-copy"><span class="stage-kicker">STEP '+String(stage+1).padStart(2,'0')+' / '+String(steps.length).padStart(2,'0')+'</span><h2 id="exhibitTitle">'+s.heading+'</h2><p>'+s.sub+'</p>';
- let visual='fruit';
- if(stage===0){visual='fruit';left+=options(q1,prediction)+(prediction!==null?'<div class="feedback" role="status">'+(prediction===1?'That’s right!':'Interesting prediction!')+' Strawberry cells contain DNA, mainly inside their nuclei.</div>':'');}
- if(stage===1){visual='mash';left+='<div class="lab-tip"><strong>What happens?</strong> The berry becomes a soft pulp, exposing more of its cells. Crushing alone does not make the DNA visible.</div>';}
- if(stage===2){visual='mix';left+='<div class="lab-tip"><strong>Why both?</strong> Detergent breaks down lipid membranes. Salt helps shield DNA’s negative charges, making it easier for the DNA to come together.</div>';}
- if(stage===3){visual='filter';left+='<div class="lab-tip"><strong>Look closely:</strong> The filter catches solids, but dissolved DNA and other small molecules pass through with the liquid.</div>';}
- if(stage===4){visual='alcohol';left+='<div class="lab-tip"><strong>Important:</strong> Pour slowly to create a separate layer. Cold alcohol reduces DNA solubility, allowing clumps to appear at the interface.</div>';}
- if(stage===5){visual='dna';left+='<div class="lab-tip"><strong>What you actually see:</strong> Many DNA molecules clumped together, not an individual double helix. The extract can contain other material too.</div>';}
- if(stage===6){visual='cell';left+=options(q2,answer)+(answer!==null?'<div class="feedback" role="status">'+(answer===0?'Correct! ':'Not quite. ')+'Cold alcohol causes DNA to precipitate from the watery mixture.</div>':'');}
- if(completed){visual='dna';left='<div class="stage-copy"><span class="stage-kicker">EXHIBIT COMPLETE</span><h2 id="exhibitTitle">You’re a DNA detective!</h2><p>You followed the whole experiment, from crushing the strawberry to collecting DNA. Science starts with a question and grows through careful observation.</p><button class="button secondary" id="restartBtn" type="button">↺ Restart experiment</button></div>';}
+ if(stage===0)left+=options(q1,prediction)+(prediction!==null?'<div class="feedback" role="status">'+(prediction===1?'That’s right!':'Interesting prediction!')+' Strawberry cells contain DNA, mainly inside their nuclei.</div>':'');
+ if(stage===5)left+='<div class="lab-tip"><strong>What you actually see:</strong> Many DNA molecules clumped together, not an individual double helix. The extract can contain other material too.</div>';
+ if(stage===6)left+=options(q2,answer)+(answer!==null?'<div class="feedback" role="status">'+(answer===0?'Correct! ':'Not quite. ')+'Cold alcohol causes DNA to precipitate from the watery mixture.</div>':'');
+ if(completed)left='<div class="stage-copy"><span class="stage-kicker">EXHIBIT COMPLETE</span><h2 id="exhibitTitle">You’re a DNA detective!</h2><p>You mashed the fruit, released the DNA, filtered the pulp, and made DNA precipitate. Every successful scientist starts with careful observations.</p><button class="button secondary" id="restartBtn" type="button">↺ Restart experiment</button></div>';
  else left+='</div>';
- content.innerHTML='<div class="stage-layout enhanced-stage">'+left+'<div class="science-visual refined-visual">'+labScene(visual)+'</div></div>';
- content.scrollTop=0;
+ let right;
+ if(completed)right=labScene('dna');
+ else if(labStates[stage])right=labMarkup();
+ else right=labScene(stage===0?'fruit':stage===6?'cell':'dna');
+ content.innerHTML='<div class="stage-layout enhanced-stage '+(labStates[stage]?'interactive-layout':'')+'">'+left+'<div class="science-visual refined-visual '+(labStates[stage]?'interactive-visual':'')+'">'+right+'</div></div>';
+ content.scrollTop=preserveScroll?prior:0;
  content.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(stage===0)prediction=+b.dataset.answer;else answer=+b.dataset.answer;render()}));
- const restart=document.getElementById('restartBtn');if(restart)restart.addEventListener('click',reset);
+ const restart=content.querySelector('#restartBtn');if(restart)restart.addEventListener('click',reset);
+ bindHandsOn();
 }
-function reset(){stage=0;prediction=null;answer=null;completed=false;render()}
+function reset(){stage=0;prediction=null;answer=null;completed=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;render()}
 function openModal(){reset();modal.hidden=false;document.body.classList.add('modal-open');document.getElementById('closeModal').focus()}
 function closeModal(){modal.hidden=true;document.body.classList.remove('modal-open');document.getElementById('launchBtn').focus()}
 document.getElementById('launchBtn').addEventListener('click',openModal);
 document.getElementById('closeModal').addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal();if(e.key==='Tab'&&!modal.hidden){const list=[...modal.querySelectorAll('button:not(:disabled)')];if(!list.length)return;const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal();if(e.key==='Tab'&&!modal.hidden){const list=[...modal.querySelectorAll('button:not(:disabled),[role="button"][tabindex="0"]')].filter(el=>!el.closest('[hidden]'));if(!list.length)return;const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 backBtn.addEventListener('click',()=>{if(stage>0){stage--;completed=false;render()}});
-nextBtn.addEventListener('click',()=>{if(completed){closeModal();return}if(stage<steps.length-1)stage++;else{completed=true;try{localStorage.setItem('discovery-lab-dna-completed','true')}catch(e){}}render()});
+nextBtn.addEventListener('click',()=>{if(!stageReady()&&!completed)return;if(completed){closeModal();return}if(stage<steps.length-1)stage++;else{completed=true;try{localStorage.setItem('discovery-lab-dna-completed','true')}catch(e){}}render()});
