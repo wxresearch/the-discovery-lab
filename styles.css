@@ -1078,3 +1078,32 @@
     animation:stir-anchored .01s both!important;
   }
 }
+
+/* Single bowl: pulp covers the immersed part of the masher during use.
+   The overlay contains NO glass strokes, so it cannot double the rim. */
+.exhibit-modal .lab-workbench .mash-foreground{
+ position:absolute;
+ left:36%;
+ bottom:7%;
+ width:54%;
+ height:79%;
+ z-index:14;
+ pointer-events:none;
+ overflow:visible;
+ opacity:0;
+ transition:opacity .12s ease-in;
+}
+.exhibit-modal .lab-workbench.mash-in-progress .mash-foreground,
+.exhibit-modal .lab-workbench.target-active .mash-foreground{
+ opacity:1;
+}
+.exhibit-modal .lab-workbench .masher{z-index:10}
+@media(max-width:450px){
+ .exhibit-modal .lab-workbench .mash-foreground{
+  left:34%;
+  width:59%;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .mash-foreground{transition:none}
+}
