@@ -36,8 +36,6 @@ The Discovery Lab is structured for deployment through GitHub Pages:
 
 https://wxresearch.github.io/the-discovery-lab/
 
-To publish the website, open the repository's **Settings → Pages**, select **Deploy from a branch**, and choose `main` and `/ (root)`. The URL above becomes available after GitHub Pages deployment succeeds.
-
 ## Interactive DNA Experiment
 
 The first exhibit introduces the process of extracting DNA from a strawberry through four stages:
