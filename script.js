@@ -93,6 +93,19 @@ function applyAction(type){
  if(type==='alcohol')actions.alcohol=Math.min(maxPour,actions.alcohol+1);
  render(true);
 }
+function startMashAnimation(){
+ if(pouring||stage!==1||actions.mash>=maxMash)return;
+ pouring=true;
+ const bench=content.querySelector('#workbench');
+ const masher=bench&&bench.querySelector('.lab-tool.masher');
+ if(!masher){pouring=false;applyAction('mash');return;}
+ masher.classList.add('auto-mash');
+ bench.classList.add('mash-in-progress');
+ let finished=false;
+ const finish=()=>{if(finished)return;finished=true;pouring=false;applyAction('mash')};
+ masher.addEventListener('animationend',finish,{once:true});
+ setTimeout(finish,920);
+}
 function startStirAnimation(){
  if(pouring||stage!==2||!actions.soap||!actions.salt||mixStirs>=requiredStirs)return;
  pouring=true;
@@ -124,9 +137,11 @@ function startPourAnimation(){
 function bindHandsOn(){
  const bench=content.querySelector('#workbench');
  if(!bench)return;
+ const controls=content.querySelector('.lab-controls');
+ if(controls){bench.appendChild(controls);controls.classList.add('bench-controls');}
  const assist=content.querySelector('#assistBtn');
  assist.addEventListener('click',()=>{
-  if(stage===1)applyAction('mash');
+  if(stage===1)startMashAnimation();
   else if(stage===2){if(!actions.soap)applyAction('soap');else if(!actions.salt)applyAction('salt');else startStirAnimation();}
   else if(stage===3)applyAction('filter');
   else startPourAnimation();
@@ -140,7 +155,7 @@ function bindHandsOn(){
    return x>=box.left-12&&x<=box.right+12&&y>=box.top-15&&y<=box.bottom+15;
   };
   el.addEventListener('pointerdown',e=>{
-   if(el.classList.contains('tool-done'))return;
+   if(pouring||el.classList.contains('tool-done'))return;
    if(type==='salt'&&!actions.soap)return;
    if(type==='stir'&&!(actions.soap&&actions.salt))return;
    e.preventDefault();dragging=true;last=0;strokes=0;
@@ -171,7 +186,7 @@ function bindHandsOn(){
   }
   el.addEventListener('pointerup',finish);
   el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
-  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type!=='salt'||actions.soap)applyAction(type)}});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type==='mash')startMashAnimation();else if(type==='stir')startStirAnimation();else if(type!=='salt'||actions.soap)applyAction(type)}});
  });
 }
 function render(preserveScroll=false){
