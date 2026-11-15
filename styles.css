@@ -955,3 +955,88 @@
 @media(prefers-reduced-motion:reduce){
  .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-precise .01s both!important}
 }
+
+/* Reagent interactions: bottles visibly pour INTO the existing glass bowl. */
+.exhibit-modal .lab-workbench .lab-stirrer .stir-head{display:none!important}
+.exhibit-modal .lab-workbench .lab-stirrer{
+  width:30px;
+  height:154px;
+  z-index:6;
+  transform-origin:50% 15%;
+}
+.exhibit-modal .lab-workbench .lab-stirrer .stir-handle{
+  width:11px;
+  height:148px;
+  margin:auto;
+  transform:none;
+  border-radius:7px;
+  background:linear-gradient(90deg,#8ebed1,#e5f7ff 54%,#8cb2c4);
+  box-shadow:inset 1px 0 3px #efffff7a,0 7px 9px #07152c66;
+}
+.exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{
+  z-index:10;
+  animation:reagent-into-bowl 1s ease-in-out both;
+}
+@keyframes reagent-into-bowl{
+  0%,100%{transform:translate(0,0) rotate(0deg)}
+  25%{transform:translate(var(--target-x),calc(var(--target-y) - 22px)) rotate(0deg)}
+  42%,76%{transform:translate(var(--target-x),calc(var(--target-y) - 22px)) rotate(105deg)}
+  88%{transform:translate(var(--target-x),calc(var(--target-y) - 22px)) rotate(0deg)}
+}
+.exhibit-modal .lab-workbench .reagent-pour{
+  position:absolute;z-index:8;left:59%;top:26%;height:25%;
+  width:22px;pointer-events:none;opacity:0;
+}
+.exhibit-modal .lab-workbench.adding-soap .reagent-pour,
+.exhibit-modal .lab-workbench.adding-salt .reagent-pour{
+  animation:reagent-stream-appear 1s ease both;
+}
+.exhibit-modal .lab-workbench .reagent-pour i{
+  position:absolute;left:8px;top:0;display:block;
+  width:5px;height:60%;border-radius:6px;
+  background:linear-gradient(#d7fdf5,#8ce1df);
+}
+.exhibit-modal .lab-workbench.adding-salt .reagent-pour i{
+  width:4px;height:5px;border-radius:50%;background:#fff3d5;
+  animation:fall-salt .35s linear infinite;
+}
+.exhibit-modal .lab-workbench.adding-salt .reagent-pour i:nth-child(2){left:2px;animation-delay:.08s}
+.exhibit-modal .lab-workbench.adding-salt .reagent-pour i:nth-child(3){left:17px;animation-delay:.2s}
+.exhibit-modal .lab-workbench.adding-salt .reagent-pour i:nth-child(4){left:12px;animation-delay:.27s}
+.exhibit-modal .lab-workbench.adding-salt .reagent-pour i:nth-child(5){left:4px;animation-delay:.15s}
+.exhibit-modal .lab-workbench.adding-soap .reagent-pour i:not(:first-child){display:none}
+@keyframes reagent-stream-appear{
+  0%,32%,90%,100%{opacity:0}
+  42%,78%{opacity:1}
+}
+@keyframes fall-salt{from{transform:translateY(0);opacity:1}to{transform:translateY(77px);opacity:0}}
+.exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
+  z-index:6;
+  animation:stir-in-mixture .7s ease-in-out both!important;
+}
+@keyframes stir-in-mixture{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  20%{transform:translate(var(--target-x),calc(var(--target-y) - 13px)) rotate(-4deg)}
+  42%{transform:translate(calc(var(--target-x) - 15px),var(--target-y)) rotate(9deg)}
+  65%{transform:translate(calc(var(--target-x) + 13px),calc(var(--target-y) - 5px)) rotate(-8deg)}
+  82%{transform:translate(var(--target-x),var(--target-y)) rotate(0)}
+}
+.exhibit-modal .lab-workbench .mix-surface-ripple{
+  position:absolute;left:49%;top:55%;width:24%;height:10%;
+  border:3px solid #ffd5dc;border-radius:50%;opacity:0;
+  pointer-events:none;z-index:5;
+}
+.exhibit-modal .lab-workbench.stir-in-progress .mix-surface-ripple{
+  animation:stir-ripple .7s ease-in-out both;
+}
+@keyframes stir-ripple{
+  0%,15%{opacity:0;transform:scale(.4)}
+  43%{opacity:.9;transform:scale(1)}
+  80%,100%{opacity:0;transform:scale(1.45)}
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{animation:reagent-into-bowl .01s both}
+ .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation:stir-in-mixture .01s both!important}
+ .exhibit-modal .lab-workbench.adding-soap .reagent-pour,.exhibit-modal .lab-workbench.adding-salt .reagent-pour{animation:none}
+ .exhibit-modal .lab-workbench.stir-in-progress .mix-surface-ripple{animation:none}
+}
