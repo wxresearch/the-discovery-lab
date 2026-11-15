@@ -728,3 +728,65 @@
  .exhibit-modal .lab-workbench.is-pouring .pour-stream.visible{animation:pour-into-opening .01s both}
  .exhibit-modal .lab-workbench .alcohol.pour-tilt{animation:alcohol-bottle-tilt .01s both}
 }
+
+/* Keep the action button visible INSIDE the workbench while animation plays. */
+.exhibit-modal .interactive-visual .lab-workbench{position:relative}
+.exhibit-modal .interactive-visual .lab-controls.bench-controls{
+ position:absolute;
+ z-index:20;
+ left:12px;
+ bottom:12px;
+ display:flex;
+ flex-direction:column;
+ align-items:flex-start;
+ width:auto;
+ max-width:calc(100% - 24px);
+ padding:0;
+ gap:0;
+ pointer-events:none;
+}
+.exhibit-modal .interactive-visual .bench-controls #assistBtn{
+ pointer-events:auto;
+ min-height:44px;
+ font-size:13px;
+ padding:12px 16px;
+ background:#172a4ff2;
+ border:1px solid #9cc7ee;
+ box-shadow:0 5px 18px #06112caa;
+ backdrop-filter:blur(8px);
+}
+.exhibit-modal .interactive-visual .bench-controls .lab-result{display:none}
+.exhibit-modal .lab-workbench .masher.auto-mash{
+ z-index:12;
+ animation:mash-strawberry .78s cubic-bezier(.25,.55,.3,1) both;
+}
+.exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{
+ animation:pulp-push .78s ease-in-out both;
+ transform-origin:center 76%;
+}
+@keyframes mash-strawberry{
+ 0%,100%{transform:translate(0,0) rotate(0)}
+ 28%{transform:translate(100px,54px) rotate(-12deg)}
+ 52%{transform:translate(120px,83px) rotate(-18deg)}
+ 72%{transform:translate(122px,69px) rotate(-9deg)}
+ 88%{transform:translate(112px,85px) rotate(-16deg)}
+}
+@keyframes pulp-push{
+ 0%,100%{transform:scale(1)}
+ 45%{transform:scale(1.05,.88)}
+ 75%{transform:scale(1.02,.93)}
+}
+@media(max-width:650px){
+ .exhibit-modal .interactive-visual .bench-controls #assistBtn{padding:10px 13px;font-size:12px}
+ @keyframes mash-strawberry{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  28%{transform:translate(62px,50px) rotate(-12deg)}
+  52%{transform:translate(88px,78px) rotate(-18deg)}
+  72%{transform:translate(90px,62px) rotate(-9deg)}
+  88%{transform:translate(82px,80px) rotate(-16deg)}
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-strawberry .01s both}
+ .exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{animation:none}
+}
