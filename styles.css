@@ -428,3 +428,35 @@
 @media(prefers-reduced-motion:reduce){
  .exhibit-modal .mash-scene .soap-foam,.exhibit-modal .mash-scene .salt-fall{animation:none}
 }
+
+/* Readable full-size ingredients. Override earlier mobile reductions. */
+.exhibit-modal .lab-workbench .reagent-tool.soap-prop{
+  width:128px;
+  left:-4%;
+  top:21%;
+  min-width:0;
+}
+.exhibit-modal .lab-workbench .reagent-tool.salt-prop{
+  width:111px;
+  right:-3%;
+  left:auto;
+  top:44%;
+}
+.exhibit-modal .lab-workbench .reagent-tool svg{
+  width:100%;
+  height:auto;
+  max-height:none;
+}
+@media(max-width:600px){
+  .exhibit-modal .lab-workbench .reagent-tool.soap-prop{
+    width:clamp(82px,25vw,118px);
+    left:-4%;
+    top:24%;
+  }
+  .exhibit-modal .lab-workbench .reagent-tool.salt-prop{
+    width:clamp(78px,23vw,105px);
+    right:-4%;
+    left:auto;
+    top:50%;
+  }
+}
