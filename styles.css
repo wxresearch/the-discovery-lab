@@ -467,3 +467,76 @@
 .step-illustration:has(.experiment-illustration){background:radial-gradient(circle,#355e8144,transparent 70%)}
 .experiment-illustration{display:block;width:min(190px,94%);height:auto;max-height:124px;margin:auto;filter:drop-shadow(0 8px 12px #0006)}
 @media(prefers-reduced-motion:reduce){.planet-illustration,.experiment-illustration{animation:none}}
+
+/* Filtration scene: funnel and receiving glass stay fully inside the workbench. */
+.exhibit-modal .lab-workbench .filter-station{
+  position:absolute;
+  left:41%;
+  top:3%;
+  bottom:auto;
+  width:51%;
+  height:88%;
+  min-height:0;
+  transform:none;
+  z-index:2;
+  pointer-events:none;
+}
+.exhibit-modal .filter-station .filter-scene{
+  display:block;
+  width:100%;
+  height:100%;
+  max-height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 9px 8px #060f2880);
+}
+.exhibit-modal .filter-residue-label{
+  display:block;
+  position:absolute;
+  left:5%;
+  right:5%;
+  bottom:-3%;
+  text-align:center;
+  color:#ecf2fa;
+  font:700 10px/1.4 Outfit,sans-serif;
+  letter-spacing:1px;
+  text-shadow:0 2px 5px #031026;
+  pointer-events:none;
+}
+.exhibit-modal .filter-station .funnel,
+.exhibit-modal .filter-station .filter-paper,
+.exhibit-modal .filter-station .filter-flask{display:none}
+.exhibit-modal .lab-workbench .mixing-cup{
+  left:5%;
+  top:32%;
+  width:105px;
+  height:118px;
+}
+.exhibit-modal .lab-workbench .cup-label{
+  font-size:12px;
+  line-height:1.3;
+  font-weight:800;
+  letter-spacing:.6px;
+  z-index:2;
+  left:9px;
+  top:10px;
+  color:#fff;
+  text-shadow:0 2px 3px #32122e;
+}
+.exhibit-modal .interactive-visual .workbench-caption{
+  position:static!important;
+  display:block;
+  margin:0 0 13px;
+  width:100%;
+  padding:7px 0;
+  border:0;
+  background:transparent;
+  color:#b8d0f3;
+  font:700 10px/1.45 Outfit,sans-serif;
+  letter-spacing:1.2px;
+  text-align:left;
+}
+@media(max-width:500px){
+  .exhibit-modal .lab-workbench .filter-station{left:41%;width:55%;height:85%;top:4%}
+  .exhibit-modal .lab-workbench .mixing-cup{left:4%;width:82px;height:104px}
+  .exhibit-modal .filter-residue-label{font-size:9px}
+}
