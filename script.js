@@ -121,7 +121,7 @@ function bindHandsOn(){
    bench.classList.toggle('target-active',isInside);
    if(type==='mash'&&isInside&&Math.hypot(dx,dy)>22&&Date.now()-last>240){
     last=Date.now();strokes++;const ratio=Math.min(1,strokes/maxMash);
-    const pulp=bench.querySelector('.fruit-pulp');if(pulp)pulp.style.setProperty('--mash',ratio);
+    bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(p=>p.style.setProperty('--mash',ratio));
    }
   });
   function finish(e){
