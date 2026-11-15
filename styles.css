@@ -847,10 +847,10 @@
    Keeping rotation at zero ensures the tool tip lands at the intended point. */
 @keyframes mash-to-center{
   0%,100%{transform:translate(0,0)}
-  26%{transform:translate(calc(var(--mash-dx)*.85),calc(var(--mash-dy)*.55))}
-  48%{transform:translate(var(--mash-dx),var(--mash-dy))}
-  66%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 14px))}
-  82%{transform:translate(var(--mash-dx),var(--mash-dy))}
+  30%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 24px))}
+  50%{transform:translate(var(--mash-dx),var(--mash-dy))}
+  69%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 14px))}
+  84%{transform:translate(var(--mash-dx),var(--mash-dy))}
 }
 @media(max-width:850px){
   .exhibit-modal .stage-layout.enhanced-stage.interactive-layout{
