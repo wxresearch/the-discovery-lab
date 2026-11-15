@@ -76,13 +76,13 @@ function labMarkup(){
  const progress=stage===1?pct(actions.mash,maxMash):stage===2?Math.round((Number(actions.soap)+Number(actions.salt)+mixStirs/requiredStirs)/3*100):stage===3?(actions.filter?100:0):pct(actions.alcohol,maxPour);
  const ready=progress===100;
  const tool=stage===1?'<div class="lab-tool masher" role="button" tabindex="0" aria-label="Drag masher through the strawberry pulp" data-tool="mash"><span class="tool-top"></span><span class="tool-shaft"></span><span class="tool-base"></span></div>':
- stage===2?'<div class="lab-tool reagent-tool soap-prop '+(actions.soap?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag dish soap into the bowl" data-tool="soap"><svg viewBox="0 0 88 166" aria-hidden="true"><defs><linearGradient id="soapBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3c9ba8"/><stop offset=".5" stop-color="#a5e6de"/><stop offset="1" stop-color="#357f90"/></linearGradient></defs><path d="M36 23V12h17V5h23v12H57v9" fill="none" stroke="#c7e8ef" stroke-width="7" stroke-linecap="round"/><rect x="18" y="24" width="53" height="132" rx="18" fill="url(#soapBody)" stroke="#d3f4f1" stroke-width="2"/><rect x="23" y="78" width="43" height="46" rx="7" fill="#f2faf5"/><text x="44" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">DISH</text><text x="44" y="115" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">SOAP</text><path d="M27 38Q34 30 40 35" stroke="#f2ffff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/></svg></div><div class="lab-tool reagent-tool salt-prop '+(actions.salt?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag salt into the bowl" data-tool="salt"><svg viewBox="0 0 74 126" aria-hidden="true"><defs><linearGradient id="saltBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#dae6ee"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#c5d7df"/></linearGradient></defs><rect x="12" y="32" width="50" height="89" rx="12" fill="url(#saltBody)" stroke="#cfe4eb" stroke-width="3"/><rect x="8" y="19" width="58" height="20" rx="6" fill="#a9c2cf" stroke="#e6f1f7" stroke-width="3"/><circle cx="24" cy="27" r="2.2" fill="#536f80"/><circle cx="37" cy="27" r="2.2" fill="#536f80"/><circle cx="50" cy="27" r="2.2" fill="#536f80"/><rect x="17" y="61" width="40" height="36" rx="5" fill="#fff8ef"/><text x="37" y="83" font-size="17" font-weight="bold" fill="#304758" text-anchor="middle">SALT</text></svg></div>'+((actions.soap&&actions.salt)?'<div class="lab-tool lab-stirrer" role="button" tabindex="0" aria-label="Stir the strawberry mixture" data-tool="stir"><span class="stir-handle"></span><span class="stir-head"></span></div>':''):
+ stage===2?'<div class="lab-tool reagent-tool soap-prop '+(actions.soap?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag dish soap into the bowl" data-tool="soap"><svg viewBox="0 0 88 166" aria-hidden="true"><defs><linearGradient id="soapBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3c9ba8"/><stop offset=".5" stop-color="#a5e6de"/><stop offset="1" stop-color="#357f90"/></linearGradient></defs><path d="M36 23V12h17V5h23v12H57v9" fill="none" stroke="#c7e8ef" stroke-width="7" stroke-linecap="round"/><rect x="18" y="24" width="53" height="132" rx="18" fill="url(#soapBody)" stroke="#d3f4f1" stroke-width="2"/><rect x="23" y="78" width="43" height="46" rx="7" fill="#f2faf5"/><text x="44" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">DISH</text><text x="44" y="115" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5666">SOAP</text><path d="M27 38Q34 30 40 35" stroke="#f2ffff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/></svg></div><div class="lab-tool reagent-tool salt-prop '+(actions.salt?'tool-done':'')+'" role="button" tabindex="0" aria-label="Drag salt into the bowl" data-tool="salt"><svg viewBox="0 0 74 126" aria-hidden="true"><defs><linearGradient id="saltBody" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#dae6ee"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#c5d7df"/></linearGradient></defs><rect x="12" y="32" width="50" height="89" rx="12" fill="url(#saltBody)" stroke="#cfe4eb" stroke-width="3"/><rect x="8" y="19" width="58" height="20" rx="6" fill="#a9c2cf" stroke="#e6f1f7" stroke-width="3"/><circle cx="24" cy="27" r="2.2" fill="#536f80"/><circle cx="37" cy="27" r="2.2" fill="#536f80"/><circle cx="50" cy="27" r="2.2" fill="#536f80"/><rect x="17" y="61" width="40" height="36" rx="5" fill="#fff8ef"/><text x="37" y="83" font-size="17" font-weight="bold" fill="#304758" text-anchor="middle">SALT</text></svg></div>'+((actions.soap&&actions.salt)?'<div class="lab-tool lab-stirrer" role="button" tabindex="0" aria-label="Stir the strawberry mixture" data-tool="stir"><span class="stir-handle"></span></div>':''):
  stage===3?'<div class="lab-tool mixing-cup '+(actions.filter?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour the strawberry mixture containing soap and salt through the filter" data-tool="filter"><span class="cup-mixture"></span><span class="cup-label">MIXED<br>EXTRACT</span></div>':
  '<div class="lab-tool bottle alcohol '+(ready?'tool-done':'')+'" role="button" tabindex="0" aria-label="Pour cold alcohol into jar" data-tool="alcohol"><span class="lid"></span><span class="bottle-label">COLD<br>ALCOHOL</span></div>';
  const vessel=(stage===1||stage===2)?bowlScene(stage===1?'mash':'mix'):
  stage===3?'<div class="lab-vessel filter-station" data-dropzone="filter"><svg class="filter-scene" viewBox="0 0 290 310" role="img" aria-label="Coffee filter in a funnel above a glass receiving jar. '+(actions.filter?'Strawberry residue remains in the filter and filtered extract collects in the jar.':'The filter is ready, and the receiving jar is still empty.')+'"><defs><linearGradient id="filGlass" x1="0" x2="1"><stop stop-color="#b7e4ff" stop-opacity=".32"/><stop offset=".5" stop-color="#cfeeff" stop-opacity=".06"/><stop offset="1" stop-color="#c4eaff" stop-opacity=".4"/></linearGradient><linearGradient id="filLiquid" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#d77b9e"/><stop offset="1" stop-color="#a33d71"/></linearGradient><clipPath id="jarInterior"><path d="M93 174H204L200 283Q200 296 187 298H110Q99 297 98 284Z"/></clipPath></defs><ellipse cx="151" cy="298" rx="101" ry="10" fill="#050f2e" opacity=".37"/><path d="M87 170H210L204 284Q202 302 187 303H109Q94 302 92 284Z" fill="url(#filGlass)" stroke="#d5edfc" stroke-width="5"/><g clip-path="url(#jarInterior)">'+(actions.filter?'<path d="M96 253Q148 250 205 253V313H96Z" fill="url(#filLiquid)"/><path d="M95 253Q151 248 205 253" fill="none" stroke="#f6b1c1" stroke-width="3"/>':'')+'</g><ellipse cx="148" cy="170" rx="61" ry="9" fill="#bfe8fb" fill-opacity=".13" stroke="#d5edfc" stroke-width="4"/><path d="M64 42H232L167 157H129Z" fill="#acd1df" fill-opacity=".37" stroke="#bedfee" stroke-width="5" stroke-linejoin="round"/><path d="M82 51H215L164 141H131Z" fill="#f5ebd8" stroke="#fff5e4" stroke-width="3" stroke-linejoin="round"/><path d="M86 64Q148 77 211 64" stroke="#d2c7af" stroke-width="2" fill="none"/>'+(actions.filter?'<path d="M91 72Q147 67 205 72L184 107Q166 113 147 108Q126 115 107 106Z" fill="#9e3f5e"/><path d="M111 82Q126 76 141 84T174 82" stroke="#da7b87" stroke-width="6" fill="none" opacity=".7"/><circle cx="145" cy="92" r="5" fill="#7a2a48"/><circle cx="164" cy="100" r="4" fill="#cc6b7f"/>':'')+'<path d="M148 153V170" stroke="#c1e0ef" stroke-width="5" opacity=".7"/>'+(actions.filter?'<path d="M148 155v18" stroke="#e1a6b7" stroke-width="3" stroke-dasharray="3 4"/>':'')+'</svg><span class="filter-residue-label">'+(actions.filter?'PULP REMAINS IN FILTER':'FILTER READY')+'</span></div>':
  '<div class="lab-vessel alcohol-station" data-dropzone="alcohol"><svg class="alcohol-scene" viewBox="0 0 260 260" role="img" aria-label="Open glass vessel with filtered strawberry extract and cold alcohol layered on top"><defs><linearGradient id="alcoholGlass" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#c4ebff" stop-opacity=".25"/><stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#b7dff4" stop-opacity=".35"/></linearGradient><linearGradient id="alcoholPink" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e58ba5"/><stop offset="1" stop-color="#a63866"/></linearGradient><clipPath id="alcoholInterior"><path d="M42 47V178Q42 227 130 227Q218 227 218 178V47Z"/></clipPath></defs><ellipse cx="130" cy="237" rx="100" ry="8" fill="#03112b" opacity=".36"/><g clip-path="url(#alcoholInterior)"><path d="M38 154Q130 151 222 154V233H38Z" fill="url(#alcoholPink)"/><rect x="39" y="'+(154-actions.alcohol/maxPour*49)+'" width="182" height="'+(actions.alcohol/maxPour*49)+'" fill="#c1e9f6" fill-opacity=".7"/>'+(actions.alcohol>=maxPour?'<path d="M75 155q16-12 29 0t27-1t27 0t27 1" fill="none" stroke="#fff8ed" stroke-width="3" opacity=".8"/>':'')+'</g><path d="M42 47V178Q42 227 130 227Q218 227 218 178V47Z" fill="url(#alcoholGlass)" stroke="none"/><path d="M42 47V178Q42 227 130 227Q218 227 218 178V47" fill="none" stroke="#c9e9f8" stroke-width="5"/><ellipse cx="130" cy="47" rx="88" ry="15" fill="#bedef2" fill-opacity=".09" stroke="#d4effb" stroke-width="5"/></svg></div>';
- return '<div class="hands-on"><div class="lab-status"><div class="lab-status-top"><span class="lab-status-label">'+(stage===1?'MASH THE STRAWBERRY':stage===2?'ADD SOAP · SALT · STIR':stage===3?'FILTER THE EXTRACT':'LAYER THE ALCOHOL')+'</span><strong class="lab-status-value">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-instruction">'+item.tip+'</div></div><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+(stage===4?'<div class="pour-stream" aria-hidden="true"></div>':'')+'</div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?(actions.salt?'Stir mixture':'Add salt'):'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step complete. Continue when ready.':'Drag the tool, or use the action button.')+'</span></div></div>';
+ return '<div class="hands-on"><div class="lab-status"><div class="lab-status-top"><span class="lab-status-label">'+(stage===1?'MASH THE STRAWBERRY':stage===2?'ADD SOAP · SALT · STIR':stage===3?'FILTER THE EXTRACT':'LAYER THE ALCOHOL')+'</span><strong class="lab-status-value">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-instruction">'+item.tip+'</div></div><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+(stage===4?'<div class="pour-stream" aria-hidden="true"></div>':stage===2?'<div class="reagent-pour" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="mix-surface-ripple" aria-hidden="true"></div>':'')+'</div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?(actions.salt?'Stir mixture':'Add salt'):'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step complete. Continue when ready.':'Drag the tool, or use the action button.')+'</span></div></div>';
 }
 function applyAction(type){
  if(type==='mash')actions.mash=Math.min(maxMash,actions.mash+1);
@@ -121,13 +121,42 @@ function startMashAnimation(){
  masher.addEventListener('animationend',finish,{once:true});
  setTimeout(finish,920);
 }
+function bowlContact(bench, tool, xRatio=.5, yRatio=.44){
+ const bowl=bench.querySelector('.mash-bowl');
+ if(!bowl||!tool)return;
+ const b=bowl.getBoundingClientRect(),t=tool.getBoundingClientRect();
+ const x=b.left+b.width*xRatio;
+ const y=b.top+b.height*yRatio;
+ const anchorX=t.left+t.width*.5;
+ const anchorY=t.bottom-8;
+ tool.style.setProperty('--target-x',(x-anchorX).toFixed(1)+'px');
+ tool.style.setProperty('--target-y',(y-anchorY).toFixed(1)+'px');
+}
+function runIngredientAnimation(type){
+ if(pouring||stage!==2||!['soap','salt'].includes(type))return;
+ if(type==='soap'&&actions.soap)return;
+ if(type==='salt'&&(!actions.soap||actions.salt))return;
+ const bench=content.querySelector('#workbench');
+ const bottle=bench&&bench.querySelector('[data-tool="'+type+'"]');
+ if(!bottle){applyAction(type);return;}
+ pouring=true;
+ bowlContact(bench,bottle,type==='soap'?.43:.58,.36);
+ bench.classList.add('adding-'+type);
+ bottle.classList.add('ingredient-animating');
+ let finished=false;
+ const finish=()=>{if(finished)return;finished=true;pouring=false;applyAction(type)};
+ bottle.addEventListener('animationend',finish,{once:true});
+ setTimeout(finish,1150);
+}
 function startStirAnimation(){
  if(pouring||stage!==2||!actions.soap||!actions.salt||mixStirs>=requiredStirs)return;
  pouring=true;
  const bench=content.querySelector('#workbench');
  const stirrer=bench&&bench.querySelector('.lab-stirrer');
  if(!stirrer){pouring=false;applyAction('stir');return;}
+ bowlContact(bench,stirrer,.51,.54);
  stirrer.classList.add('auto-stir');
+ bench.classList.add('stir-in-progress');
  let called=false;
  const finish=()=>{if(called)return;called=true;pouring=false;applyAction('stir')};
  stirrer.addEventListener('animationend',finish,{once:true});
@@ -157,7 +186,7 @@ function bindHandsOn(){
  const assist=content.querySelector('#assistBtn');
  assist.addEventListener('click',()=>{
   if(stage===1)startMashAnimation();
-  else if(stage===2){if(!actions.soap)applyAction('soap');else if(!actions.salt)applyAction('salt');else startStirAnimation();}
+  else if(stage===2){if(!actions.soap)runIngredientAnimation('soap');else if(!actions.salt)runIngredientAnimation('salt');else startStirAnimation();}
   else if(stage===3)applyAction('filter');
   else startPourAnimation();
  });
@@ -196,12 +225,14 @@ function bindHandsOn(){
    if(hit){
     if(type==='mash'){actions.mash=Math.min(maxMash,actions.mash+Math.max(1,strokes));render(true);}
     else if(type==='alcohol')startPourAnimation();
+    else if(type==='soap'||type==='salt')runIngredientAnimation(type);
+    else if(type==='stir')startStirAnimation();
     else applyAction(type);
    }
   }
   el.addEventListener('pointerup',finish);
   el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
-  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type==='mash')startMashAnimation();else if(type==='stir')startStirAnimation();else if(type!=='salt'||actions.soap)applyAction(type)}});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type==='mash')startMashAnimation();else if(type==='stir')startStirAnimation();else if(type==='soap'||type==='salt')runIngredientAnimation(type);else if(type!=='salt'||actions.soap)applyAction(type)}});
  });
 }
 function render(preserveScroll=false){
