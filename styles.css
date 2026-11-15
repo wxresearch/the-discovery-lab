@@ -164,3 +164,10 @@
 @media(max-width:850px){.exhibit-modal .interactive-layout{grid-template-columns:minmax(0,1fr)}.exhibit-modal .interactive-visual{position:static}.hands-on{padding:12px}.lab-workbench{height:270px}}
 @media(max-width:450px){.lab-workbench{height:240px}.lab-tool.bottle{transform-origin:top left}.interaction-heading{font-size:17px}.lab-controls{align-items:flex-start;flex-direction:column}.lab-result{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.filtrate,.clear-layer,.activity-track>div{transition:none}}
+
+/* Preserve the complete studio strawberry instead of cropping it into the card. */
+.strawberry-art{background:#080b14}
+.strawberry-photo{object-fit:contain;object-position:center;filter:none}
+.strawberry-art::after{background:linear-gradient(90deg,#09112350,transparent 50%)}
+.specimen-photo{background:#080b14}
+.specimen-photo img{object-fit:contain;object-position:center;background:#080b14}
