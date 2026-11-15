@@ -9,7 +9,7 @@ Rather than presenting science as a collection of facts to memorize, The Discove
 - **Interactive Science Museum:** Explore a digital museum with a futuristic visual style and exhibit-based navigation.
 - **Strawberry DNA Exhibit:** Follow a seven-stage guided simulation of DNA extraction in the correct sequence.
 - **Scientific Investigation:** Examine a strawberry and predict where its DNA is located.
-- **Virtual Experimentation:** Follow mashing, detergent-and-salt treatment, filtration, and cold-alcohol precipitation in order.
+- **Interactive Virtual Experimentation:** Drag a masher across strawberry pulp, pour detergent and salt into the mixture, filter the pulp, and add cold alcohol in the correct order. Keyboard and button controls are also available.
 - **Visual Explanations:** Explore detailed SVG illustrations of strawberries, glassware, filtration, and DNA precipitation.
 - **Knowledge Checks:** Answer questions and receive immediate explanations.
 - **Guided Learning:** Follow the investigate, experiment, discover, and think-like-a-scientist stages.
@@ -41,14 +41,14 @@ https://wxresearch.github.io/the-discovery-lab/
 The first exhibit introduces the process of extracting DNA from a strawberry through seven stages:
 
 1. **Investigate:** Predict where DNA is found inside a strawberry.
-2. **Mash:** Crush strawberry tissue to expose its cells.
-3. **Release:** Add soap and salt to help release and collect DNA.
-4. **Filter:** Separate fruit pulp from the liquid extract.
-5. **Precipitate:** Gently layer cold alcohol over the filtered liquid.
+2. **Mash:** Drag the masher through the bowl until the strawberry pulp is fully mashed.
+3. **Release:** Drag a detergent bottle and salt shaker into the extraction mixture, in that order.
+4. **Filter:** Drag the strawberry mixture over a funnel to filter out the pulp.
+5. **Precipitate:** Drag the alcohol bottle to the vessel and gradually add cold alcohol.
 6. **Discover:** Examine the whitish clumps that contain many DNA molecules.
 7. **Reflect:** Answer a question about why DNA precipitates.
 
-The activity is a guided educational simulation rather than a physical laboratory procedure. Its explanations are intended for introductory science learning, not experimental measurement or assessment of laboratory technique.
+Advancing through the experimental stages requires completing the corresponding interaction. Each interactive action also has a clickable alternative for keyboards and touch devices. The activity is a guided educational simulation rather than a physical laboratory procedure. Its explanations are intended for introductory science learning, not experimental measurement or assessment of laboratory technique.
 
 ## Educational Goals
 
