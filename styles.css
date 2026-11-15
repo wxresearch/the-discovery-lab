@@ -636,3 +636,20 @@
  .exhibit-modal .dna-precipitate.shown{animation:none;opacity:1}
  .exhibit-modal .lab-workbench:has(.lab-stirrer.dragging) .pulp-fibers{animation:none}
 }
+
+/* Clicking Stir runs the motion before recording the completed stir. */
+.exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
+ animation:stir-action .65s ease-in-out both;
+}
+@keyframes stir-action{
+ 0%,100%{transform:translate(0,0) rotate(0)}
+ 25%{transform:translate(52px,28px) rotate(20deg)}
+ 50%{transform:translate(74px,40px) rotate(-12deg)}
+ 75%{transform:translate(42px,25px) rotate(12deg)}
+}
+.exhibit-modal .lab-workbench:has(.lab-stirrer.auto-stir) .pulp-fibers{
+ animation:swirl-pulp .65s ease-in-out both;
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation:stir-action .01s both}
+}
