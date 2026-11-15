@@ -98,3 +98,12 @@
  .exhibit-modal .modal-bottom{padding:12px 14px}
  .exhibit-modal .progress-stages span{font-size:9px}
 }
+
+/* Photographic specimen replaces the oversized CSS strawberry icon. */
+.strawberry-art{background:radial-gradient(ellipse at center,#564b69 0%,#211b3f 65%,#10172e 100%);display:flex;justify-content:center;align-items:center}
+.strawberry-photo{height:100%;width:100%;object-fit:cover;object-position:center 50%;filter:saturate(1.12) contrast(1.05)}
+.strawberry-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,18,43,.27),transparent 65%);pointer-events:none}
+.strawberry-art .exhibit-art-tag{z-index:2;text-shadow:0 1px 7px #071025}
+.specimen-photo{height:100%;width:100%;min-height:260px;position:relative;background:#222b42;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.specimen-photo img{display:block;width:100%;height:100%;position:absolute;inset:0;object-fit:cover;object-position:center}
+.specimen-photo span{position:absolute;bottom:15px;left:0;right:0;text-align:center;font-size:12px;letter-spacing:2px;color:#fff;text-shadow:0 2px 8px #000;background:#14233d91;padding:6px 0}
