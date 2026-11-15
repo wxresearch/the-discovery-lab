@@ -790,3 +790,103 @@
  .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-strawberry .01s both}
  .exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{animation:none}
 }
+
+/* Shared compact information layout for EVERY interactive lab step.
+   The instructions and progress appear before the equipment, not below the
+   scrollable workbench, while the action button remains on the scene. */
+.exhibit-modal .interactive-visual .hands-on{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:12px;
+}
+.exhibit-modal .interactive-visual .lab-status{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  padding:1px 3px 5px;
+}
+.exhibit-modal .lab-status-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.exhibit-modal .lab-status-label{
+  color:#bad1f1;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.1px;
+}
+.exhibit-modal .lab-status-value{color:#91e8ec;font-size:13px}
+.exhibit-modal .lab-instruction{
+  font-size:12px;
+  color:#c1d0e9;
+  line-height:1.45;
+  max-width:100%;
+}
+.exhibit-modal .interactive-visual .lab-status .activity-track{
+  height:6px;
+  margin:0;
+}
+.exhibit-modal .interactive-visual .lab-workbench{
+  height:clamp(195px,33dvh,285px);
+  min-height:195px;
+  margin:0;
+  flex-shrink:0;
+}
+.exhibit-modal .interactive-visual .lab-controls.bench-controls{
+  left:10px;
+  bottom:10px;
+  right:auto;
+}
+.exhibit-modal .lab-workbench .masher.auto-mash{
+  animation:mash-to-center .8s ease-in-out both;
+}
+/* The actual target offset is calculated from the SVG bowl and tool head.
+   Keeping rotation at zero ensures the tool tip lands at the intended point. */
+@keyframes mash-to-center{
+  0%,100%{transform:translate(0,0)}
+  26%{transform:translate(calc(var(--mash-dx)*.85),calc(var(--mash-dy)*.55))}
+  48%{transform:translate(var(--mash-dx),var(--mash-dy))}
+  66%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 14px))}
+  82%{transform:translate(var(--mash-dx),var(--mash-dy))}
+}
+@media(max-width:850px){
+  .exhibit-modal .stage-layout.enhanced-stage.interactive-layout{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .exhibit-modal .interactive-layout .stage-copy{
+    order:0;
+  }
+  .exhibit-modal .interactive-layout .stage-copy h2{
+    font-size:clamp(22px,4vw,29px);
+    margin:5px 0 4px;
+  }
+  .exhibit-modal .interactive-layout .stage-copy p{
+    font-size:12px;
+    line-height:1.5;
+    margin:0 0 3px;
+  }
+  .exhibit-modal .interactive-layout .interactive-visual{
+    order:1;
+    width:100%;
+  }
+  .exhibit-modal .interactive-visual .lab-workbench{
+    height:clamp(190px,30dvh,270px);
+    min-height:190px;
+  }
+}
+@media(max-width:450px){
+  .exhibit-modal .interactive-visual .hands-on{padding:9px}
+  .exhibit-modal .lab-instruction{font-size:11px}
+  .exhibit-modal .interactive-visual .lab-workbench{
+    height:clamp(180px,29dvh,240px);
+    min-height:180px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-to-center .01s both}
+}
