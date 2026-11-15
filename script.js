@@ -99,6 +99,20 @@ function startMashAnimation(){
  const bench=content.querySelector('#workbench');
  const masher=bench&&bench.querySelector('.lab-tool.masher');
  if(!masher){pouring=false;applyAction('mash');return;}
+ // Calculate the target from the actual bowl and masher positions rather than
+ // using fixed pixel offsets (which miss the bowl on different screen sizes).
+ const bowl=bench.querySelector('.mash-bowl');
+ const head=masher.querySelector('.tool-base');
+ if(bowl&&head){
+  const bowlRect=bowl.getBoundingClientRect();
+  const headRect=head.getBoundingClientRect();
+  const targetX=bowlRect.left+bowlRect.width*.5;
+  const targetY=bowlRect.top+bowlRect.height*.65;
+  const headX=headRect.left+headRect.width*.5;
+  const headY=headRect.top+headRect.height*.5;
+  masher.style.setProperty('--mash-dx',(targetX-headX).toFixed(1)+'px');
+  masher.style.setProperty('--mash-dy',(targetY-headY).toFixed(1)+'px');
+ }
  masher.classList.add('auto-mash');
  bench.classList.add('mash-in-progress');
  let finished=false;
