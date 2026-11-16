@@ -242,80 +242,100 @@ function bindHandsOn(){
   else startPourAnimation();
  });
  bench.querySelectorAll('.lab-tool').forEach(el=>{
-  let dragging=false,originX=0,originY=0,last=0,strokes=0,previousHead=null,enteredPulp=false,lastValidTransform='';
   const type=el.dataset.tool;
+  const bowlTools=['mash','stir','soap','salt'].includes(type);
+  let dragging=false,startX=0,startY=0,strokeCount=0,lastStroke=0,prior=null;
+  let entered=false,lastValid='',lastValidPoint=null,validAtEnd=false;
   const target=bench.querySelector('[data-dropzone]');
-  const geometry=type==='mash'?pulpGeometry(bench):null;
-  const inside=(x,y)=>{
+  const geometry=bowlTools?pulpGeometry(bench):null;
+  const nonBowlHit=(x,y)=>{
    const box=target.getBoundingClientRect();
-   return x>=box.left-12&&x<=box.right+12&&y>=box.top-15&&y<=box.bottom+15;
+   return x>=box.left&&x<=box.right&&y>=box.top&&y<=box.bottom;
+  };
+  const tipValid=(p)=>{
+   if(!geometry||!p)return false;
+   if(type==='mash'||type==='stir')return geometry.contains(p.x,p.y);
+   // Soap and salt pour from above the strawberry pulp, through the
+   // open mouth of the bowl, never through its side glass.
+   const local=geometry.toLocal(p.x,p.y);
+   return local.x>=63&&local.x<=196&&local.y>=20&&local.y<=112;
   };
   el.addEventListener('pointerdown',e=>{
    if(pouring||el.classList.contains('tool-done'))return;
    if(type==='salt'&&!actions.soap)return;
    if(type==='stir'&&!(actions.soap&&actions.salt))return;
-   e.preventDefault();dragging=true;last=0;strokes=0;previousHead=null;enteredPulp=false;lastValidTransform='';
-   originX=e.clientX;originY=e.clientY;
-   el.setPointerCapture(e.pointerId);el.classList.add('dragging');
+   e.preventDefault();
+   dragging=true;strokeCount=0;lastStroke=0;entered=false;lastValid='';prior=null;
+   const point=toolHeadPoint(el,type);
+   validAtEnd=Boolean(bowlTools&&tipValid(point));
+   if(validAtEnd){entered=true;lastValid='';prior=point;}
+   startX=e.clientX;startY=e.clientY;
+   el.setPointerCapture(e.pointerId);
+   el.classList.add('dragging');
   });
   el.addEventListener('pointermove',e=>{
    if(!dragging)return;
-   const dx=e.clientX-originX,dy=e.clientY-originY;
-   // Do not allow the wooden tool to be dragged outside the workbench.
-   const toolBox=el.getBoundingClientRect(),benchBox=bench.getBoundingClientRect();
-   const isMash=type==='mash';
-   // For mash movement, derive the new pose from the pointer delta since
-   // pointer-down rather than accumulating transformed bounding boxes.
-   const px=Math.max(-bench.clientWidth,Math.min(bench.clientWidth,dx));
-   const py=Math.max(-bench.clientHeight,Math.min(bench.clientHeight,dy));
-   el.style.transform='translate('+px+'px,'+py+'px) rotate('+(isMash?-12:dx>10?25:0)+'deg)';
-   if(isMash){
-    const head=el.querySelector('.tool-base');
-    const r=head.getBoundingClientRect();
-    const hx=r.left+r.width/2,hy=r.top+r.height/2;
-    const valid=geometry&&geometry.contains(hx,hy);
-    if(!valid&&enteredPulp){
-     // Once the head is inside the strawberry pulp, keep it within the bowl
-     // until the student releases the pointer.
-     el.style.transform=lastValidTransform;
-     bench.classList.add('target-active');
-     return;
+   const dx=e.clientX-startX,dy=e.clientY-startY;
+   const transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px)';
+   el.style.transform=transform;
+   if(bowlTools){
+    const point=toolHeadPoint(el,type);
+    let valid=tipValid(point);
+    // Prevent the working end of an immersed tool from exiting the pulp.
+    // For reagent bottles, constrain dispensing to the opening when close.
+    if(!valid&&entered&&(type==='mash'||type==='stir')){
+     el.style.transform=lastValid;
+     valid=true;
     }
-    bench.classList.toggle('target-active',Boolean(valid));
-    if(valid){
-     enteredPulp=true;
-     lastValidTransform=el.style.transform;
-     const distance=previousHead?Math.hypot(hx-previousHead.x,hy-previousHead.y):0;
-     const elapsed=Date.now()-last;
-     if(previousHead&&distance>8&&elapsed>190){
-      last=Date.now();strokes=Math.min(maxMash,strokes+1);
-      const ratio=Math.min(1,(actions.mash+strokes)/maxMash);
-      bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(p=>p.style.setProperty('--mash',ratio));
+    const actual=toolHeadPoint(el,type);
+    validAtEnd=tipValid(actual);
+    bench.classList.toggle('target-active',Boolean(validAtEnd));
+    if(validAtEnd){
+     entered=true;lastValid=el.style.transform;
+     if(type==='mash'||type==='stir'){
+      const distance=prior?Math.hypot(actual.x-prior.x,actual.y-prior.y):0;
+      if(distance>=7&&Date.now()-lastStroke>=170){
+       lastStroke=Date.now();
+       strokeCount=Math.min(type==='mash'?maxMash:requiredStirs,strokeCount+1);
+       if(type==='mash'){
+        const ratio=Math.min(1,(actions.mash+strokeCount)/maxMash);
+        bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(p=>p.style.setProperty('--mash',ratio));
+       }
+      }
+      prior=actual;
      }
-     previousHead={x:hx,y:hy};
-    }else previousHead=null;
-   }else bench.classList.toggle('target-active',inside(e.clientX,e.clientY));
+    }else prior=null;
+   }else bench.classList.toggle('target-active',nonBowlHit(e.clientX,e.clientY));
   });
-  function finish(e){
+  const finish=(e)=>{
    if(!dragging)return;
    dragging=false;
-   const isMash=type==='mash';
-   const hit=!isMash&&inside(e.clientX,e.clientY);
-   el.classList.remove('dragging');bench.classList.remove('target-active');el.style.transform='';
-   if(isMash){
-    // The cursor being near the vessel does not count. Only genuine movement
-    // of the masher HEAD inside the submerged-pulp area earns progress.
-    if(strokes>0){actions.mash=Math.min(maxMash,actions.mash+strokes);render(true)}
+   const isBowl=bowlTools;
+   const hit=isBowl?validAtEnd:nonBowlHit(e.clientX,e.clientY);
+   el.classList.remove('dragging');
+   bench.classList.remove('target-active');
+   el.style.transform='';
+   if(type==='mash'){
+    if(strokeCount>0){actions.mash=Math.min(maxMash,actions.mash+strokeCount);render(true)}
+   }else if(type==='stir'){
+    if(strokeCount>0){mixStirs=Math.min(requiredStirs,mixStirs+strokeCount);render(true)}
    }else if(hit){
-    if(type==='alcohol')startPourAnimation();
-    else if(type==='soap'||type==='salt')runIngredientAnimation(type);
-    else if(type==='stir')startStirAnimation();
-    else applyAction(type);
+    if(type==='soap'||type==='salt')runIngredientAnimation(type);
+    else if(type==='alcohol')startPourAnimation();
+    else if(type==='filter')applyAction('filter');
    }
-  }
+  };
   el.addEventListener('pointerup',finish);
   el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
-  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type==='mash')startMashAnimation();else if(type==='stir')startStirAnimation();else if(type==='soap'||type==='salt')runIngredientAnimation(type);else if(type!=='salt'||actions.soap)applyAction(type)}});
+  el.addEventListener('keydown',e=>{
+   if(e.key!=='Enter'&&e.key!==' ')return;
+   e.preventDefault();
+   if(type==='mash')startMashAnimation();
+   else if(type==='stir')startStirAnimation();
+   else if(type==='soap'||type==='salt')runIngredientAnimation(type);
+   else if(type==='alcohol')startPourAnimation();
+   else if(type==='filter')applyAction('filter');
+  });
 
  });
 }
