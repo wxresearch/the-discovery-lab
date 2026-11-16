@@ -93,42 +93,57 @@ function applyAction(type){
  if(type==='alcohol')actions.alcohol=Math.min(maxPour,actions.alcohol+1);
  render(true);
 }
+function pulpGeometry(bench){
+ const svg=bench.querySelector('.mash-scene');
+ if(!svg||!svg.getScreenCTM())return null;
+ const matrix=svg.getScreenCTM();
+ const toScreen=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
+ const toLocal=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix.inverse())};
+ // Actual strawberry level is near y=138 in the bowl's 260 x 250 viewBox.
+ // Keep the masher head below that surface, away from the curved sidewalls.
+ const contains=(x,y)=>{
+  const p=toLocal(x,y);
+  if(p.y<157||p.y>211)return false;
+  const halfWidth=84*Math.sqrt(Math.max(.08,1-Math.pow((p.y-155)/102,2)));
+  return Math.abs(p.x-130)<Math.max(28,halfWidth-18);
+ };
+ return {toScreen,toLocal,contains};
+}
 function startMashAnimation(){
  if(pouring||stage!==1||actions.mash>=maxMash)return;
  pouring=true;
  const bench=content.querySelector('#workbench');
  const masher=bench&&bench.querySelector('.lab-tool.masher');
- const bowl=bench&&bench.querySelector('.mash-bowl');
  const head=masher&&masher.querySelector('.tool-base');
- if(!bench||!masher||!bowl||!head){pouring=false;applyAction('mash');return;}
- const b=bowl.getBoundingClientRect();
- const h=head.getBoundingClientRect();
- // Use the same translated-and-tilted tool movement as pointer dragging.
- // SVG pulp begins at y=138/250 (55% of the bowl); its deepest safe
- // central region lies around 78%. Sink the head well below the surface,
- // leaving the handle above it, rather than stopping at the liquid boundary.
- const dx=b.left+b.width*.5-(h.left+h.width*.5);
- const dy=b.top+b.height*.79-(h.top+h.height*.5);
+ const geometry=bench&&pulpGeometry(bench);
+ if(!bench||!masher||!head||!geometry){pouring=false;applyAction('mash');return;}
+ const destination=geometry.toScreen(130,187);
+ const box=masher.getBoundingClientRect(),h=head.getBoundingClientRect();
+ const centerX=box.left+box.width/2, centerY=box.top+box.height/2;
+ const offsetX=h.left+h.width/2-centerX,offsetY=h.top+h.height/2-centerY;
+ const angle=-12*Math.PI/180;
+ const tiltedX=centerX+offsetX*Math.cos(angle)-offsetY*Math.sin(angle);
+ const tiltedY=centerY+offsetX*Math.sin(angle)+offsetY*Math.cos(angle);
+ const dx=destination.x-tiltedX,dy=destination.y-tiltedY;
  const pose=(x,y)=>'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate(-12deg)';
- const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const duration=reduce?1:900;
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const duration=reduced?1:900;
  const motion=masher.animate([
   {transform:'translate(0px,0px) rotate(0deg)',offset:0},
-  {transform:pose(dx*.88,dy*.75),offset:.24},
-  {transform:pose(dx,dy),offset:.40},
-  {transform:pose(dx-12,dy-6),offset:.55},
-  {transform:pose(dx+10,dy+2),offset:.70},
-  {transform:pose(dx,dy),offset:.81},
+  {transform:pose(dx,dy-30),offset:.27},
+  {transform:pose(dx,dy),offset:.44},
+  {transform:pose(dx-10,dy-4),offset:.58},
+  {transform:pose(dx+9,dy+2),offset:.73},
+  {transform:pose(dx,dy),offset:.84},
   {transform:'translate(0px,0px) rotate(0deg)',offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
  bench.classList.add('mash-in-progress');
- const chunks=bench.querySelectorAll('.pulp-chunks,.pulp-fibers');
- chunks.forEach(el=>{el.animate([
+ bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(el=>el.animate([
   {transform:'translateX(0px)',offset:0},
-  {transform:'translateX(-7px)',offset:.4},
-  {transform:'translateX(7px)',offset:.7},
+  {transform:'translateX(-7px)',offset:.44},
+  {transform:'translateX(7px)',offset:.72},
   {transform:'translateX(0px)',offset:1}
- ],{duration,easing:'ease-in-out'});});
+ ],{duration,easing:'ease-in-out'}));
  motion.onfinish=()=>{pouring=false;applyAction('mash')};
  motion.oncancel=()=>{pouring=false};
 }
@@ -216,9 +231,10 @@ function bindHandsOn(){
   else startPourAnimation();
  });
  bench.querySelectorAll('.lab-tool').forEach(el=>{
-  let dragging=false,originX=0,originY=0,last=0,strokes=0;
+  let dragging=false,originX=0,originY=0,last=0,strokes=0,previousHead=null;
   const type=el.dataset.tool;
   const target=bench.querySelector('[data-dropzone]');
+  const geometry=type==='mash'?pulpGeometry(bench):null;
   const inside=(x,y)=>{
    const box=target.getBoundingClientRect();
    return x>=box.left-12&&x<=box.right+12&&y>=box.top-15&&y<=box.bottom+15;
@@ -227,29 +243,51 @@ function bindHandsOn(){
    if(pouring||el.classList.contains('tool-done'))return;
    if(type==='salt'&&!actions.soap)return;
    if(type==='stir'&&!(actions.soap&&actions.salt))return;
-   e.preventDefault();dragging=true;last=0;strokes=0;
+   e.preventDefault();dragging=true;last=0;strokes=0;previousHead=null;
    originX=e.clientX;originY=e.clientY;
    el.setPointerCapture(e.pointerId);el.classList.add('dragging');
   });
   el.addEventListener('pointermove',e=>{
    if(!dragging)return;
    const dx=e.clientX-originX,dy=e.clientY-originY;
-   el.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(type==='mash'?-12:dx>10?25:0)+'deg)';
-   const isInside=inside(e.clientX,e.clientY);
-   bench.classList.toggle('target-active',isInside);
-   if(type==='mash'&&isInside&&Math.hypot(dx,dy)>22&&Date.now()-last>240){
-    last=Date.now();strokes++;const ratio=Math.min(1,strokes/maxMash);
-    bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(p=>p.style.setProperty('--mash',ratio));
-   }
+   // Do not allow the wooden tool to be dragged outside the workbench.
+   const toolBox=el.getBoundingClientRect(),benchBox=bench.getBoundingClientRect();
+   const isMash=type==='mash';
+   // For mash movement, derive the new pose from the pointer delta since
+   // pointer-down rather than accumulating transformed bounding boxes.
+   const px=Math.max(-bench.clientWidth,Math.min(bench.clientWidth,dx));
+   const py=Math.max(-bench.clientHeight,Math.min(bench.clientHeight,dy));
+   el.style.transform='translate('+px+'px,'+py+'px) rotate('+(isMash?-12:dx>10?25:0)+'deg)';
+   if(isMash){
+    const head=el.querySelector('.tool-base');
+    const r=head.getBoundingClientRect();
+    const hx=r.left+r.width/2,hy=r.top+r.height/2;
+    const valid=geometry&&geometry.contains(hx,hy);
+    bench.classList.toggle('target-active',Boolean(valid));
+    if(valid){
+     const distance=previousHead?Math.hypot(hx-previousHead.x,hy-previousHead.y):0;
+     const elapsed=Date.now()-last;
+     if(previousHead&&distance>8&&elapsed>190){
+      last=Date.now();strokes=Math.min(maxMash,strokes+1);
+      const ratio=Math.min(1,(actions.mash+strokes)/maxMash);
+      bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(p=>p.style.setProperty('--mash',ratio));
+     }
+     previousHead={x:hx,y:hy};
+    }else previousHead=null;
+   }else bench.classList.toggle('target-active',inside(e.clientX,e.clientY));
   });
   function finish(e){
    if(!dragging)return;
    dragging=false;
-   const hit=inside(e.clientX,e.clientY);
+   const isMash=type==='mash';
+   const hit=!isMash&&inside(e.clientX,e.clientY);
    el.classList.remove('dragging');bench.classList.remove('target-active');el.style.transform='';
-   if(hit){
-    if(type==='mash'){actions.mash=Math.min(maxMash,actions.mash+Math.max(1,strokes));render(true);}
-    else if(type==='alcohol')startPourAnimation();
+   if(isMash){
+    // The cursor being near the vessel does not count. Only genuine movement
+    // of the masher HEAD inside the submerged-pulp area earns progress.
+    if(strokes>0){actions.mash=Math.min(maxMash,actions.mash+strokes);render(true)}
+   }else if(hit){
+    if(type==='alcohol')startPourAnimation();
     else if(type==='soap'||type==='salt')runIngredientAnimation(type);
     else if(type==='stir')startStirAnimation();
     else applyAction(type);
@@ -258,6 +296,7 @@ function bindHandsOn(){
   el.addEventListener('pointerup',finish);
   el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(type==='alcohol')startPourAnimation();else if(type==='mash')startMashAnimation();else if(type==='stir')startStirAnimation();else if(type==='soap'||type==='salt')runIngredientAnimation(type);else if(type!=='salt'||actions.soap)applyAction(type)}});
+
  });
 }
 function render(preserveScroll=false){
