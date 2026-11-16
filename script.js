@@ -231,7 +231,7 @@ function bindHandsOn(){
   else startPourAnimation();
  });
  bench.querySelectorAll('.lab-tool').forEach(el=>{
-  let dragging=false,originX=0,originY=0,last=0,strokes=0,previousHead=null;
+  let dragging=false,originX=0,originY=0,last=0,strokes=0,previousHead=null,enteredPulp=false,lastValidTransform='';
   const type=el.dataset.tool;
   const target=bench.querySelector('[data-dropzone]');
   const geometry=type==='mash'?pulpGeometry(bench):null;
@@ -243,7 +243,7 @@ function bindHandsOn(){
    if(pouring||el.classList.contains('tool-done'))return;
    if(type==='salt'&&!actions.soap)return;
    if(type==='stir'&&!(actions.soap&&actions.salt))return;
-   e.preventDefault();dragging=true;last=0;strokes=0;previousHead=null;
+   e.preventDefault();dragging=true;last=0;strokes=0;previousHead=null;enteredPulp=false;lastValidTransform='';
    originX=e.clientX;originY=e.clientY;
    el.setPointerCapture(e.pointerId);el.classList.add('dragging');
   });
@@ -263,8 +263,17 @@ function bindHandsOn(){
     const r=head.getBoundingClientRect();
     const hx=r.left+r.width/2,hy=r.top+r.height/2;
     const valid=geometry&&geometry.contains(hx,hy);
+    if(!valid&&enteredPulp){
+     // Once the head is inside the strawberry pulp, keep it within the bowl
+     // until the student releases the pointer.
+     el.style.transform=lastValidTransform;
+     bench.classList.add('target-active');
+     return;
+    }
     bench.classList.toggle('target-active',Boolean(valid));
     if(valid){
+     enteredPulp=true;
+     lastValidTransform=el.style.transform;
      const distance=previousHead?Math.hypot(hx-previousHead.x,hy-previousHead.y):0;
      const elapsed=Date.now()-last;
      if(previousHead&&distance>8&&elapsed>190){
