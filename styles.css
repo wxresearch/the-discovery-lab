@@ -1038,3 +1038,26 @@
 @media(prefers-reduced-motion:reduce){
  .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation-duration:.01s!important}
 }
+
+/* Physical depth for the stirring stage: the tool is BEHIND the actual
+   bowl SVG (including its glass and pink mixture), never drawn over its
+   front rim. The SVG bowl has pointer-events:none, so manual dragging
+   still reaches the rod. No second bowl or pulp illustration is added. */
+.exhibit-modal .lab-workbench .lab-stirrer,
+.exhibit-modal .lab-workbench .lab-stirrer.dragging,
+.exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
+  z-index:1!important;
+}
+.exhibit-modal .lab-workbench .lab-vessel.mash-bowl{
+  z-index:2!important;
+  pointer-events:none!important;
+}
+.exhibit-modal .lab-workbench .bowl-front-lip{
+  z-index:13!important;
+  pointer-events:none!important;
+}
+.exhibit-modal .lab-workbench .lab-stirrer .stir-handle{
+  /* Its apparent translucency is now supplied by the actual glass/pulp. */
+  -webkit-mask-image:none;
+  mask-image:none;
+}
