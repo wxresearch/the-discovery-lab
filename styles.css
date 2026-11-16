@@ -1014,3 +1014,27 @@
   animation:pour-into-bowl .01s both;
  }
 }
+
+/* Stirrer immersion: only its segment ABOVE the puree remains opaque.
+   The submerged portion reveals the actual mixture behind it. */
+.exhibit-modal .lab-workbench .lab-stirrer .stir-handle{
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--submerge-at,70%) - 2%),rgba(0,0,0,.16) calc(var(--submerge-at,70%) + 2%),rgba(0,0,0,.16) 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--submerge-at,70%) - 2%),rgba(0,0,0,.16) calc(var(--submerge-at,70%) + 2%),rgba(0,0,0,.16) 100%);
+}
+.exhibit-modal .lab-workbench .lab-stirrer,
+.exhibit-modal .lab-workbench .masher{
+  will-change:transform;
+  touch-action:none;
+}
+.exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
+  animation-duration:.56s!important;
+}
+@keyframes stir-anchored{
+  0%,100%{transform:translate(0,0)}
+  25%{transform:translate(-8px,2px)}
+  50%{transform:translate(8px,4px)}
+  75%{transform:translate(-7px,3px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation-duration:.01s!important}
+}
