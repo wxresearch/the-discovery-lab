@@ -272,76 +272,93 @@ function bindHandsOn(){
   const type=el.dataset.tool;
   const bowlTools=['mash','stir','soap','salt'].includes(type);
   let dragging=false,startX=0,startY=0,strokeCount=0,lastStroke=0,prior=null;
-  let entered=false,lastValid='',lastValidPoint=null,validAtEnd=false;
+  let entered=false,validAtEnd=false,initialTip=null,validDX=0,validDY=0;
+  let pending=null,frame=0;
   const target=bench.querySelector('[data-dropzone]');
   const geometry=bowlTools?pulpGeometry(bench):null;
-  const nonBowlHit=(x,y)=>{
-   const box=target.getBoundingClientRect();
-   return x>=box.left&&x<=box.right&&y>=box.top&&y<=box.bottom;
-  };
+  const chunks=type==='mash'?[...bench.querySelectorAll('.pulp-chunks,.pulp-fibers')]:[];
+  let dropRect=null;
+  const nonBowlHit=(x,y)=>dropRect&&x>=dropRect.left&&x<=dropRect.right&&y>=dropRect.top&&y<=dropRect.bottom;
   const tipValid=(p)=>{
    if(!geometry||!p)return false;
    if(type==='mash'||type==='stir')return geometry.contains(p.x,p.y);
-   // Soap and salt pour from above the strawberry pulp, through the
-   // open mouth of the bowl, never through its side glass.
    const local=geometry.toLocal(p.x,p.y);
    return local.x>=63&&local.x<=196&&local.y>=20&&local.y<=112;
+  };
+  const updateDrag=(clientX,clientY)=>{
+   if(!dragging)return;
+   let dx=clientX-startX,dy=clientY-startY;
+   if(bowlTools){
+    // Tip coordinates come from the untransformed tool at pointer-down.
+    // Avoid a synchronous layout read on every pointer movement.
+    let current={x:initialTip.x+dx,y:initialTip.y+dy};
+    let valid=tipValid(current);
+    if(!valid&&entered){
+     dx=validDX;dy=validDY;
+     current={x:initialTip.x+dx,y:initialTip.y+dy};
+     valid=tipValid(current);
+    }
+    validAtEnd=Boolean(valid);
+    bench.classList.toggle('target-active',validAtEnd);
+    if(validAtEnd){
+     entered=true;validDX=dx;validDY=dy;
+     if(type==='mash'||type==='stir'){
+      const distance=prior?Math.hypot(current.x-prior.x,current.y-prior.y):0;
+      if(distance>=7&&performance.now()-lastStroke>=145){
+       lastStroke=performance.now();
+       strokeCount=Math.min(type==='mash'?maxMash:requiredStirs,strokeCount+1);
+       if(type==='mash'){
+        const ratio=Math.min(1,(actions.mash+strokeCount)/maxMash);
+        chunks.forEach(node=>node.style.setProperty('--mash',ratio));
+       }
+      }
+      prior=current;
+     }
+    }else prior=null;
+   }else{
+    validAtEnd=Boolean(nonBowlHit(clientX,clientY));
+    bench.classList.toggle('target-active',validAtEnd);
+   }
+   el.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px)';
   };
   el.addEventListener('pointerdown',e=>{
    if(pouring||el.classList.contains('tool-done'))return;
    if(type==='salt'&&!actions.soap)return;
    if(type==='stir'&&!(actions.soap&&actions.salt))return;
    e.preventDefault();
-   dragging=true;strokeCount=0;lastStroke=0;entered=false;lastValid='';prior=null;
-   const point=toolHeadPoint(el,type);
-   validAtEnd=Boolean(bowlTools&&tipValid(point));
-   if(validAtEnd){entered=true;lastValid='';prior=point;}
+   dragging=true;strokeCount=0;lastStroke=0;entered=false;prior=null;
    startX=e.clientX;startY=e.clientY;
-   el.setPointerCapture(e.pointerId);
-   el.classList.add('dragging');
+   initialTip=toolHeadPoint(el,type);
+   dropRect=target.getBoundingClientRect();
+   validAtEnd=Boolean(bowlTools&&tipValid(initialTip));
+   if(validAtEnd){entered=true;prior=initialTip;validDX=0;validDY=0;}
+   el.setPointerCapture(e.pointerId);el.classList.add('dragging');
   });
   el.addEventListener('pointermove',e=>{
    if(!dragging)return;
-   const dx=e.clientX-startX,dy=e.clientY-startY;
-   const transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px)';
-   el.style.transform=transform;
-   if(bowlTools){
-    const point=toolHeadPoint(el,type);
-    let valid=tipValid(point);
-    // Once a working tip reaches its valid target, keep it there until release.
-    // This also prevents reagent bottles from passing through bowl walls.
-    if(!valid&&entered){
-     el.style.transform=lastValid;
-     valid=true;
-    }
-    const actual=toolHeadPoint(el,type);
-    validAtEnd=tipValid(actual);
-    bench.classList.toggle('target-active',Boolean(validAtEnd));
-    if(validAtEnd){
-     entered=true;lastValid=el.style.transform;
-     if(type==='mash'||type==='stir'){
-      const distance=prior?Math.hypot(actual.x-prior.x,actual.y-prior.y):0;
-      if(distance>=7&&Date.now()-lastStroke>=170){
-       lastStroke=Date.now();
-       strokeCount=Math.min(type==='mash'?maxMash:requiredStirs,strokeCount+1);
-       if(type==='mash'){
-        const ratio=Math.min(1,(actions.mash+strokeCount)/maxMash);
-        bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(p=>p.style.setProperty('--mash',ratio));
-       }
-      }
-      prior=actual;
-     }
-    }else prior=null;
-   }else bench.classList.toggle('target-active',nonBowlHit(e.clientX,e.clientY));
+   pending={x:e.clientX,y:e.clientY};
+   if(frame)return;
+   frame=requestAnimationFrame(()=>{
+    frame=0;
+    const point=pending;
+    pending=null;
+    if(point)updateDrag(point.x,point.y);
+   });
   });
-  const finish=(e)=>{
-   if(!dragging)return;
-   dragging=false;
-   const isBowl=bowlTools;
-   const hit=isBowl?validAtEnd:nonBowlHit(e.clientX,e.clientY);
+  const cleanup=()=>{
+   if(frame){cancelAnimationFrame(frame);frame=0}
+   pending=null;
+   dragging=false;prior=null;
+   el.style.transform='';
    el.classList.remove('dragging');
    bench.classList.remove('target-active');
-   el.style.transform='';
+  };
+  el.addEventListener('pointerup',e=>{
+   if(!dragging)return;
+   if(frame){cancelAnimationFrame(frame);frame=0}
+   updateDrag(e.clientX,e.clientY);
+   const hit=validAtEnd;
+   cleanup();
    if(type==='mash'){
     if(strokeCount>0){actions.mash=Math.min(maxMash,actions.mash+strokeCount);render(true)}
    }else if(type==='stir'){
@@ -351,9 +368,8 @@ function bindHandsOn(){
     else if(type==='alcohol')startPourAnimation();
     else if(type==='filter')applyAction('filter');
    }
-  };
-  el.addEventListener('pointerup',finish);
-  el.addEventListener('pointercancel',()=>{dragging=false;el.style.transform='';el.classList.remove('dragging');bench.classList.remove('target-active')});
+  });
+  el.addEventListener('pointercancel',cleanup);
   el.addEventListener('keydown',e=>{
    if(e.key!=='Enter'&&e.key!==' ')return;
    e.preventDefault();
