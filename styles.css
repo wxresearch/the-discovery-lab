@@ -878,16 +878,8 @@
   background:linear-gradient(90deg,#8ebed1,#e5f7ff 54%,#8cb2c4);
   box-shadow:inset 1px 0 3px #efffff7a,0 7px 9px #07152c66;
 }
-.exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{
-  z-index:10;
-  animation:reagent-into-bowl 1s ease-in-out both;
-}
-@keyframes reagent-into-bowl{
-  0%,100%{transform:translate(0,0) rotate(0deg)}
-  25%{transform:translate(var(--target-x),calc(var(--target-y) - 22px)) rotate(0deg)}
-  42%,76%{transform:translate(var(--target-x),calc(var(--target-y) - 22px)) rotate(105deg)}
-  88%{transform:translate(var(--target-x),calc(var(--target-y) - 22px)) rotate(0deg)}
-}
+.exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{z-index:10}
+
 .exhibit-modal .lab-workbench .reagent-pour{
   position:absolute;z-index:8;left:59%;top:26%;height:25%;
   width:22px;pointer-events:none;opacity:0;
@@ -914,7 +906,7 @@
   0%,32%,90%,100%{opacity:0}
   42%,78%{opacity:1}
 }
-@keyframes fall-salt{from{transform:translateY(0);opacity:1}to{transform:translateY(77px);opacity:0}}
+
 .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
   z-index:6;
   animation:stir-in-mixture .7s ease-in-out both!important;
@@ -940,7 +932,6 @@
   80%,100%{opacity:0;transform:scale(1.45)}
 }
 @media(prefers-reduced-motion:reduce){
- .exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{animation:reagent-into-bowl .01s both}
  .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation:stir-in-mixture .01s both!important}
  .exhibit-modal .lab-workbench.adding-soap .reagent-pour,.exhibit-modal .lab-workbench.adding-salt .reagent-pour{animation:none}
  .exhibit-modal .lab-workbench.stir-in-progress .mix-surface-ripple{animation:none}
