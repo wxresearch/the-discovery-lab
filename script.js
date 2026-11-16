@@ -195,7 +195,7 @@ function startStirAnimation(){
  let called=false;
  const finish=()=>{if(called)return;called=true;pouring=false;applyAction('stir')};
  stirrer.addEventListener('animationend',finish,{once:true});
- setTimeout(finish,850);
+ setTimeout(finish,680);
 }
 function startPourAnimation(){
  if(pouring||stage!==4||actions.alcohol>=maxPour)return;
