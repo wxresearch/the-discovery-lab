@@ -227,9 +227,32 @@ function placeStirrerInBowl(bench){
  stirrer.style.left=(x-15)+'px';
  stirrer.style.top=(pulpY-rodHeight+8)+'px';
 }
+function alignBowlElements(bench){
+ const bowl=bench.querySelector('.mash-bowl');
+ const overlay=bench.querySelector('.bowl-front-lip');
+ const stream=bench.querySelector('.reagent-pour');
+ if(!bowl)return;
+ if(overlay){
+  overlay.style.left=bowl.offsetLeft+'px';
+  overlay.style.top=bowl.offsetTop+'px';
+  overlay.style.width=bowl.offsetWidth+'px';
+  overlay.style.height=bowl.offsetHeight+'px';
+ }
+ if(stream){
+  const g=pulpGeometry(bench);
+  if(g){
+   const start=g.toScreen(130,83),end=g.toScreen(130,138);
+   const rect=bench.getBoundingClientRect();
+   stream.style.left=(start.x-rect.left-10)+'px';
+   stream.style.top=(start.y-rect.top)+'px';
+   stream.style.height=Math.max(20,end.y-start.y)+'px';
+  }
+ }
+}
 function bindHandsOn(){
  const bench=content.querySelector('#workbench');
  if(!bench)return;
+ alignBowlElements(bench);
  placeMasherInPulp(bench);
  placeStirrerInBowl(bench);
  const controls=content.querySelector('.lab-controls');
