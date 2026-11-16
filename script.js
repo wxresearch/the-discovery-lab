@@ -97,8 +97,9 @@ function pulpGeometry(bench){
  const svg=bench.querySelector('.mash-scene');
  if(!svg||!svg.getScreenCTM())return null;
  const matrix=svg.getScreenCTM();
+ const inverse=matrix.inverse();
  const toScreen=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
- const toLocal=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix.inverse())};
+ const toLocal=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(inverse)};
  // Actual strawberry level is near y=138 in the bowl's 260 x 250 viewBox.
  // Keep the masher head below that surface, away from the curved sidewalls.
  const contains=(x,y)=>{
