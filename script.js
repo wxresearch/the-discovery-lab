@@ -139,7 +139,7 @@ function startMashAnimation(){
  // Both pointer dragging and button strokes now move the head locally
  // within the same submerged pulp area.
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const duration=reduced?1:760;
+ const duration=reduced?1:560;
  const swing=el.animate([
   {transform:'translate(0,0)',offset:0},
   {transform:'translate(-10px,-5px) rotate(-5deg)',offset:.2},
@@ -220,11 +220,15 @@ function placeStirrerInBowl(bench){
  // Align the rod's lower tip to the strawberry pulp, not to the SVG canvas edge.
  const b=bowl.getBoundingClientRect();
  const w=bench.getBoundingClientRect();
- const rodHeight=stirrer.getBoundingClientRect().height;
+ const rodHeight=stirrer.offsetHeight;
  const x=b.left-w.left+b.width*.51;
- const pulpY=b.top-w.top+b.height*.73;
- stirrer.style.left=(x-15)+'px';
- stirrer.style.top=(pulpY-rodHeight+8)+'px';
+ const pulpY=b.top-w.top+b.height*.76;
+ const surfaceY=b.top-w.top+b.height*(137/250);
+ const rodTop=pulpY-rodHeight+8;
+ stirrer.style.left=(x-stirrer.offsetWidth/2)+'px';
+ stirrer.style.top=rodTop+'px';
+ // Visually submerge only the part below the actual pink liquid surface.
+ stirrer.style.setProperty('--submerge-at',Math.max(0,Math.min(100,(surfaceY-rodTop)/rodHeight*100)).toFixed(1)+'%');
 }
 function alignBowlElements(bench){
  const bowl=bench.querySelector('.mash-bowl');
