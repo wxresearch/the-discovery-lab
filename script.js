@@ -281,9 +281,9 @@ function bindHandsOn(){
    if(bowlTools){
     const point=toolHeadPoint(el,type);
     let valid=tipValid(point);
-    // Prevent the working end of an immersed tool from exiting the pulp.
-    // For reagent bottles, constrain dispensing to the opening when close.
-    if(!valid&&entered&&(type==='mash'||type==='stir')){
+    // Once a working tip reaches its valid target, keep it there until release.
+    // This also prevents reagent bottles from passing through bowl walls.
+    if(!valid&&entered){
      el.style.transform=lastValid;
      valid=true;
     }
