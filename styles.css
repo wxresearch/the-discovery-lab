@@ -1079,60 +1079,18 @@
   }
 }
 
-/* Single bowl: pulp covers the immersed part of the masher during use.
-   The overlay contains NO glass strokes, so it cannot double the rim. */
-.exhibit-modal .lab-workbench .mash-foreground{
+/* Single-rim bowl. The red pulp is drawn ONLY inside the bowlScene SVG.
+   The sole foreground overlay contains the front half of the existing rim. */
+.exhibit-modal .lab-workbench .bowl-front-lip{
  position:absolute;
- left:36%;
- bottom:7%;
- width:54%;
- height:79%;
- z-index:14;
+ z-index:13;
  pointer-events:none;
  overflow:visible;
- opacity:0;
- transition:opacity .12s ease-in;
 }
-.exhibit-modal .lab-workbench.mash-in-progress .mash-foreground,
-.exhibit-modal .lab-workbench.target-active .mash-foreground{
- opacity:1;
-}
-.exhibit-modal .lab-workbench .masher{z-index:10}
-@media(max-width:450px){
- .exhibit-modal .lab-workbench .mash-foreground{
-  left:34%;
-  width:59%;
- }
-}
-@media(prefers-reduced-motion:reduce){
- .exhibit-modal .lab-workbench .mash-foreground{transition:none}
-}
-
-/* Fully hide the submerged portion of the head beneath the strawberry puree.
-   No additional glass outline is drawn. */
-.exhibit-modal .lab-workbench .mash-foreground{
-  z-index:14;
-}
-.exhibit-modal .lab-workbench .mash-foreground path[fill="#c5335c"]{
-  fill-opacity:.97;
-}
-.exhibit-modal .lab-workbench.target-active .mash-foreground,
-.exhibit-modal .lab-workbench.mash-in-progress .mash-foreground{
-  opacity:1;
-}
-
-/* Natural strawberry slurry, with the masher already submerged at rest.
-   Preserve a single glass outline and allow underlying detail to show. */
 .exhibit-modal .lab-workbench .mash-scene g[clip-path="url(#bowlInner)"] > path:first-child{
- opacity:.91;
+ opacity:.79;
 }
-.exhibit-modal .lab-workbench .mash-foreground{
- opacity:1;
-}
-.exhibit-modal .lab-workbench .mash-foreground path[fill="#c5335c"]{
- fill-opacity:.78;
-}
-.exhibit-modal .lab-workbench .masher{
- z-index:10;
-}
+.exhibit-modal .lab-workbench .masher .tool-base{opacity:.38}
 .exhibit-modal .lab-workbench .target-ring{display:none}
+/* Keep visible texture in the real pulp, not a second solid-colored layer. */
+.exhibit-modal .lab-workbench .mash-scene .pulp-chunks{opacity:.85}
