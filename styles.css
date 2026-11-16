@@ -1120,3 +1120,19 @@
 .exhibit-modal .lab-workbench.mash-in-progress .mash-foreground{
   opacity:1;
 }
+
+/* Natural strawberry slurry, with the masher already submerged at rest.
+   Preserve a single glass outline and allow underlying detail to show. */
+.exhibit-modal .lab-workbench .mash-scene g[clip-path="url(#bowlInner)"] > path:first-child{
+ opacity:.91;
+}
+.exhibit-modal .lab-workbench .mash-foreground{
+ opacity:1;
+}
+.exhibit-modal .lab-workbench .mash-foreground path[fill="#c5335c"]{
+ fill-opacity:.78;
+}
+.exhibit-modal .lab-workbench .masher{
+ z-index:10;
+}
+.exhibit-modal .lab-workbench .target-ring{display:none}
