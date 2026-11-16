@@ -104,9 +104,11 @@ function startMashAnimation(){
  const b=bowl.getBoundingClientRect();
  const h=head.getBoundingClientRect();
  // Use the same translated-and-tilted tool movement as pointer dragging.
- // Target the middle of the pink mixture, which starts below the bowl rim.
+ // SVG pulp begins at y=138/250 (55% of the bowl); its deepest safe
+ // central region lies around 78%. Sink the head well below the surface,
+ // leaving the handle above it, rather than stopping at the liquid boundary.
  const dx=b.left+b.width*.5-(h.left+h.width*.5);
- const dy=b.top+b.height*.61-(h.top+h.height*.5);
+ const dy=b.top+b.height*.79-(h.top+h.height*.5);
  const pose=(x,y)=>'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate(-12deg)';
  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const duration=reduce?1:900;
