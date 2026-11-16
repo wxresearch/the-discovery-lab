@@ -157,16 +157,15 @@ function startMashAnimation(){
  swing.onfinish=()=>{pouring=false;applyAction('mash')};
  swing.oncancel=()=>{pouring=false};
 }
-function bowlContact(bench, tool, xRatio=.5, yRatio=.44, anchor='bottom'){
- const bowl=bench.querySelector('.mash-bowl');
- if(!bowl||!tool)return;
- const b=bowl.getBoundingClientRect(),t=tool.getBoundingClientRect();
- const x=b.left+b.width*xRatio;
- const y=b.top+b.height*yRatio;
- const anchorX=t.left+t.width*.5;
- const anchorY=anchor==='top'?t.top+t.height*.15:t.bottom-8;
- tool.style.setProperty('--target-x',(x-anchorX).toFixed(1)+'px');
- tool.style.setProperty('--target-y',(y-anchorY).toFixed(1)+'px');
+function bowlContact(bench,tool,xRatio=.5,yRatio=.44,anchor='bottom'){
+ const geometry=pulpGeometry(bench);
+ if(!geometry||!tool)return;
+ const target=geometry.toScreen(260*xRatio,250*yRatio);
+ const bounds=tool.getBoundingClientRect();
+ const pointX=bounds.left+bounds.width*.5;
+ const pointY=anchor==='top'?bounds.top+bounds.height*.15:bounds.bottom-8;
+ tool.style.setProperty('--target-x',(target.x-pointX).toFixed(1)+'px');
+ tool.style.setProperty('--target-y',(target.y-pointY).toFixed(1)+'px');
 }
 function runIngredientAnimation(type){
  if(pouring||stage!==2||!['soap','salt'].includes(type))return;
@@ -176,7 +175,7 @@ function runIngredientAnimation(type){
  const bottle=bench&&bench.querySelector('[data-tool="'+type+'"]');
  if(!bottle){applyAction(type);return;}
  pouring=true;
- bowlContact(bench,bottle,.5,.24,'top');
+ bowlContact(bench,bottle,type==='soap'?.43:.57,.29,'top');
  bench.classList.add('adding-'+type);
  bottle.classList.add('ingredient-animating');
  let finished=false;
@@ -246,6 +245,7 @@ function alignBowlElements(bench){
    stream.style.left=(start.x-rect.left-10)+'px';
    stream.style.top=(start.y-rect.top)+'px';
    stream.style.height=Math.max(20,end.y-start.y)+'px';
+   stream.style.setProperty('--drop-distance',Math.max(20,end.y-start.y)+'px');
   }
  }
 }
