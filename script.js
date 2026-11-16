@@ -109,43 +109,53 @@ function pulpGeometry(bench){
  };
  return {toScreen,toLocal,contains};
 }
+function toolHeadPoint(el,type){
+ const part=type==='mash'?el.querySelector('.tool-base'):type==='stir'?el.querySelector('.stir-handle'):el;
+ if(!part)return null;
+ const r=part.getBoundingClientRect();
+ if(type==='soap'||type==='salt')return {x:r.left+r.width/2,y:r.top+r.height*.18};
+ return {x:r.left+r.width/2,y:r.bottom-(type==='mash'?r.height*.5:5)};
+}
+function placeMasherInPulp(bench){
+ const el=bench.querySelector('.lab-tool.masher');
+ const g=pulpGeometry(bench);
+ if(!el||!g)return;
+ // At rest, immerse the head already: do not let a click first carry
+ // it across the front glass wall.
+ const dest=g.toScreen(130,182);
+ const point=toolHeadPoint(el,'mash');
+ if(!point)return;
+ const dx=dest.x-point.x,dy=dest.y-point.y;
+ el.style.left=(el.offsetLeft+dx)+'px';
+ el.style.top=(el.offsetTop+dy)+'px';
+}
 function startMashAnimation(){
  if(pouring||stage!==1||actions.mash>=maxMash)return;
- pouring=true;
  const bench=content.querySelector('#workbench');
- const masher=bench&&bench.querySelector('.lab-tool.masher');
- const head=masher&&masher.querySelector('.tool-base');
- const geometry=bench&&pulpGeometry(bench);
- if(!bench||!masher||!head||!geometry){pouring=false;applyAction('mash');return;}
- const destination=geometry.toScreen(130,187);
- const box=masher.getBoundingClientRect(),h=head.getBoundingClientRect();
- const centerX=box.left+box.width/2, centerY=box.top+box.height/2;
- const offsetX=h.left+h.width/2-centerX,offsetY=h.top+h.height/2-centerY;
- const angle=-12*Math.PI/180;
- const tiltedX=centerX+offsetX*Math.cos(angle)-offsetY*Math.sin(angle);
- const tiltedY=centerY+offsetX*Math.sin(angle)+offsetY*Math.cos(angle);
- const dx=destination.x-tiltedX,dy=destination.y-tiltedY;
- const pose=(x,y)=>'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate(-12deg)';
+ const el=bench&&bench.querySelector('.masher');
+ const g=bench&&pulpGeometry(bench);
+ if(!el||!g){applyAction('mash');return;}
+ pouring=true;
+ // Both pointer dragging and button strokes now move the head locally
+ // within the same submerged pulp area.
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const duration=reduced?1:900;
- const motion=masher.animate([
-  {transform:'translate(0px,0px) rotate(0deg)',offset:0},
-  {transform:pose(dx,dy-30),offset:.27},
-  {transform:pose(dx,dy),offset:.44},
-  {transform:pose(dx-10,dy-4),offset:.58},
-  {transform:pose(dx+9,dy+2),offset:.73},
-  {transform:pose(dx,dy),offset:.84},
-  {transform:'translate(0px,0px) rotate(0deg)',offset:1}
+ const duration=reduced?1:760;
+ const swing=el.animate([
+  {transform:'translate(0,0)',offset:0},
+  {transform:'translate(-10px,-5px) rotate(-5deg)',offset:.2},
+  {transform:'translate(11px,3px) rotate(5deg)',offset:.48},
+  {transform:'translate(-7px,5px) rotate(-4deg)',offset:.72},
+  {transform:'translate(0,0)',offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
  bench.classList.add('mash-in-progress');
- bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(el=>el.animate([
-  {transform:'translateX(0px)',offset:0},
-  {transform:'translateX(-7px)',offset:.44},
-  {transform:'translateX(7px)',offset:.72},
-  {transform:'translateX(0px)',offset:1}
+ bench.querySelectorAll('.pulp-chunks,.pulp-fibers').forEach(chunk=>chunk.animate([
+  {transform:'translateX(0)',offset:0},
+  {transform:'translateX(-7px)',offset:.25},
+  {transform:'translateX(7px)',offset:.55},
+  {transform:'translateX(0)',offset:1}
  ],{duration,easing:'ease-in-out'}));
- motion.onfinish=()=>{pouring=false;applyAction('mash')};
- motion.oncancel=()=>{pouring=false};
+ swing.onfinish=()=>{pouring=false;applyAction('mash')};
+ swing.oncancel=()=>{pouring=false};
 }
 function bowlContact(bench, tool, xRatio=.5, yRatio=.44, anchor='bottom'){
  const bowl=bench.querySelector('.mash-bowl');
@@ -220,6 +230,7 @@ function placeStirrerInBowl(bench){
 function bindHandsOn(){
  const bench=content.querySelector('#workbench');
  if(!bench)return;
+ placeMasherInPulp(bench);
  placeStirrerInBowl(bench);
  const controls=content.querySelector('.lab-controls');
  if(controls){bench.appendChild(controls);controls.classList.add('bench-controls');}
