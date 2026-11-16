@@ -1107,3 +1107,16 @@
 @media(prefers-reduced-motion:reduce){
  .exhibit-modal .lab-workbench .mash-foreground{transition:none}
 }
+
+/* Fully hide the submerged portion of the head beneath the strawberry puree.
+   No additional glass outline is drawn. */
+.exhibit-modal .lab-workbench .mash-foreground{
+  z-index:14;
+}
+.exhibit-modal .lab-workbench .mash-foreground path[fill="#c5335c"]{
+  fill-opacity:.97;
+}
+.exhibit-modal .lab-workbench.target-active .mash-foreground,
+.exhibit-modal .lab-workbench.mash-in-progress .mash-foreground{
+  opacity:1;
+}
