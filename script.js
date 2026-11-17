@@ -551,6 +551,35 @@ const microscopeViews=[
   return '<g fill="none">'+pairs+'<path d="'+strand(x1)+'" stroke="#5CD8C6" stroke-width="7" stroke-linecap="round"/><path d="'+strand(x2)+'" stroke="#B8A5F8" stroke-width="7" stroke-linecap="round"/></g>';
  })()}
 ];
+const dnaBases={
+ A:{name:'Adenine',pair:'T',detail:'A pairs with T. The order of bases stores information; a single letter is one part of the sequence.'},
+ T:{name:'Thymine',pair:'A',detail:'T pairs with A. Complementary base pairing helps cells copy DNA accurately.'},
+ C:{name:'Cytosine',pair:'G',detail:'C pairs with G, helping hold the two DNA strands together.'},
+ G:{name:'Guanine',pair:'C',detail:'G pairs with C. A gene contains a sequence of bases used for making a functional product.'}
+};
+function dnaExplorerMarkup(){
+ const info=dnaBases[dnaBase];
+ return '<section class="dna-explorer"><strong>Explore the DNA alphabet</strong><p>Tap one of the four letters to find its matching base.</p><div class="dna-base-buttons" role="group" aria-label="Choose a DNA base">'+Object.keys(dnaBases).map(base=>'<button type="button" class="dna-base-button '+(dnaBase===base?'active':'')+'" aria-pressed="'+(dnaBase===base)+'" data-dna-base="'+base+'">'+base+'</button>').join('')+'</div><div class="dna-base-match" aria-live="polite"><span>'+dnaBase+'</span><span aria-hidden="true">↔</span><span>'+info.pair+'</span><small>'+info.name+' pairs with '+dnaBases[info.pair].name+'.</small></div><p>'+info.detail+'</p><p><strong>Why genes matter:</strong> Cells use information in DNA to make RNA; many genes provide instructions for proteins that help cells work.</p></section>';
+}
+const strawberryFacts=[
+ {title:'Eight sets of chromosomes',detail:'Cultivated garden strawberries usually have eight sets of chromosomes. Scientists call this octoploid.'},
+ {title:'The strands are many molecules',detail:'The cloudy material is many DNA molecules clumped together, often with other substances. A single DNA molecule is much too small to see.'},
+ {title:'DNA helps make strawberries strawberries',detail:'Genes provide instructions that affect growth, ripening, and pigment production, among many other traits.'}
+];
+function strawberryFactsMarkup(){
+ return '<section class="strawberry-facts"><h3>Did you know?</h3>'+strawberryFacts.map((f,i)=>'<div class="strawberry-fact"><span>0'+(i+1)+'</span><div><strong>'+f.title+'</strong><p>'+f.detail+'</p></div></div>').join('')+'</section>';
+}
+const dnaJourney=[
+ {name:'Strawberry',detail:'Strawberries are made of many cells.'},
+ {name:'Cell',detail:'Cells are the basic units of life. Plant cells have cell walls and membranes.'},
+ {name:'Nucleus',detail:'Most strawberry cells keep much of their genetic information in a nucleus.'},
+ {name:'Chromosome',detail:'Chromosomes package long DNA molecules with proteins.'},
+ {name:'DNA',detail:'DNA stores information in sequences of A, T, C, and G.'},
+ {name:'Gene',detail:'A gene is a section of DNA that helps produce RNA or another functional product, often a protein.'}
+];
+function dnaJourneyMarkup(){
+ return '<section class="dna-journey"><h3>From strawberry to DNA</h3><p>Tap a level to review what you discovered.</p><div class="dna-journey-steps" role="group" aria-label="Levels from strawberry to gene">'+dnaJourney.map((part,i)=>'<button type="button" data-journey="'+i+'" class="dna-journey-button '+(recapFocus===i?'active':'')+'" aria-pressed="'+(recapFocus===i)+'">'+part.name+'</button>').join('<span aria-hidden="true">›</span>')+'</div><p class="dna-journey-description" aria-live="polite"><strong>'+dnaJourney[recapFocus].name+':</strong> '+dnaJourney[recapFocus].detail+'</p></section>';
+}
 function microscopeMarkup(){
  const v=microscopeViews[microscopeLevel];
  return '<div class="micro-card"><div class="micro-top"><span>MICROSCOPE STATION</span><span>'+String(microscopeLevel+1)+' / 4</span></div><svg class="micro-window" viewBox="0 0 240 220" role="img" aria-label="'+v.title+' illustration"><circle cx="120" cy="110" r="100" fill="#14293C" stroke="#71D8CB" stroke-width="5"/>'+v.graphic+'</svg><h3>'+v.title+'</h3><p>'+v.caption+'</p><div class="micro-explainer"><strong>Why it matters</strong><p>'+v.detail+'</p></div>'+(microscopeLevel===3?dnaExplorerMarkup():'')+'<div class="micro-controls"><button type="button" class="button secondary" id="microBack" '+(microscopeLevel===0?'disabled':'')+'>← Back</button><button type="button" class="button primary" id="microNext" '+(microscopeLevel===3?'disabled':'')+'>'+(microscopeLevel===3?'Finished ✓':'Zoom closer →')+'</button></div></div>';
