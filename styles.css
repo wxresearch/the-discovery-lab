@@ -1730,3 +1730,35 @@ html,body{background:#101e30;color:var(--light)}
 .exhibit-modal .dna-certificate .cert-icon,
 .exhibit-modal .dna-certificate>span{color:#a7d4e4}
 .exhibit-modal .cert-line{background:#74b9d4}
+
+
+.how .step-illustration,
+.how .step-illustration:has(.experiment-illustration){
+ background:#204658;
+ height:180px;
+ width:100%;
+ display:grid;
+ place-items:center;
+ border-radius:0;
+}
+.how .step-illustration .process-illustration,
+.how .step-illustration .experiment-illustration{
+ display:block;
+ width:min(200px,94%);
+ height:150px;
+ max-height:150px;
+ margin:auto;
+ object-fit:contain;
+ filter:none;
+}
+@media(max-width:650px){
+ .how .step-illustration,
+ .how .step-illustration:has(.experiment-illustration){
+  height:135px;
+ }
+ .how .step-illustration .process-illustration,
+ .how .step-illustration .experiment-illustration{
+  height:120px;
+  max-height:120px;
+ }
+}
