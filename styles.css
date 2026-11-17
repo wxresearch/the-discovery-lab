@@ -1128,3 +1128,55 @@
   animation:alcohol-stream-visible .01s both;
  }
 }
+
+/* The ONLY front-pulp overlay for the mashing scene: a subtle tint clipped
+   to the same inner bowl shape, over both shaft and head, behind the rim. */
+.exhibit-modal .lab-workbench .bowl-liquid-front{
+ position:absolute;
+ z-index:11;
+ pointer-events:none;
+ display:block;
+ overflow:visible;
+}
+.exhibit-modal .lab-workbench .bowl-liquid-front path[fill="#c94266"]{
+ fill-opacity:.27;
+}
+.exhibit-modal .lab-workbench .bowl-front-lip{
+ z-index:13!important;
+ pointer-events:none;
+}
+/* Filtering: move the extract cup above the funnel, then show the stream
+   flowing into the filter. Filtrate and retained pulp appear after pouring. */
+.exhibit-modal .lab-workbench .mixing-cup{
+ transform-origin:50% 16%;
+ will-change:transform;
+}
+.exhibit-modal .lab-workbench .filter-pour-stream{
+ position:absolute;
+ display:block;
+ z-index:9;
+ pointer-events:none;
+ overflow:visible;
+ opacity:0;
+}
+.exhibit-modal .lab-workbench .filter-pour-stream path{
+ stroke-dasharray:65;
+ stroke-dashoffset:65;
+ filter:drop-shadow(0 1px 2px #d783a5);
+}
+.exhibit-modal .lab-workbench.filter-pouring .filter-pour-stream{
+ opacity:1;
+}
+.exhibit-modal .lab-workbench.filter-pouring .filter-pour-stream path{
+ animation:filter-stream 1.15s ease-in-out both;
+}
+@keyframes filter-stream{
+ 0%,35%{stroke-dashoffset:65;opacity:0}
+ 44%,72%{stroke-dashoffset:0;opacity:1}
+ 90%,100%{stroke-dashoffset:65;opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench.filter-pouring .filter-pour-stream path{
+  animation:filter-stream .01s both;
+ }
+}
