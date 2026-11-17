@@ -1786,3 +1786,13 @@ html,body{background:#101e30;color:var(--light)}
 }
 
 
+
+
+.exhibit-modal .lab-workbench .lab-tool.alcohol{
+ top:20%;
+}
+@media(max-width:650px){
+ .exhibit-modal .lab-workbench .lab-tool.alcohol{
+  top:18%;
+ }
+}
