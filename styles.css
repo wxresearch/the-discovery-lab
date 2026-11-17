@@ -1180,3 +1180,42 @@
   animation:filter-stream .01s both;
  }
 }
+
+/* One-piece wooden masher: shaft continues INTO the rounded head. The
+   liquid surface fades the lower shaft as well as the paddle. */
+.exhibit-modal .lab-workbench .masher .tool-shaft{
+ top:33px;
+ height:113px;
+ border-radius:5px;
+ z-index:1;
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--shaft-submerge-at,70%) - 1%),rgba(0,0,0,.35) calc(var(--shaft-submerge-at,70%) + 3%),rgba(0,0,0,.35) 100%);
+ mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--shaft-submerge-at,70%) - 1%),rgba(0,0,0,.35) calc(var(--shaft-submerge-at,70%) + 3%),rgba(0,0,0,.35) 100%);
+}
+.exhibit-modal .lab-workbench .masher .tool-top{
+ z-index:2;
+}
+.exhibit-modal .lab-workbench .masher .tool-base{
+ z-index:3;
+ opacity:1;
+}
+/* Only one liquid layer is needed; avoid making it opaque again. */
+.exhibit-modal .lab-workbench .bowl-liquid-front path[fill="#c94266"]{
+ fill-opacity:.22;
+}
+/* The old CSS-only filter animation was competing with the explicit
+   cup/stream animation. The stream is now animated with the cup in JS. */
+.exhibit-modal .lab-workbench.filter-pouring .filter-pour-stream path{
+ animation:none!important;
+}
+.exhibit-modal .lab-workbench .filter-pour-stream{
+ z-index:20;
+ opacity:0;
+}
+.exhibit-modal .lab-workbench.filter-pouring .filter-pour-stream{
+ opacity:1;
+}
+.exhibit-modal .lab-workbench .filter-pour-stream path{
+ stroke-dasharray:105;
+ stroke-dashoffset:105;
+ filter:drop-shadow(0 0 3px #f0acc2);
+}
