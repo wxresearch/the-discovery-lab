@@ -1219,3 +1219,191 @@
  stroke-dashoffset:105;
  filter:drop-shadow(0 0 3px #f0acc2);
 }
+
+
+/* Aurora Lab · site-wide visual theme
+   Museum atmosphere without changing exhibit geometry or interactions. */
+:root{
+ color-scheme:dark;
+ --bg:#101d30;
+ --panel:#152c3e;
+ --light:#ecfbf8;
+ --muted:#b9d3d7;
+ --cyan:#62e3c2;
+ --purple:#b6a3f8;
+ --line:rgba(153,220,223,.20);
+ --aurora-teal:#62e3c2;
+ --aurora-blue:#71cbe2;
+ --aurora-violet:#b6a3f8;
+ --aurora-deep:#101d30;
+}
+body{
+ background:linear-gradient(180deg,#101d30 0%,#102639 38%,#112134 72%,#101d30 100%);
+ color:var(--light);
+}
+.ambient{
+ position:fixed;inset:0;z-index:-1;height:auto;overflow:hidden;
+ background:
+  radial-gradient(ellipse 43% 42% at 82% 14%,rgba(98,227,194,.19),transparent 73%),
+  radial-gradient(ellipse 35% 42% at 12% 28%,rgba(182,163,248,.15),transparent 74%),
+  radial-gradient(ellipse 30% 40% at 62% 78%,rgba(83,172,207,.12),transparent 74%);
+}
+.ambient::before,.ambient::after{
+ content:"";position:absolute;pointer-events:none;
+ width:min(74vw,1000px);height:540px;border-radius:50%;
+ opacity:.32;filter:blur(85px);transform:rotate(-24deg);
+}
+.ambient::before{
+ top:-260px;right:-180px;
+ background:linear-gradient(110deg,transparent 10%,rgba(98,227,194,.48),rgba(93,184,218,.24),rgba(182,163,248,.39),transparent 91%);
+ animation:aurora-breathe 16s ease-in-out infinite alternate;
+}
+.ambient::after{
+ left:-370px;top:450px;opacity:.18;
+ background:linear-gradient(115deg,transparent,rgba(182,163,248,.46),rgba(98,227,194,.36),transparent);
+ animation:aurora-breathe 19s ease-in-out infinite alternate-reverse;
+}
+@keyframes aurora-breathe{
+ from{transform:translate3d(-2%,0,0) rotate(-24deg);opacity:.20}
+ to{transform:translate3d(3%,4%,0) rotate(-18deg);opacity:.40}
+}
+.site-header{
+ border-bottom:1px solid rgba(152,226,213,.20);
+ background:rgba(16,29,48,.76);
+ backdrop-filter:blur(16px);
+ -webkit-backdrop-filter:blur(16px);
+}
+.brand b,.nav a:hover,.text-link:hover,.modal-identity .live-dot{color:var(--aurora-teal)}
+.brand-mark span{
+ background:linear-gradient(170deg,var(--aurora-teal),var(--aurora-blue) 53%,var(--aurora-violet));
+ box-shadow:0 0 17px rgba(98,227,194,.18);
+}
+.header-cta{
+ border-color:rgba(129,215,209,.46);
+ background:rgba(56,118,125,.13);
+ color:#e8fbf8;
+}
+.header-cta:hover{background:rgba(98,227,194,.13)}
+.hero h1 em,h2 em{
+ background:linear-gradient(104deg,#7df3d2 4%,#94d8fa 52%,#c2afff 98%);
+ background-clip:text;-webkit-background-clip:text;color:transparent;
+}
+.hero-copy>p,.section-heading>p,.mission p{color:#c0d6de}
+.eyebrow,.metric-icon,.step-num{color:var(--aurora-teal)}
+.eyebrow.muted,.soon{color:#bcaef8}
+.live-dot,.tag-dot,.label-dot{
+ background:var(--aurora-teal);
+ box-shadow:0 0 13px rgba(98,227,194,.58);
+}
+.button{border-radius:11px}
+.button.primary,.primary{
+ background:linear-gradient(108deg,#6ce4c7,#86d9e6 55%,#b9a5f6);
+ color:#102537;
+ box-shadow:0 6px 23px rgba(98,227,194,.11);
+}
+.button.primary:hover,.primary:hover{
+ background:linear-gradient(108deg,#96f4db,#a6e5f0 55%,#c7b7ff);
+}
+.button.secondary,.secondary{
+ color:#ecfbf8;
+ border-color:rgba(128,198,204,.38);
+ background:rgba(111,184,185,.07);
+}
+.button.secondary:hover,.secondary:hover{background:rgba(98,227,194,.14)}
+.hero-art{
+ background:
+ radial-gradient(ellipse 48% 48% at 51% 44%,rgba(97,218,200,.25),transparent 70%),
+ radial-gradient(ellipse 60% 65% at 58% 45%,rgba(131,111,215,.18),transparent 76%);
+}
+.hero-art::before{
+ content:"";position:absolute;inset:12% 8%;border-radius:50%;
+ background:conic-gradient(from 145deg,transparent,rgba(98,227,194,.07),transparent,rgba(182,163,248,.12),transparent);
+ filter:blur(18px);pointer-events:none;
+}
+.art-grid{
+ background-image:linear-gradient(rgba(133,230,215,.08) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(133,230,215,.08) 1px,transparent 1px);
+}
+.orbit{border-color:rgba(124,223,206,.22)}
+.dna-model{filter:drop-shadow(0 0 22px rgba(98,227,194,.36))}
+.dna-rung{
+ background:linear-gradient(90deg,#74ecd1,#9cdfe9,#b6a3f8);
+ box-shadow:0 0 12px rgba(98,227,194,.38);
+}
+.floating-label{
+ background:rgba(22,51,68,.78);
+ border:1px solid rgba(141,224,213,.39);
+ color:#d2e4e8;
+ box-shadow:0 18px 48px rgba(5,17,33,.48);
+}
+.floating-label strong{color:#f4fffc}
+.label-dot.cyan{background:#62e3c2}
+.label-dot.lavender{background:#b6a3f8}
+.art-floor{
+ border-top-color:rgba(98,227,194,.36);
+ background:radial-gradient(ellipse,rgba(98,227,194,.21),transparent 70%);
+}
+.metrics{border-color:var(--line)}
+.metrics>div{border-color:var(--line)}
+.metrics small,.hero-footer,.step p{color:#b7ced7}
+.exhibit-card,.step{
+ background:linear-gradient(145deg,rgba(27,59,75,.95),rgba(17,35,56,.94));
+ border:1px solid rgba(125,208,207,.27);
+ box-shadow:0 10px 40px rgba(5,16,36,.20);
+}
+.exhibit-card{transition:border-color .25s,box-shadow .25s,transform .25s}
+.exhibit-card:hover{
+ border-color:rgba(98,227,194,.56);
+ box-shadow:0 15px 40px rgba(8,34,48,.33),0 0 28px rgba(98,227,194,.09);
+ transform:translateY(-3px);
+}
+.strawberry-art{background:linear-gradient(135deg,#193e42,#132e3d)}
+.exhibit-art-tag,.card-meta{color:#a8e5d9}
+.exhibit-body p,.upcoming-body p{color:#c0d3dd}
+.upcoming-art{
+ background:radial-gradient(ellipse at 50% 50%,#32516a,#17243e 75%);
+}
+.upcoming-art.planets{
+ background:radial-gradient(ellipse at 51% 49%,#3a536d 0%,#243a54 54%,#132338 100%);
+}
+.geometry{background:radial-gradient(ellipse at 47% 58%,#246b70a6,#15263c 72%)}
+.geometry-shape{border-color:#77e8d0;box-shadow:0 0 22px #77e8d043,inset 0 0 22px #77e8d01c}
+.geometry-shape.second{border-color:#b6a3f8}
+.step-illustration{background:radial-gradient(circle,rgba(98,227,194,.12),transparent 70%)}
+.step-symbol{color:#96e9d7;text-shadow:0 0 18px rgba(98,227,194,.28)}
+.mission-orb{
+ color:#9ee6d7;
+ border-color:rgba(121,221,210,.36);
+ background:radial-gradient(circle,rgba(98,227,194,.22),rgba(182,163,248,.09) 55%,transparent 74%);
+ box-shadow:0 0 85px rgba(98,227,194,.12),inset 0 0 42px rgba(182,163,248,.09);
+}
+.text-link{color:#88f0d5}
+.exhibit-modal{background:rgba(5,17,29,.89)}
+.modal-shell{
+ background:radial-gradient(circle at 92% 0,rgba(113,203,226,.13),transparent 48%),#142a3c;
+ border:1px solid rgba(143,223,211,.36);
+ box-shadow:0 24px 90px rgba(0,10,20,.64);
+}
+.progress-bar{background:#314c5e}
+.progress-bar>div{background:linear-gradient(90deg,#62e3c2,#80d5e7,#b6a3f8)}
+.progress-stages .active{color:#82ecd4}
+.icon-button{border-color:rgba(128,198,204,.45);color:#ecfbf8}
+.icon-button:hover{background:rgba(98,227,194,.13)}
+/* The experiment stage and its live tools stay in their existing positions. */
+.exhibit-modal .lab-status{border-color:rgba(125,208,207,.31)}
+.exhibit-modal .interactive-layout .stage-copy .lab-status{
+ background:rgba(22,57,72,.78);
+ border-color:rgba(124,210,207,.35);
+}
+.exhibit-modal .lab-status-value{color:#82edd4}
+.exhibit-modal .interactive-visual .bench-controls #assistBtn{
+ background:rgba(20,51,68,.93);
+ border-color:rgba(129,231,213,.72);
+ color:#eafffa;
+}
+footer{border-color:var(--line);color:#b3cbd5}
+@media(prefers-reduced-motion:reduce){
+ .ambient::before,.ambient::after{animation:none}
+ .exhibit-card{transition:none}
+ .exhibit-card:hover{transform:none}
+}
