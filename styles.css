@@ -1080,3 +1080,51 @@
 .exhibit-modal .lab-workbench .mash-scene g[clip-path="url(#bowlInner)"] > path:first-child{
   opacity:.72;
 }
+
+/* Precise liquid paths: keep bottles outside glass until tilted, and draw
+   visible streams through each vessel's OPEN rim. The motion itself is
+   controlled by JS; these rules only control the fluid visuals. */
+.exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{
+ animation:none!important;
+}
+.exhibit-modal .lab-workbench .reagent-pour{
+ z-index:9;
+ pointer-events:none;
+}
+.exhibit-modal .lab-workbench .pour-stream{
+ position:absolute;
+ z-index:9;
+ display:block;
+ opacity:0;
+ pointer-events:none;
+ background:none;
+ border:0;
+ border-radius:0;
+ transform:none;
+ overflow:visible;
+ max-width:none;
+ max-height:none;
+}
+.exhibit-modal .lab-workbench.is-pouring .pour-stream.visible{
+ animation:none!important;
+ opacity:1;
+}
+.exhibit-modal .lab-workbench .pour-stream .alcohol-flow{
+ stroke-dasharray:110;
+ stroke-dashoffset:110;
+ opacity:0;
+ filter:drop-shadow(0 0 3px #c8efff);
+}
+.exhibit-modal .lab-workbench.is-pouring .alcohol-flow{
+ animation:alcohol-stream-visible 1.15s ease-in-out both;
+}
+@keyframes alcohol-stream-visible{
+ 0%,28%{stroke-dashoffset:110;opacity:0}
+ 39%,75%{stroke-dashoffset:0;opacity:1}
+ 91%,100%{stroke-dashoffset:110;opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench.is-pouring .alcohol-flow{
+  animation:alcohol-stream-visible .01s both;
+ }
+}
