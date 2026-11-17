@@ -533,15 +533,7 @@ function whatIfMarkup(){
 }
 function certificateMarkup(){
  const date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
- return '<div class="certificate-screen"><div class="dna-certificate" id="dnaCertificate"><div class="cert-icon">✧</div><span>THE DISCOVERY LAB · EXHIBIT 001</span><h3>DNA Detective</h3><p>Certificate of Discovery</p><strong>Strawberry DNA Extraction</strong><div class="cert-line"></div><small>Completed '+date+'</small><small>Explore · Experiment · Discover</small></div><p>You explored strawberry cells, extracted DNA, collected visible strands, and tested a scientific prediction.</p><div class="cert-actions"><button type="button" class="button primary" id="saveCertificate">Save certificate</button><button class="button secondary" id="restartBtn" type="button">↺ Try again</button></div></div>';
-}
-function saveCertificate(){
- const date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
- const esc=x=>x.replace(/&/g,'&amp;').replace(/</g,'&lt;');
- const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640"><rect width="1000" height="640" fill="#101D30"/><rect x="35" y="35" width="930" height="570" rx="30" fill="#172F42" stroke="#62E3C2" stroke-width="4"/><circle cx="500" cy="160" r="58" fill="#244E59" stroke="#B6A3F8" stroke-width="4"/><text x="500" y="180" text-anchor="middle" fill="#62E3C2" font-size="65">✧</text><text x="500" y="268" text-anchor="middle" fill="#62E3C2" font-family="Arial" font-size="22" letter-spacing="5">THE DISCOVERY LAB</text><text x="500" y="355" text-anchor="middle" fill="#FFFFFF" font-family="Arial" font-size="78" font-weight="bold">DNA Detective</text><text x="500" y="406" text-anchor="middle" fill="#D4E7EB" font-family="Arial" font-size="27">Certificate of Discovery</text><text x="500" y="468" text-anchor="middle" fill="#B6A3F8" font-family="Arial" font-size="28">Strawberry DNA Extraction</text><path d="M320 505H680" stroke="#62E3C2" stroke-width="3"/><text x="500" y="548" text-anchor="middle" fill="#D4E7EB" font-family="Arial" font-size="22">Completed '+esc(date)+'</text></svg>';
- const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
- const link=document.createElement('a');link.href=url;link.download='discovery-lab-dna-detective.svg';document.body.appendChild(link);link.click();link.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+ return '<div class="certificate-screen"><div class="dna-certificate" id="dnaCertificate"><div class="cert-icon">✧</div><span>THE DISCOVERY LAB · EXHIBIT 001</span><h3>DNA Detective</h3><p>Certificate of Discovery</p><strong>Strawberry DNA Extraction</strong><div class="cert-line"></div><small>Completed '+date+'</small><small>Explore · Experiment · Discover</small></div><p>You explored strawberry cells, extracted DNA, collected visible strands, and tested a scientific prediction.</p><div class="cert-actions"><button class="button secondary" id="restartBtn" type="button">↺ Try again</button></div></div>';
 }
 function render(preserveScroll=false){
  const prior=content.scrollTop;
@@ -577,7 +569,6 @@ function render(preserveScroll=false){
  content.scrollTop=preserveScroll?Math.min(prior,Math.max(0,content.scrollHeight-content.clientHeight)):0;
  content.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(stage===0)prediction=+b.dataset.answer;else answer=+b.dataset.answer;render()}));
  const restart=content.querySelector('#restartBtn');if(restart)restart.addEventListener('click',reset);
- const save=content.querySelector('#saveCertificate');if(save)save.addEventListener('click',saveCertificate);
  const microNext=content.querySelector('#microNext');if(microNext)microNext.addEventListener('click',()=>{microscopeLevel=Math.min(3,microscopeLevel+1);render(true)});
  const microBack=content.querySelector('#microBack');if(microBack)microBack.addEventListener('click',()=>{microscopeLevel=Math.max(0,microscopeLevel-1);render(true)});
  const spool=()=>{if(spoolProgress>=5)return;spoolProgress++;render(true)};
