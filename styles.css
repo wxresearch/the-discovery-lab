@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 :root{color-scheme:dark;--bg:#090e21;--panel:#111a34;--light:#f5f7ff;--muted:#a5aec8;--cyan:#7de5ef;--purple:#b49aff;--line:rgba(188,207,255,.14)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--light);font-family:'DM Sans',Arial,sans-serif;overflow-x:hidden}button,a{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}.ambient{position:absolute;inset:0 0 auto;height:1100px;z-index:-1;background:radial-gradient(ellipse 40% 44% at 83% 22%,#18325b70,transparent),radial-gradient(ellipse 37% 34% at 10% 20%,#2c215b40,transparent);pointer-events:none}.skip-link{position:absolute;top:-100px;left:10px;background:white;color:black;padding:10px;z-index:99}.skip-link:focus{top:10px}.site-header{height:84px;display:flex;align-items:center;justify-content:space-between;padding:0 max(5.5vw,24px);border-bottom:1px solid var(--line);position:relative;z-index:4}.brand{display:flex;align-items:center;gap:12px;font-family:Outfit,sans-serif;font-weight:600;font-size:21px;letter-spacing:-.65px}.brand b{font-weight:600;color:var(--cyan)}.brand-mark{display:block;width:29px;height:29px;position:relative;transform:rotate(-30deg)}.brand-mark span{position:absolute;width:8px;height:26px;border-radius:10px;background:linear-gradient(var(--cyan),var(--purple));left:10px;top:1px}.brand-mark span:nth-child(2){transform:rotate(60deg)}.brand-mark span:nth-child(3){transform:rotate(120deg)}.nav{display:flex;gap:34px;font-size:13px;color:#c6cbe0}.nav a:hover,.text-link:hover{color:var(--cyan)}.header-cta{border:1px solid #617da0;padding:12px 17px;border-radius:7px;font-size:12px;font-weight:700}.header-cta:hover{background:#192943}.section{max-width:1390px;margin:auto;padding-left:6%;padding-right:6%}.hero{display:grid;grid-template-columns:1fr 1.02fr;min-height:650px;align-items:center;gap:30px}.hero-copy{position:relative;z-index:2;padding-bottom:10px}.eyebrow{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:2.4px;display:flex;align-items:center;gap:10px}.live-dot,.tag-dot,.label-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px #73e6ff}.hero h1,h2,h3{font-family:Outfit,sans-serif}.hero h1{font-size:clamp(54px,5.7vw,88px);line-height:1.04;letter-spacing:-3.8px;font-weight:600;margin:24px 0 21px;max-width:660px}.hero h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,#92dcfa,#ba9aff);background-clip:text;-webkit-background-clip:text;color:transparent}.hero-copy>p{font-size:16px;line-height:1.9;max-width:480px;color:#b4bfd4}.hero-actions{display:flex;gap:11px;margin:32px 0}.button{display:inline-flex;align-items:center;justify-content:center;gap:22px;padding:15px 21px;border-radius:8px;font-size:13px;font-weight:700;border:1px solid transparent;transition:transform .2s,background .2s}.button:hover{transform:translateY(-2px)}.primary{background:linear-gradient(115deg,#92daf1,#a99afa);color:#111831}.primary:hover{background:linear-gradient(115deg,#b2f0ff,#c3b6ff)}.secondary{background:#ffffff08;color:#e7e9ff;border-color:#4a5a78}.secondary:hover{background:#ffffff14}.play-icon{font-size:10px;border:1px solid #7c88a9;border-radius:50%;width:22px;height:22px;display:grid;place-items:center}.hero-footer{font-size:11px;color:#929cbb;display:flex;align-items:center;gap:10px;margin-top:42px;flex-wrap:wrap}.mini-symbol{font-size:20px;color:var(--purple)}.thin-rule{width:20px;height:1px;background:#65708a}.hero-art{height:570px;position:relative;isolation:isolate;border-radius:48% 48% 20% 20%;background:radial-gradient(ellipse 43% 42% at 54% 46%,#31558577,transparent),radial-gradient(ellipse 65% 60% at 50% 48%,#25386163,transparent)}.art-grid{position:absolute;inset:6% 0 0;border-radius:49%;background-image:linear-gradient(#a3c6ff0b 1px,transparent 1px),linear-gradient(90deg,#a3c6ff0b 1px,transparent 1px);background-size:34px 34px;mask-image:radial-gradient(ellipse,black 35%,transparent 69%)}.orbit{border:1px solid #8abafc24;border-radius:50%;position:absolute;left:7%;top:12%;width:87%;height:72%;transform:rotate(-23deg)}.orbit-two{left:18%;top:2%;width:68%;height:90%;transform:rotate(28deg)}.dna-model{position:absolute;left:calc(50% - 105px);top:45px;width:210px;height:470px;filter:drop-shadow(0 0 24px #6c9af759);transform:rotate(17deg)}.dna-rung{position:absolute;height:5px;border-radius:10px;transform-origin:center;background:linear-gradient(90deg,#9feafa,#bcc3fa,#bca4ff);box-shadow:0 0 12px #9ebfff7a}.dna-node{position:absolute;width:14px;height:14px;border-radius:100%;box-shadow:0 0 14px currentColor}.art-floor{position:absolute;bottom:15px;width:75%;height:95px;left:12%;background:radial-gradient(ellipse,#76a8fa26,transparent 70%);border-top:1px solid #8daafc3c;transform:perspective(400px) rotateX(75deg)}.floating-label{position:absolute;background:#172341db;border:1px solid #7890bc55;backdrop-filter:blur(12px);border-radius:9px;padding:14px 18px;font-size:9px;letter-spacing:1.4px;color:#aab8d8;display:grid;grid-template-columns:10px 1fr;column-gap:9px;row-gap:5px;box-shadow:0 16px 40px #03081970}.floating-label strong{grid-column:2;color:#e1e7ff;font-size:10px;letter-spacing:.5px}.label-one{left:1%;top:28%}.label-two{right:0;bottom:25%}.label-dot.lavender{background:#bba4ff;box-shadow:0 0 10px #bba4ff}.metrics{min-height:115px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.metrics>div{display:flex;align-items:center;gap:15px;justify-content:center;border-right:1px solid var(--line)}.metrics>div:last-child{border-right:0}.metric-icon{font-size:26px;color:var(--purple)}.metrics strong{font:600 30px Outfit}.metrics small{max-width:160px;font-size:11px;color:#9fa9c4;line-height:1.6}.exhibits{padding-top:112px;padding-bottom:110px}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:37px}.section-heading h2,.mission h2{font-size:clamp(35px,4vw,53px);line-height:1.13;letter-spacing:-1.6px;font-weight:600;max-width:600px;margin:16px 0 0}.section-heading>p{max-width:325px;line-height:1.8;font-size:13px;color:#aab5cb}.muted{color:#8fa4d9}.exhibit-grid{display:grid;grid-template-columns:1.55fr 1fr 1fr;gap:18px}.exhibit-card{background:linear-gradient(150deg,#182442,#0f1932);border:1px solid #6c8ac240;border-radius:14px;overflow:hidden;min-width:0}.exhibit-visual{height:260px;position:relative;overflow:hidden}.strawberry-art{background:radial-gradient(ellipse at 54% 70%,#96365b80,transparent 52%),linear-gradient(135deg,#32264f,#151c38 73%)}.strawberry-glow{position:absolute;left:30%;top:14%;width:50%;height:75%;background:#cb587f4a;filter:blur(46px);border-radius:50%}.strawberry-fruit{position:absolute;width:124px;height:158px;left:calc(50% - 62px);top:63px;background:radial-gradient(circle at 30% 24%,#ff8190,#e94969 46%,#ae284d 89%);border-radius:43% 43% 52% 52%/35% 35% 68% 68%;transform:rotate(-10deg);box-shadow:inset -19px -14px 25px #72223b7a,0 25px 55px #ff4b8059}.seeds{position:absolute;inset:12px;border-radius:inherit;background-image:radial-gradient(ellipse 2px 4px at 9px 12px,#ffdab0 98%,transparent),radial-gradient(ellipse 2px 4px at 24px 40px,#ffdab0 98%,transparent);background-size:28px 31px;opacity:.85}.leaf{position:absolute;z-index:2;width:38px;height:26px;background:#7ac2a5;left:43px;top:-12px;border-radius:0 90% 0 90%;transform:rotate(-30deg)}.leaf-b{transform:rotate(35deg);left:63px;top:-9px}.leaf-c{transform:rotate(-85deg);left:20px;top:-1px}.leaf-d{transform:rotate(95deg);left:81px;top:4px}.exhibit-art-tag{position:absolute;left:24px;top:24px;font-size:10px;letter-spacing:2px;color:#c4d3f3}.exhibit-body{padding:24px 28px 29px}.card-meta{display:flex;justify-content:space-between;gap:10px;font-size:9px;letter-spacing:1.2px;color:#96b2e8;font-weight:800}.card-meta span:first-child{display:flex;align-items:center;gap:7px}.tag-dot{width:5px;height:5px}.exhibit-body h3,.upcoming-body h3{font-size:28px;letter-spacing:-.7px;margin:15px 0 8px;font-weight:600}.exhibit-body p,.upcoming-body p{color:#aab6d2;font-size:13px;line-height:1.8}.exhibit-body .button{margin-top:12px}.upcoming{opacity:.85}.upcoming-art{height:260px;position:relative;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at center,#273661,#11192e 72%)}.planet-core{width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 28% 25%,#bca9f9,#7469b5 48%,#3a397a 85%);box-shadow:0 0 70px #9c81eb65}.planet-ring{width:205px;height:72px;border:14px solid #9ba7e6a8;box-shadow:0 0 24px #97affb4f;position:absolute;z-index:2;border-radius:50%;transform:rotate(-27deg)}.small-star{position:absolute;color:#c5dcff}.s1{top:20%;left:19%;font-size:27px}.s2{bottom:22%;right:14%}.geometry{background:radial-gradient(ellipse at 47% 58%,#215d737a,#11192e 72%)}.geometry-shape{width:122px;height:122px;border:2px solid #7ddaf1;box-shadow:0 0 22px #86def257,inset 0 0 30px #86def21e;transform:rotate(40deg) skew(-10deg,-10deg)}.geometry-shape.second{position:absolute;transform:rotate(5deg) skew(-10deg,-10deg);border-color:#ab9df5}.upcoming-body{padding:25px}.soon{font-size:9px;color:#af9bf2;letter-spacing:1.6px;font-weight:800}.upcoming-body h3{font-size:23px}.how{padding-top:90px;padding-bottom:110px;border-top:1px solid var(--line)}.centered{display:block;text-align:center}.centered .eyebrow{justify-content:center}.centered h2{max-width:760px;margin:17px auto 49px}.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.step{background:#111b33;border:1px solid #41578266;border-radius:12px;padding:24px}.step-illustration{height:125px;display:grid;place-items:center;background:radial-gradient(circle,#54769e33,transparent 65%)}.step-symbol{font-size:55px;font-family:serif;color:#a6c8f3;text-shadow:0 0 20px #a5b9ff7e}.step-num{font-size:10px;color:#8da8e7;letter-spacing:1.8px;font-weight:800}.step h3{font-size:23px;margin:11px 0 7px}.step p{font-size:12px;line-height:1.8;color:#9dabc9}.mission{border-top:1px solid var(--line);padding-top:115px;padding-bottom:115px;display:grid;grid-template-columns:1fr 1.3fr;align-items:center;gap:90px}.mission-orb{margin:auto;width:240px;height:240px;border:1px solid #8caffc5c;border-radius:50%;display:grid;place-items:center;font-size:130px;color:#a6b7ed;background:radial-gradient(circle,#4b60a055,transparent 68%);box-shadow:0 0 90px #4b65b52f,inset 0 0 50px #7598fa13}.mission h2{margin:15px 0 18px}.mission p{color:#aab5cb;line-height:1.9;font-size:14px;max-width:520px}.text-link{font-size:13px;color:#9ee0f9;font-weight:700;display:inline-block;margin-top:13px}footer{border-top:1px solid var(--line);padding:33px 6%;max-width:1390px;margin:auto;display:flex;align-items:center;justify-content:space-between;color:#8e9bb8;font-size:11px}.footer-brand{font-size:16px;color:white}.footer-brand .brand-mark{transform:scale(.7) rotate(-30deg);margin-right:-5px}.exhibit-modal[hidden]{display:none}.exhibit-modal{position:fixed;inset:0;background:#020612e8;z-index:10;padding:18px;display:grid;place-items:center;backdrop-filter:blur(14px)}.modal-shell{width:min(900px,100%);max-height:min(92vh,900px);overflow:auto;background:radial-gradient(circle at 92% 0,#26376755,transparent 40%),#111a32;border:1px solid #748bc057;border-radius:17px;box-shadow:0 20px 90px #0009;display:flex;flex-direction:column}.modal-top,.modal-bottom{padding:17px 26px;display:flex;align-items:center;justify-content:space-between;gap:10px}.modal-top{border-bottom:1px solid var(--line)}.modal-identity{font-size:11px;color:#c3cce8;letter-spacing:1.4px;font-weight:700;display:flex;align-items:center;gap:10px}.modal-divider{color:#617294}.icon-button{background:transparent;border:1px solid #536484;color:white;border-radius:8px;width:36px;height:36px}.progress-wrap{padding:20px 26px 6px}.progress-stages{display:flex;justify-content:space-between;font-size:11px;gap:9px;color:#95a5c8;margin-bottom:12px}.progress-stages .active{color:var(--cyan)}.progress-bar{height:4px;background:#34405d;border-radius:5px;overflow:hidden}.progress-bar>div{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .3s}.modal-content{padding:18px 35px 24px;min-height:390px}.modal-content h2{font-size:clamp(28px,3.5vw,40px);margin:8px 0 14px;letter-spacing:-1px}.modal-content p{color:#b7c3dc;line-height:1.8;font-size:14px}.stage-kicker{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:800}.stage-layout{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center}.science-visual{min-height:245px;border-radius:14px;background:radial-gradient(circle,#344776,#192540 75%);border:1px solid #647eab45;display:grid;place-items:center;position:relative;overflow:hidden}.big-fruit{font-size:118px;filter:drop-shadow(0 9px 25px #0007)}.big-cell{font-size:110px;filter:drop-shadow(0 0 23px #89a5ff45)}.beaker{position:relative;width:135px;height:160px;border:7px solid #a9d8ef;border-top:0;border-radius:8px 8px 36px 36px;overflow:hidden;transform:perspective(220px) rotateX(-5deg);box-shadow:0 0 27px #68adfb57}.beaker:before{content:"";position:absolute;top:0;left:0;width:100%;border-top:7px solid #a9d8ef}.liquid{position:absolute;bottom:0;left:0;right:0;height:48%;background:linear-gradient(0deg,#f18ca7ad,#f8bbcd80);transition:height .3s}.strand{position:absolute;bottom:60px;width:4px;height:54px;border-radius:50%;background:#f9f6f0;opacity:.9;box-shadow:0 0 8px white;transform:rotate(17deg)}.strand:nth-child(3){left:55px;height:75px;transform:rotate(-22deg)}.strand:nth-child(4){left:85px;height:49px}.choices{display:grid;gap:10px;margin-top:20px}.choice{width:100%;text-align:left;border:1px solid #5a6f986e;background:#1c2948;color:#e9efff;padding:13px 15px;border-radius:9px;font-size:13px;transition:background .2s}.choice:hover{background:#2c3a60}.choice.selected{border-color:#9ce7f4;background:#28536b}.choice.correct{border-color:#84ddbd;background:#1b574c}.choice.incorrect{border-color:#eb9aa4;background:#5a344a}.feedback{border-left:3px solid var(--cyan);background:#1d2c4c;padding:11px 15px;margin-top:15px;border-radius:0 7px 7px 0;font-size:13px;line-height:1.6;color:#dce9ff}.ingredient-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}.ingredient{background:#1c2948;color:#dce8fc;border:1px solid #6178a071;border-radius:10px;padding:13px 9px;font-size:13px;min-height:72px}.ingredient span{display:block;font-size:26px;margin-bottom:5px}.ingredient.used{background:#254d56;border-color:var(--cyan)}.science-note{font-size:12px;color:#a3b0cc;line-height:1.6}.completion{text-align:center;padding:12px 5px}.completion-icon{font-size:80px;display:block;filter:drop-shadow(0 0 27px #aaa8ff94)}.completion h2{margin:12px auto;max-width:600px}.completion p{max-width:590px;margin:0 auto 15px}.modal-bottom{border-top:1px solid var(--line)}.modal-bottom .button{padding:12px 17px}.modal-bottom>span{font-size:11px;color:#a5b1cc}.button:disabled{opacity:.4;cursor:not-allowed;transform:none}.modal-open{overflow:hidden}@media(max-width:1000px){.hero{grid-template-columns:1fr 1fr}.hero-art{height:480px}.floating-label{display:none}.exhibit-grid{grid-template-columns:1fr 1fr}.featured{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr}.featured .exhibit-visual{height:100%;min-height:280px}.step-grid{grid-template-columns:1fr 1fr}}@media(max-width:680px){.site-header{height:70px}.brand{font-size:17px}.nav,.header-cta{display:none}.section{padding-left:6%;padding-right:6%}.hero{display:flex;flex-direction:column;min-height:0;padding-top:65px;gap:0}.hero-copy{width:100%}.hero h1{font-size:clamp(49px,12vw,72px);letter-spacing:-2.6px}.hero-art{height:370px;width:100%}.dna-model{transform:scale(.75) rotate(17deg);top:-10px}.hero-footer{margin-top:25px}.metrics{grid-template-columns:1fr;gap:0}.metrics>div{justify-content:flex-start;padding:15px 12px;border-right:0;border-bottom:1px solid var(--line)}.metrics>div:last-child{border:0}.exhibits{padding-top:75px;padding-bottom:70px}.section-heading{display:block}.section-heading>p{max-width:100%}.exhibit-grid{grid-template-columns:1fr}.featured{grid-column:auto;display:block}.featured .exhibit-visual{height:260px;min-height:0}.upcoming-art{height:190px}.step-grid{grid-template-columns:1fr 1fr;gap:10px}.step{padding:16px}.step h3{font-size:19px}.step-illustration{height:95px}.mission{grid-template-columns:1fr;gap:25px;padding-top:70px;padding-bottom:80px}.mission-orb{width:150px;height:150px;font-size:88px}footer{flex-wrap:wrap;gap:18px}.modal-content{padding:18px 20px}.modal-top,.modal-bottom{padding:14px 17px}.progress-wrap{padding:18px 17px 4px}.progress-stages{font-size:9px}.stage-layout{grid-template-columns:1fr}.science-visual{min-height:190px}.big-fruit,.big-cell{font-size:95px}.modal-shell{max-height:96vh}.modal-content{min-height:0}.modal-bottom .button{font-size:11px}.stage-layout .science-visual{order:-1}}@media(max-width:390px){.hero-actions{flex-wrap:wrap}.step-grid{grid-template-columns:1fr}.progress-stages span{font-size:8px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-/* Keep exhibit explanations inside the scrollable stage instead of behind the navigation footer. */
+
 .modal-shell{
   height:min(92vh,800px);
   max-height:92vh;
@@ -27,8 +27,7 @@
 }
 
 
-/* Exhibit v2: a bounded, three-row dialog with one dedicated scroll region.
-   The footer is outside that region and can never cover explanations. */
+
 .exhibit-modal{overflow:hidden;align-items:center}
 .exhibit-modal .modal-shell{
   display:grid;
@@ -99,7 +98,7 @@
  .exhibit-modal .progress-stages span{font-size:9px}
 }
 
-/* Photographic specimen replaces the oversized CSS strawberry icon. */
+
 .strawberry-art{background:radial-gradient(ellipse at center,#564b69 0%,#211b3f 65%,#10172e 100%);display:flex;justify-content:center;align-items:center}
 .strawberry-photo{height:100%;width:100%;object-fit:cover;object-position:center 50%;filter:saturate(1.12) contrast(1.05)}
 .strawberry-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,18,43,.27),transparent 65%);pointer-events:none}
@@ -108,7 +107,7 @@
 .specimen-photo img{display:block;width:100%;height:100%;position:absolute;inset:0;object-fit:cover;object-position:center}
 .specimen-photo span{position:absolute;bottom:15px;left:0;right:0;text-align:center;font-size:12px;letter-spacing:2px;color:#fff;text-shadow:0 2px 8px #000;background:#14233d91;padding:6px 0}
 
-/* Interactive equipment: grounded in a single laboratory workbench. */
+
 .exhibit-modal .interactive-layout{grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);gap:20px}
 .exhibit-modal .interactive-visual{position:relative;overflow:visible;background:linear-gradient(160deg,#243552,#121c34);border:1px solid #7f9fc44f}
 .hands-on{padding:16px;min-width:0}
@@ -157,15 +156,14 @@
 @media(max-width:450px){.lab-workbench{height:240px}.lab-tool.bottle{transform-origin:top left}.interaction-heading{font-size:17px}.lab-controls{align-items:flex-start;flex-direction:column}.lab-result{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.filtrate,.clear-layer,.activity-track>div{transition:none}}
 
-/* Preserve the complete studio strawberry instead of cropping it into the card. */
+
 .strawberry-art{background:#080b14}
 .strawberry-photo{object-fit:contain;object-position:center;filter:none}
 .strawberry-art::after{background:linear-gradient(90deg,#09112350,transparent 50%)}
 .specimen-photo{background:#080b14}
 .specimen-photo img{object-fit:contain;object-position:center;background:#080b14}
 
-/* Fix the missing workbench: the generic .science-visual grid had been
-   constraining the taller, interactive content and clipping its main scene. */
+
 .exhibit-modal .refined-visual.interactive-visual{
   display:block !important;
   height:auto !important;
@@ -212,8 +210,7 @@
  .exhibit-modal .interactive-visual .hands-on{padding:10px}
 }
 
-/* Bowl anatomy: keep the fruit strictly inside the transparent vessel.
-   No rectangular fills or repeating concentric rings. */
+
 .exhibit-modal .lab-workbench .mash-bowl{
   overflow:hidden;
   isolation:isolate;
@@ -239,13 +236,13 @@
   pointer-events:none;
 }
 
-/* Editorial photo cover: natural fruit in its actual bowl. */
+
 .exhibit-visual.strawberry-art{background:#151b2c}
 .exhibit-visual .strawberry-photo{width:100%;height:100%;object-fit:cover;object-position:center 52%;filter:saturate(1.04) contrast(1.04)}
 .exhibit-visual.strawberry-art::after{background:linear-gradient(90deg,#101a376b,transparent 55%)}
 .specimen-photo img{object-fit:cover;object-position:center 50%}
 
-/* Unified SVG bowl: pulp shares the exact bowl geometry and stays behind the glass rim. */
+
 .exhibit-modal .lab-workbench .lab-vessel.mash-bowl{
   position:absolute!important;
   left:36%!important;
@@ -340,7 +337,7 @@
  .exhibit-modal .mash-scene .soap-foam,.exhibit-modal .mash-scene .salt-fall{animation:none}
 }
 
-/* Readable full-size ingredients. Override earlier mobile reductions. */
+
 .exhibit-modal .lab-workbench .reagent-tool.soap-prop{
   width:128px;
   left:-4%;
@@ -372,14 +369,14 @@
   }
 }
 
-/* Museum gallery illustration refresh */
+
 .upcoming-art.planets{background:radial-gradient(ellipse at 51% 49%,#364b75 0%,#1b294a 54%,#101a33 100%);overflow:hidden}
 .planet-illustration{display:block;width:100%;height:100%;max-height:260px;object-fit:contain;filter:drop-shadow(0 10px 28px #8c83df33)}
 .step-illustration:has(.experiment-illustration){background:radial-gradient(circle,#355e8144,transparent 70%)}
 .experiment-illustration{display:block;width:min(190px,94%);height:auto;max-height:124px;margin:auto;filter:drop-shadow(0 8px 12px #0006)}
 @media(prefers-reduced-motion:reduce){.planet-illustration,.experiment-illustration{animation:none}}
 
-/* Filtration scene: funnel and receiving glass stay fully inside the workbench. */
+
 .exhibit-modal .lab-workbench .filter-station{
   position:absolute;
   left:41%;
@@ -452,7 +449,7 @@
   .exhibit-modal .filter-residue-label{font-size:9px}
 }
 
-/* Stage refinements: ingredient placement and tactile mixing */
+
 .exhibit-modal .lab-workbench .reagent-tool.soap-prop{
   left:0!important;top:10%!important;width:106px!important;
 }
@@ -473,7 +470,7 @@
   .exhibit-modal .lab-workbench .reagent-tool.salt-prop{width:clamp(64px,17vw,82px)!important;left:0!important;right:auto!important;top:60%!important}
   .exhibit-modal .lab-workbench .lab-stirrer{left:21%;top:9%}
 }
-/* Button-triggered alcohol animation; hidden until the pouring action starts */
+
 .exhibit-modal .lab-workbench .pour-stream{
  position:absolute;z-index:6;left:43%;top:31%;width:5px;height:0;
  border-radius:12px;background:linear-gradient(#ecfdff,#8ccaf0);
@@ -494,7 +491,7 @@
  35%,72%{height:85px;opacity:.93}
  100%{height:0;opacity:0}
 }
-/* DNA precipitation is a separate observation, not stirring the alcohol */
+
 .exhibit-modal .dna-reveal-scene{
  display:flex;flex-direction:column;align-items:center;gap:12px;
  padding:18px 14px 24px;width:100%;min-width:0;
@@ -542,7 +539,7 @@
  .exhibit-modal .lab-workbench:has(.lab-stirrer.dragging) .pulp-fibers{animation:none}
 }
 
-/* Clicking Stir runs the motion before recording the completed stir. */
+
 .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
  animation:stir-action .65s ease-in-out both;
 }
@@ -559,8 +556,7 @@
  .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation:stir-action .01s both}
 }
 
-/* Alcohol-stage vessel is a true open-topped SVG, not the old CSS beaker.
-   The pour stream terminates at the OPENING, above the glass wall. */
+
 .exhibit-modal .lab-workbench .alcohol-station{
  position:absolute;
  left:31%;
@@ -634,7 +630,7 @@
  .exhibit-modal .lab-workbench .alcohol.pour-tilt{animation:alcohol-bottle-tilt .01s both}
 }
 
-/* Keep the action button visible INSIDE the workbench while animation plays. */
+
 .exhibit-modal .interactive-visual .lab-workbench{position:relative}
 .exhibit-modal .interactive-visual .lab-controls.bench-controls{
  position:absolute;
@@ -696,9 +692,7 @@
  .exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{animation:none}
 }
 
-/* Shared compact information layout for EVERY interactive lab step.
-   The instructions and progress appear before the equipment, not below the
-   scrollable workbench, while the action button remains on the scene. */
+
 .exhibit-modal .interactive-visual .hands-on{
   display:flex;
   flex-direction:column;
@@ -748,8 +742,7 @@
 .exhibit-modal .lab-workbench .masher.auto-mash{
   animation:mash-to-center .8s ease-in-out both;
 }
-/* The actual target offset is calculated from the SVG bowl and tool head.
-   Keeping rotation at zero ensures the tool tip lands at the intended point. */
+
 @keyframes mash-to-center{
   0%,100%{transform:translate(0,0)}
   30%{transform:translate(var(--mash-dx),calc(var(--mash-dy) - 24px))}
@@ -796,8 +789,7 @@
  .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-to-center .01s both}
 }
 
-/* Consistent side-by-side lab layout: explanation + progress on the left,
-   interactive workbench and action button on the right. */
+
 .exhibit-modal .stage-layout.enhanced-stage.interactive-layout{
  display:grid!important;
  grid-template-columns:minmax(0,.85fr) minmax(0,1.45fr)!important;
@@ -861,7 +853,7 @@
  .exhibit-modal .lab-workbench .masher.auto-mash{animation:mash-precise .01s both!important}
 }
 
-/* Reagent interactions: bottles visibly pour INTO the existing glass bowl. */
+
 .exhibit-modal .lab-workbench .lab-stirrer .stir-head{display:none!important}
 .exhibit-modal .lab-workbench .lab-stirrer{
   width:30px;
@@ -937,15 +929,13 @@
  .exhibit-modal .lab-workbench.stir-in-progress .mix-surface-ripple{animation:none}
 }
 
-/* The original bowl SVG supplies the only glass outline.
-   Ingredient tools remain draggable, without a second bowl overlay. */
+
 .exhibit-modal .lab-workbench .reagent-tool.soap-prop,
 .exhibit-modal .lab-workbench .reagent-tool.salt-prop{
  transform-origin:50% 15%;
 }
 
-/* The stirring rod begins INSIDE the bowl. It moves only within the pulp,
-   rather than flying from the left side to a target when Stir is pressed. */
+
 .exhibit-modal .lab-workbench .lab-stirrer{
   top:auto;
   left:auto;
@@ -975,8 +965,7 @@
   }
 }
 
-/* Single-rim bowl. The red pulp is drawn ONLY inside the bowlScene SVG.
-   The sole foreground overlay contains the front half of the existing rim. */
+
 .exhibit-modal .lab-workbench .bowl-front-lip{
  position:absolute;
  z-index:13;
@@ -988,11 +977,10 @@
 }
 .exhibit-modal .lab-workbench .masher .tool-base{opacity:.38}
 .exhibit-modal .lab-workbench .target-ring{display:none}
-/* Keep visible texture in the real pulp, not a second solid-colored layer. */
+
 .exhibit-modal .lab-workbench .mash-scene .pulp-chunks{opacity:.85}
 
-/* Shared precise dispensing geometry: both ingredients pass through the
-   opening, and the liquid/grains finish at the strawberry pulp surface. */
+
 .exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{
  animation:pour-into-bowl 1s ease-in-out both;
  transform-origin:50% 15%;
@@ -1015,8 +1003,7 @@
  }
 }
 
-/* Stirrer immersion: only its segment ABOVE the puree remains opaque.
-   The submerged portion reveals the actual mixture behind it. */
+
 .exhibit-modal .lab-workbench .lab-stirrer .stir-handle{
   -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--submerge-at,70%) - 2%),rgba(0,0,0,.16) calc(var(--submerge-at,70%) + 2%),rgba(0,0,0,.16) 100%);
   mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--submerge-at,70%) - 2%),rgba(0,0,0,.16) calc(var(--submerge-at,70%) + 2%),rgba(0,0,0,.16) 100%);
@@ -1039,10 +1026,7 @@
  .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{animation-duration:.01s!important}
 }
 
-/* Physical depth for the stirring stage: the tool is BEHIND the actual
-   bowl SVG (including its glass and pink mixture), never drawn over its
-   front rim. The SVG bowl has pointer-events:none, so manual dragging
-   still reaches the rod. No second bowl or pulp illustration is added. */
+
 .exhibit-modal .lab-workbench .lab-stirrer,
 .exhibit-modal .lab-workbench .lab-stirrer.dragging,
 .exhibit-modal .lab-workbench .lab-stirrer.auto-stir{
@@ -1057,14 +1041,12 @@
   pointer-events:none!important;
 }
 .exhibit-modal .lab-workbench .lab-stirrer .stir-handle{
-  /* Its apparent translucency is now supplied by the actual glass/pulp. */
+  
   -webkit-mask-image:none;
   mask-image:none;
 }
 
-/* Masher depth: keep the entire tool behind the actual translucent glass
-   and pulp, including while it is dragged or animated. This submerges
-   the lower wooden shaft as well as the head without adding a fake layer. */
+
 .exhibit-modal .lab-workbench .lab-tool.masher,
 .exhibit-modal .lab-workbench .lab-tool.masher.dragging,
 .exhibit-modal .lab-workbench .lab-tool.masher.auto-mash{
@@ -1081,9 +1063,7 @@
   opacity:.72;
 }
 
-/* Precise liquid paths: keep bottles outside glass until tilted, and draw
-   visible streams through each vessel's OPEN rim. The motion itself is
-   controlled by JS; these rules only control the fluid visuals. */
+
 .exhibit-modal .lab-workbench .reagent-tool.ingredient-animating{
  animation:none!important;
 }
@@ -1129,8 +1109,7 @@
  }
 }
 
-/* The ONLY front-pulp overlay for the mashing scene: a subtle tint clipped
-   to the same inner bowl shape, over both shaft and head, behind the rim. */
+
 .exhibit-modal .lab-workbench .bowl-liquid-front{
  position:absolute;
  z-index:11;
@@ -1145,8 +1124,7 @@
  z-index:13!important;
  pointer-events:none;
 }
-/* Filtering: move the extract cup above the funnel, then show the stream
-   flowing into the filter. Filtrate and retained pulp appear after pouring. */
+
 .exhibit-modal .lab-workbench .mixing-cup{
  transform-origin:50% 16%;
  will-change:transform;
@@ -1181,8 +1159,7 @@
  }
 }
 
-/* One-piece wooden masher: shaft continues INTO the rounded head. The
-   liquid surface fades the lower shaft as well as the paddle. */
+
 .exhibit-modal .lab-workbench .masher .tool-shaft{
  top:33px;
  height:113px;
@@ -1198,12 +1175,11 @@
  z-index:3;
  opacity:1;
 }
-/* Only one liquid layer is needed; avoid making it opaque again. */
+
 .exhibit-modal .lab-workbench .bowl-liquid-front path[fill="#c94266"]{
  fill-opacity:.22;
 }
-/* The old CSS-only filter animation was competing with the explicit
-   cup/stream animation. The stream is now animated with the cup in JS. */
+
 .exhibit-modal .lab-workbench.filter-pouring .filter-pour-stream path{
  animation:none!important;
 }
@@ -1221,8 +1197,7 @@
 }
 
 
-/* Aurora Lab · site-wide visual theme
-   Museum atmosphere without changing exhibit geometry or interactions. */
+
 :root{
  color-scheme:dark;
  --bg:#101d30;
@@ -1241,8 +1216,7 @@ body{
  background:#101d30;
  color:var(--light);
 }
-/* Keep the overall page background solid; aurora colors live in the
-   interface accents rather than behind the entire page. */
+
 .ambient,.ambient::before,.ambient::after{
  display:none;
 }
@@ -1368,7 +1342,7 @@ body{
 .progress-stages .active{color:#82ecd4}
 .icon-button{border-color:rgba(128,198,204,.45);color:#ecfbf8}
 .icon-button:hover{background:rgba(98,227,194,.13)}
-/* The experiment stage and its live tools stay in their existing positions. */
+
 .exhibit-modal .lab-status{border-color:rgba(125,208,207,.31)}
 .exhibit-modal .interactive-layout .stage-copy .lab-status{
  background:rgba(22,57,72,.78);
@@ -1384,4 +1358,41 @@ footer{border-color:var(--line);color:#b3cbd5}
 @media(prefers-reduced-motion:reduce){
  .exhibit-card{transition:none}
  .exhibit-card:hover{transform:none}
+}
+
+.exhibit-modal .lab-workbench .lab-tool.masher,
+.exhibit-modal .lab-workbench .lab-tool.masher.dragging,
+.exhibit-modal .lab-workbench .lab-tool.masher.auto-mash{
+ z-index:6!important;
+}
+.exhibit-modal .lab-workbench .lab-vessel.mash-bowl{
+ z-index:2!important;
+ pointer-events:none!important;
+}
+.exhibit-modal .lab-workbench .bowl-liquid-front{
+ z-index:11!important;
+ pointer-events:none!important;
+}
+.exhibit-modal .lab-workbench .bowl-front-lip{
+ z-index:13!important;
+ pointer-events:none!important;
+}
+.exhibit-modal .lab-workbench:has(.masher.dragging) .pulp-fibers,
+.exhibit-modal .lab-workbench.mash-in-progress .pulp-fibers{
+ animation:swirl-pulp .58s ease-in-out infinite alternate;
+}
+.exhibit-modal .lab-workbench:has(.masher.dragging) .pulp-chunks,
+.exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{
+ animation:mash-pulp-sway .7s ease-in-out infinite alternate;
+ transform-origin:50% 55%;
+}
+@keyframes mash-pulp-sway{
+ from{transform:translateX(-4px) rotate(-1deg)}
+ to{transform:translateX(6px) rotate(1.5deg)}
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-modal .lab-workbench:has(.masher.dragging) .pulp-fibers,
+ .exhibit-modal .lab-workbench.mash-in-progress .pulp-fibers,
+ .exhibit-modal .lab-workbench:has(.masher.dragging) .pulp-chunks,
+ .exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{animation:none}
 }
