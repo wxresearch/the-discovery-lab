@@ -1817,3 +1817,40 @@ html,body{background:#101e30;color:var(--light)}
  top:73px;
  left:-6px;
 }
+
+
+.exhibit-modal .micro-explainer{
+ padding:10px 12px;
+ border-left:3px solid #74b9d4;
+ background:#224459;
+ border-radius:6px;
+}
+.exhibit-modal .micro-explainer strong{
+ display:block;
+ font-size:12px;
+ color:#c5e8f3;
+ margin-bottom:4px;
+}
+.exhibit-modal .micro-explainer p{
+ margin:0;
+ line-height:1.55;
+}
+.exhibit-modal .lab-workbench.alcohol-workbench{
+ height:clamp(315px,49dvh,410px)!important;
+ min-height:315px!important;
+}
+.exhibit-modal .lab-workbench.alcohol-workbench .alcohol-station{
+ top:16%!important;
+ height:80%!important;
+}
+.exhibit-modal .lab-workbench.alcohol-workbench .lab-tool.alcohol{
+ top:30%!important;
+}
+@media(max-width:650px){
+ .exhibit-modal .lab-workbench.alcohol-workbench{
+  height:315px!important;
+ }
+ .exhibit-modal .lab-workbench.alcohol-workbench .lab-tool.alcohol{
+  top:29%!important;
+ }
+}
