@@ -294,9 +294,10 @@ function startPourAnimation(){
  const vessel=bench&&bench.querySelector('.alcohol-scene');
  const stream=bench&&bench.querySelector('.pour-stream');
  if(!bench||!bottle||!vessel){applyAction('alcohol');return;}
+ const matrix=vessel.getScreenCTM();
+ if(!matrix)return;
  pouring=true;
  const ticket=interactionEpoch;
- const matrix=vessel.getScreenCTM();
  const svgPoint=(x,y)=>{const p=vessel.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
  const mouth=svgPoint(72,42);
  const b=bottle.getBoundingClientRect();
@@ -631,7 +632,7 @@ function render(preserveScroll=false){
     if(pointer!==e.pointerId)return;
     pointer=null;
     rod.classList.remove('dragging');
-    spool();
+    if(moved)spool();
    };
    rod.addEventListener('pointerup',release);
    rod.addEventListener('pointercancel',()=>{pointer=null;rod.classList.remove('dragging');position(130,152)});
