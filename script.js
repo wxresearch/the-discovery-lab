@@ -15,7 +15,7 @@ const backBtn=document.getElementById('backBtn');
 const steps=[
  {name:'Investigate',heading:'What’s hiding inside a strawberry?',sub:'Every strawberry is made of cells, and those cells contain DNA. Before we begin, make a prediction.'},
  {name:'Mash',heading:'First, mash the strawberry',sub:'Crushing the fruit breaks apart the soft tissue and exposes more cells. The DNA is still too small to see.'},
- {name:'Release',heading:'Add detergent, salt, then stir',sub:'Add dish soap and salt to the mashed strawberry. Then stir gently to mix the ingredients before filtering. Soap helps disrupt cell membranes, while salt supports DNA precipitation later.'},
+ {name:'Mix',heading:'Add detergent, salt, then stir',sub:'Add dish soap and salt to the mashed strawberry. Then stir gently to mix the ingredients before filtering. Soap helps disrupt cell membranes, while salt supports DNA precipitation later.'},
  {name:'Filter',heading:'Separate the solid pulp',sub:'Pour the strawberry mixture through a coffee filter. Larger bits of fruit remain behind while liquid carrying DNA passes through.'},
  {name:'Precipitate',heading:'Carefully add cold alcohol',sub:'Gently layer cold rubbing alcohol over the filtered strawberry liquid. DNA is less soluble in alcohol and begins to gather at the boundary.'},
  {name:'Discover',heading:'Watch the DNA appear',sub:'Keep the alcohol and strawberry extract in separate layers: do not stir them together. Look at the interface as cloudy DNA-rich strands precipitate and become visible.'},
@@ -575,28 +575,62 @@ function render(preserveScroll=false){
  const microBack=content.querySelector('#microBack');if(microBack)microBack.addEventListener('click',()=>{microscopeLevel=Math.max(0,microscopeLevel-1);render(true)});
  const spool=()=>{if(spoolProgress>=5)return;spoolProgress++;render(true)};
  const collect=content.querySelector('#collectDna');if(collect)collect.addEventListener('click',spool);
- const rod=content.querySelector('#spoolTool');if(rod){
-  let pointer=null,originX=0,originY=0,moved=false;
-  rod.addEventListener('pointerdown',e=>{
-   if(spoolProgress>=5)return;
-   pointer=e.pointerId;originX=e.clientX;originY=e.clientY;moved=false;
-   rod.setPointerCapture(pointer);rod.classList.add('dragging');e.preventDefault();
-  });
-  rod.addEventListener('pointermove',e=>{
-   if(pointer!==e.pointerId)return;
-   const dx=Math.max(-22,Math.min(22,e.clientX-originX));
-   const dy=Math.max(-18,Math.min(25,e.clientY-originY));
-   if(Math.hypot(e.clientX-originX,e.clientY-originY)>12)moved=true;
-   rod.style.transform='translate('+dx+'px,'+dy+'px) rotate(15deg)';
-  });
-  const release=e=>{
-   if(pointer!==e.pointerId)return;
-   pointer=null;rod.classList.remove('dragging');rod.style.transform='';
-   spool();
-  };
-  rod.addEventListener('pointerup',release);
-  rod.addEventListener('pointercancel',()=>{pointer=null;rod.classList.remove('dragging');rod.style.transform=''});
-  rod.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();spool()}});
+ const rod=content.querySelector('#spoolTool');
+ if(rod){
+  const visual=rod.closest('.spool-visual');
+  const glass=visual&&visual.querySelector('.alcohol-scene');
+  const matrix=glass&&glass.getScreenCTM();
+  if(matrix){
+   const localToScreen=(x,y)=>{
+    const point=glass.createSVGPoint();
+    point.x=x;point.y=y;
+    return point.matrixTransform(matrix);
+   };
+   const inverse=matrix.inverse();
+   const screenToLocal=(x,y)=>{
+    const point=glass.createSVGPoint();
+    point.x=x;point.y=y;
+    return point.matrixTransform(inverse);
+   };
+   const visualBounds=visual.getBoundingClientRect();
+   let tipX=130,tipY=152;
+   const position=(x,y)=>{
+    tipX=Math.max(110,Math.min(150,x));
+    tipY=Math.max(137,Math.min(171,y));
+    const screen=localToScreen(tipX,tipY);
+    rod.style.left=(screen.x-visualBounds.left-rod.offsetWidth/2)+'px';
+    rod.style.top=(screen.y-visualBounds.top-rod.offsetHeight+5)+'px';
+    rod.style.transform='none';
+   };
+   position(tipX,tipY);
+   let pointer=null,startLocal=null,initialX=0,initialY=0,moved=false;
+   rod.addEventListener('pointerdown',e=>{
+    if(spoolProgress>=5)return;
+    pointer=e.pointerId;
+    startLocal=screenToLocal(e.clientX,e.clientY);
+    initialX=tipX;initialY=tipY;moved=false;
+    rod.setPointerCapture(pointer);
+    rod.classList.add('dragging');
+    e.preventDefault();
+   });
+   rod.addEventListener('pointermove',e=>{
+    if(pointer!==e.pointerId)return;
+    const point=screenToLocal(e.clientX,e.clientY);
+    const x=initialX+point.x-startLocal.x;
+    const y=initialY+point.y-startLocal.y;
+    if(Math.hypot(x-initialX,y-initialY)>5)moved=true;
+    position(x,y);
+   });
+   const release=e=>{
+    if(pointer!==e.pointerId)return;
+    pointer=null;
+    rod.classList.remove('dragging');
+    spool();
+   };
+   rod.addEventListener('pointerup',release);
+   rod.addEventListener('pointercancel',()=>{pointer=null;rod.classList.remove('dragging');position(130,152)});
+   rod.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();spool()}});
+  }
  }
  content.querySelectorAll('[data-whatif]').forEach(b=>b.addEventListener('click',()=>{whatIfChoice=+b.dataset.whatif;whatIfPrediction=null;whatIfSeen=false;render(true)}));
  content.querySelectorAll('[data-whatif-predict]').forEach(b=>b.addEventListener('click',()=>{whatIfPrediction=+b.dataset.whatifPredict;whatIfSeen=false;render(true)}));
