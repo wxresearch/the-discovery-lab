@@ -22,6 +22,7 @@ const steps=[
  {name:'Reflect',heading:'Think like a scientist',sub:'Why did adding cold alcohol make the DNA easier to see?'}
 ];
 let stage=0,prediction=null,answer=null,completed=false,dnaRevealed=false,pouring=false;
+let interactionEpoch=0;
 let microscopeLevel=0,spoolProgress=0,whatIfChoice=null,whatIfPrediction=null,whatIfSeen=false;
 let mixStirs=0;const requiredStirs=4;
 const q1=['DNA is only found in animals','DNA is found inside strawberry cells','DNA is only found in strawberry seeds'];
@@ -143,6 +144,7 @@ function startMashAnimation(){
  const g=bench&&pulpGeometry(bench);
  if(!el||!g){applyAction('mash');return;}
  pouring=true;
+ const ticket=interactionEpoch;
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const duration=reduced?1:560;
  const swing=el.animate([
@@ -159,7 +161,7 @@ function startMashAnimation(){
   {transform:'translateX(7px)',offset:.55},
   {transform:'translateX(0)',offset:1}
  ],{duration,easing:'ease-in-out'}));
- swing.onfinish=()=>{pouring=false;applyAction('mash')};
+ swing.onfinish=()=>{if(ticket!==interactionEpoch)return;pouring=false;applyAction('mash')};
  swing.oncancel=()=>{pouring=false};
 }
 function bowlContact(bench,tool,xRatio=.5,yRatio=.44,anchor='bottom'){
@@ -181,6 +183,7 @@ function runIngredientAnimation(type){
  const g=bench&&pulpGeometry(bench);
  if(!bottle||!g){applyAction(type);return;}
  pouring=true;
+ const ticket=interactionEpoch;
  const isSoap=type==='soap';
  const b=bottle.getBoundingClientRect();
  const angle=isSoap?65:-65;
@@ -220,19 +223,20 @@ function runIngredientAnimation(type){
   {transform:transform(dx,dy,0),offset:.87},
   {transform:transform(0,0,0),offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
- anim.onfinish=()=>{pouring=false;applyAction(type)};
+ anim.onfinish=()=>{if(ticket!==interactionEpoch)return;pouring=false;applyAction(type)};
  anim.oncancel=()=>{pouring=false};
 }
 function startStirAnimation(){
  if(pouring||stage!==2||!actions.soap||!actions.salt||mixStirs>=requiredStirs)return;
  pouring=true;
+ const ticket=interactionEpoch;
  const bench=content.querySelector('#workbench');
  const stirrer=bench&&bench.querySelector('.lab-stirrer');
  if(!stirrer){pouring=false;applyAction('stir');return;}
  stirrer.classList.add('auto-stir');
  bench.classList.add('stir-in-progress');
  let called=false;
- const finish=()=>{if(called)return;called=true;pouring=false;applyAction('stir')};
+ const finish=()=>{if(called||ticket!==interactionEpoch)return;called=true;pouring=false;applyAction('stir')};
  stirrer.addEventListener('animationend',finish,{once:true});
  setTimeout(finish,680);
 }
@@ -244,6 +248,7 @@ function startFilterAnimation(){
  const stream=bench&&bench.querySelector('.filter-pour-stream');
  if(!bench||!cup||!filter||!stream){return;}
  pouring=true;
+ const ticket=interactionEpoch;
  const matrix=filter.getScreenCTM();
  if(!matrix){pouring=false;return;}
  const svgPoint=(x,y)=>{const p=filter.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
@@ -279,7 +284,7 @@ function startFilterAnimation(){
    {opacity:0,strokeDashoffset:105,offset:1}
   ],{duration,easing:'linear',fill:'none'});
  }
- motion.onfinish=()=>{pouring=false;applyAction('filter')};
+ motion.onfinish=()=>{if(ticket!==interactionEpoch)return;pouring=false;applyAction('filter')};
  motion.oncancel=()=>{pouring=false};
 }
 function startPourAnimation(){
@@ -290,6 +295,7 @@ function startPourAnimation(){
  const stream=bench&&bench.querySelector('.pour-stream');
  if(!bench||!bottle||!vessel){applyAction('alcohol');return;}
  pouring=true;
+ const ticket=interactionEpoch;
  const matrix=vessel.getScreenCTM();
  const svgPoint=(x,y)=>{const p=vessel.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
  const mouth=svgPoint(72,42);
@@ -315,7 +321,7 @@ function startPourAnimation(){
   {transform:pose(dx,dy,0),offset:.88},
   {transform:pose(0,0,0),offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
- motion.onfinish=()=>{pouring=false;applyAction('alcohol')};
+ motion.onfinish=()=>{if(ticket!==interactionEpoch)return;pouring=false;applyAction('alcohol')};
  motion.oncancel=()=>{pouring=false};
 }
 function placeStirrerInBowl(bench){
@@ -638,12 +644,12 @@ function render(preserveScroll=false){
  bindHandsOn();
  const reveal=content.querySelector('#revealDna');if(reveal)reveal.addEventListener('click',()=>{dnaRevealed=true;render(true)});
 }
-function reset(){stage=0;prediction=null;answer=null;completed=false;microscopeLevel=0;spoolProgress=0;whatIfChoice=null;whatIfPrediction=null;whatIfSeen=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
+function reset(){interactionEpoch++;stage=0;prediction=null;answer=null;completed=false;microscopeLevel=0;spoolProgress=0;whatIfChoice=null;whatIfPrediction=null;whatIfSeen=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
 function openModal(){reset();modal.hidden=false;document.body.classList.add('modal-open');document.getElementById('closeModal').focus()}
-function closeModal(){modal.hidden=true;document.body.classList.remove('modal-open');document.getElementById('launchBtn').focus()}
+function closeModal(){interactionEpoch++;pouring=false;modal.hidden=true;document.body.classList.remove('modal-open');document.getElementById('launchBtn').focus()}
 document.getElementById('launchBtn').addEventListener('click',openModal);
 document.getElementById('closeModal').addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal();if(e.key==='Tab'&&!modal.hidden){const list=[...modal.querySelectorAll('button:not(:disabled),[role="button"][tabindex="0"]')].filter(el=>!el.closest('[hidden]'));if(!list.length)return;const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
-backBtn.addEventListener('click',()=>{if(stage>0){stage--;completed=false;render()}});
-nextBtn.addEventListener('click',()=>{if(!stageReady()&&!completed)return;if(completed){closeModal();return}if(stage<steps.length-1)stage++;else{completed=true;try{localStorage.setItem('discovery-lab-dna-completed','true')}catch(e){}}render()});
+backBtn.addEventListener('click',()=>{if(stage>0){interactionEpoch++;pouring=false;stage--;completed=false;render()}});
+nextBtn.addEventListener('click',()=>{if(!stageReady()&&!completed)return;if(completed){closeModal();return}interactionEpoch++;pouring=false;if(stage<steps.length-1)stage++;else{completed=true;try{localStorage.setItem('discovery-lab-dna-completed','true')}catch(e){}}render()});
