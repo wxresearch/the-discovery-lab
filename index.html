@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=block" />
-  <link rel="stylesheet" href="styles.css?v=20261116fontlocked" />
+  <link rel="stylesheet" href="styles.css?v=20261116imagestable" />
 </head>
 <body>
   <div class="ambient" aria-hidden="true"></div>
@@ -37,6 +37,29 @@
   <script>
     (function(){
       var settled=false;
+      var image=document.querySelector('.strawberry-photo');
+      var imageReady=Promise.resolve();
+      if(image){
+        imageReady=new Promise(function(resolve){
+          var done=false;
+          function complete(){
+            if(done)return;
+            done=true;
+            image.classList.add('image-ready');
+            resolve();
+          }
+          if(image.complete&&image.naturalWidth>0){
+            if(image.decode)image.decode().then(complete,complete);
+            else complete();
+          }else{
+            image.addEventListener('load',function(){
+              if(image.decode)image.decode().then(complete,complete);
+              else complete();
+            },{once:true});
+            image.addEventListener('error',complete,{once:true});
+          }
+        });
+      }
       var timeout=setTimeout(function(){finish(false)},8000);
       function finish(loaded){
         if(settled)return;
@@ -47,6 +70,7 @@
       }
       if(!document.fonts||!document.fonts.load){finish(false);return}
       Promise.all([
+        imageReady,
         document.fonts.load('400 16px "DM Sans"'),
         document.fonts.load('500 16px "DM Sans"'),
         document.fonts.load('600 16px "DM Sans"'),
@@ -57,12 +81,12 @@
         document.fonts.load('700 32px "Outfit"'),
         document.fonts.load('800 32px "Outfit"')
       ]).then(function(results){
-        var dm=results.slice(0,4).every(function(faces){return faces.some(function(face){return face.status==='loaded'})});
-        var outfit=results.slice(4).every(function(faces){return faces.some(function(face){return face.status==='loaded'})});
+        var dm=results.slice(1,5).every(function(faces){return faces.some(function(face){return face.status==='loaded'})});
+        var outfit=results.slice(5).every(function(faces){return faces.some(function(face){return face.status==='loaded'})});
         finish(dm&&outfit);
       },function(){finish(false)});
     })();
   </script>
-  <script src="script.js?v=20261116fontlocked"></script>
+  <script src="script.js?v=20261116imagestable"></script>
 </body>
 </html>
