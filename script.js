@@ -129,6 +129,16 @@ function placeMasherInPulp(bench){
  const dx=dest.x-point.x,dy=dest.y-point.y;
  el.style.left=(el.offsetLeft+dx)+'px';
  el.style.top=(el.offsetTop+dy)+'px';
+ // Compute the actual pulp-surface intersection for the WOODEN SHAFT.
+ // Its submerged portion should fade into the pink mixture, not stop at
+ // the rounded head. Geometry comes from the same bowl SVG as the pulp.
+ const shaft=el.querySelector('.tool-shaft');
+ if(shaft){
+  const surface=g.toScreen(130,137).y;
+  const rect=shaft.getBoundingClientRect();
+  const threshold=Math.max(0,Math.min(100,(surface-rect.top)/rect.height*100));
+  shaft.style.setProperty('--shaft-submerge-at',threshold.toFixed(1)+'%');
+ }
 }
 function startMashAnimation(){
  if(pouring||stage!==1||actions.mash>=maxMash)return;
