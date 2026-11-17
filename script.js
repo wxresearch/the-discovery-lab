@@ -494,7 +494,18 @@ const microscopeViews=[
  {title:'Strawberry',caption:'A strawberry is made of many tiny cells.',graphic:'<path d="M120 45Q67 38 72 99Q72 165 120 186Q168 165 168 99Q173 38 120 45Z" fill="#E85775" stroke="#FF9BAB" stroke-width="4"/><path d="M91 48Q120 17 149 48M120 26V49" stroke="#75E0B4" stroke-width="12" stroke-linecap="round"/>'+Array.from({length:15},(_,i)=>'<circle cx="'+(84+i*17%72)+'" cy="'+(70+i*29%99)+'" r="2.8" fill="#FFE6B2"/>').join('')},
  {title:'Cells',caption:'Plants are made of cells with strong outer cell walls.',graphic:'<g fill="#7AE2BE" fill-opacity=".23" stroke="#8BE8D1" stroke-width="3"><path d="M35 40H114L120 104L61 122L26 93Z"/><path d="M126 32L201 56L207 115L128 115L120 104Z"/><path d="M61 122L120 104L138 192H58L28 152Z"/><path d="M128 115L207 115L197 183L138 192L120 104Z"/></g><g fill="#A9A0F5"><circle cx="80" cy="79" r="11"/><circle cx="163" cy="81" r="11"/><circle cx="97" cy="147" r="11"/><circle cx="168" cy="145" r="11"/></g>'},
  {title:'Nucleus',caption:'The nucleus holds most of a strawberry cell’s DNA.',graphic:'<path d="M36 62Q120 -7 204 62T202 176Q120 223 35 168T36 62" stroke="#8DE6D2" stroke-width="7" fill="#366A76" fill-opacity=".32"/><circle cx="120" cy="112" r="60" fill="#7761BD" fill-opacity=".6" stroke="#C5B6FF" stroke-width="6"/><path d="M83 91Q125 65 147 102T107 134Q90 158 155 133" fill="none" stroke="#F1E5FF" stroke-width="5"/>'},
- {title:'DNA',caption:'DNA is a long molecule that carries genetic instructions.',graphic:'<g fill="none" stroke-width="7" stroke-linecap="round"><path d="M74 18C180 66 60 145 168 191" stroke="#6CE3CA"/><path d="M168 18C60 66 180 145 74 191" stroke="#B8A5FF"/></g>'+Array.from({length:9},(_,i)=>'<path d="M'+(77+Math.sin(i*.7)*34)+' '+(26+i*18)+'L'+(165-Math.sin(i*.7)*34)+' '+(26+i*18)+'" stroke="#D5F4F0" stroke-width="4"/>').join('')}
+ {title:'DNA',caption:'DNA is a double helix: two strands linked by paired bases.',graphic:(()=>{
+  const x1=y=>120+43*Math.sin((y-25)/160*Math.PI*4+.35);
+  const x2=y=>120-43*Math.sin((y-25)/160*Math.PI*4+.35);
+  const strand=x=>Array.from({length:85},(_,i)=>(i?'L':'M')+x(25+i*2).toFixed(1)+' '+(25+i*2)).join(' ');
+  const pairs=Array.from({length:13},(_,i)=>{
+   const y=31+i*13;
+   const a=x1(y),b=x2(y);
+   const colors=['#A8E5EA','#C3B4F4','#95DACA','#B9D9F4'];
+   return '<line x1="'+a.toFixed(1)+'" y1="'+y+'" x2="'+b.toFixed(1)+'" y2="'+y+'" stroke="'+colors[i%4]+'" stroke-width="4" stroke-linecap="round"/>';
+  }).join('');
+  return '<g fill="none">'+pairs+'<path d="'+strand(x1)+'" stroke="#5CD8C6" stroke-width="7" stroke-linecap="round"/><path d="'+strand(x2)+'" stroke="#B8A5F8" stroke-width="7" stroke-linecap="round"/></g>';
+ })()}
 ];
 function microscopeMarkup(){
  const v=microscopeViews[microscopeLevel];
