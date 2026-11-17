@@ -55,8 +55,7 @@ const labScene=(kind)=>{
 };
 function options(answers,selected){return '<div class="choices" role="group" aria-label="Choose an answer">'+answers.map((a,i)=>'<button type="button" class="choice '+(selected===i?'selected':'')+'" data-answer="'+i+'">'+a+'</button>').join('')+'</div>';}
 
-/* Hands-on lab interactions: native pointer events work with mouse, pen and touch.
-   A button alternative makes every stage usable without dragging. */
+
 const actions={mash:0,soap:false,salt:false,filter:false,alcohol:0};
 const maxMash=7,maxPour=5;
 const labStates={
@@ -100,8 +99,6 @@ function pulpGeometry(bench){
  const inverse=matrix.inverse();
  const toScreen=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
  const toLocal=(x,y)=>{const p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(inverse)};
- // Actual strawberry level is near y=138 in the bowl's 260 x 250 viewBox.
- // Keep the masher head below that surface, away from the curved sidewalls.
  const contains=(x,y)=>{
   const p=toLocal(x,y);
   if(p.y<157||p.y>211)return false;
@@ -121,17 +118,12 @@ function placeMasherInPulp(bench){
  const el=bench.querySelector('.lab-tool.masher');
  const g=pulpGeometry(bench);
  if(!el||!g)return;
- // At rest, immerse the head already: do not let a click first carry
- // it across the front glass wall.
  const dest=g.toScreen(130,182);
  const point=toolHeadPoint(el,'mash');
  if(!point)return;
  const dx=dest.x-point.x,dy=dest.y-point.y;
  el.style.left=(el.offsetLeft+dx)+'px';
  el.style.top=(el.offsetTop+dy)+'px';
- // Compute the actual pulp-surface intersection for the WOODEN SHAFT.
- // Its submerged portion should fade into the pink mixture, not stop at
- // the rounded head. Geometry comes from the same bowl SVG as the pulp.
  const shaft=el.querySelector('.tool-shaft');
  if(shaft){
   const surface=g.toScreen(130,137).y;
@@ -147,8 +139,6 @@ function startMashAnimation(){
  const g=bench&&pulpGeometry(bench);
  if(!el||!g){applyAction('mash');return;}
  pouring=true;
- // Both pointer dragging and button strokes now move the head locally
- // within the same submerged pulp area.
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const duration=reduced?1:560;
  const swing=el.animate([
@@ -187,8 +177,6 @@ function runIngredientAnimation(type){
  const g=bench&&pulpGeometry(bench);
  if(!bottle||!g){applyAction(type);return;}
  pouring=true;
- // Park the bottle OUTSIDE the side of the glass, above the rim. Its
- // nozzle tilts inward; only the stream crosses the open mouth.
  const isSoap=type==='soap';
  const rim=g.toScreen(isSoap?34:226,48);
  const b=bottle.getBoundingClientRect();
@@ -227,7 +215,6 @@ function startStirAnimation(){
  const bench=content.querySelector('#workbench');
  const stirrer=bench&&bench.querySelector('.lab-stirrer');
  if(!stirrer){pouring=false;applyAction('stir');return;}
- // The stirrer is already positioned inside the pulp at rest. Stir in place.
  stirrer.classList.add('auto-stir');
  bench.classList.add('stir-in-progress');
  let called=false;
@@ -246,8 +233,6 @@ function startFilterAnimation(){
  const matrix=filter.getScreenCTM();
  if(!matrix){pouring=false;return;}
  const svgPoint=(x,y)=>{const p=filter.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
- // Keep the CUP ABOVE AND TO THE LEFT of the funnel mouth.
- // Rotate the cup while pink extract flows into the paper-lined opening.
  const spot=svgPoint(92,-5);
  const cupRect=cup.getBoundingClientRect();
  const dx=spot.x-(cupRect.left+cupRect.width/2);
@@ -269,7 +254,6 @@ function startFilterAnimation(){
   {transform:pose(dx,dy,0),offset:.88},
   {transform:pose(0,0,0),offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
- // Run the actual fluid animation from the same timing as the cup.
  const path=stream.querySelector('path');
  if(path){
   path.animate([
@@ -324,7 +308,6 @@ function placeStirrerInBowl(bench){
  const bowl=bench.querySelector('.mash-bowl');
  const stirrer=bench.querySelector('.lab-stirrer');
  if(!bowl||!stirrer)return;
- // Align the rod's lower tip to the strawberry pulp, not to the SVG canvas edge.
  const b=bowl.getBoundingClientRect();
  const w=bench.getBoundingClientRect();
  const rodHeight=stirrer.offsetHeight;
@@ -334,7 +317,6 @@ function placeStirrerInBowl(bench){
  const rodTop=pulpY-rodHeight+8;
  stirrer.style.left=(x-stirrer.offsetWidth/2)+'px';
  stirrer.style.top=rodTop+'px';
- // Visually submerge only the part below the actual pink liquid surface.
  stirrer.style.setProperty('--submerge-at',Math.max(0,Math.min(100,(surfaceY-rodTop)/rodHeight*100)).toFixed(1)+'%');
 }
 function alignBowlElements(bench){
@@ -403,8 +385,6 @@ function bindHandsOn(){
    if(!dragging)return;
    let dx=clientX-startX,dy=clientY-startY;
    if(bowlTools){
-    // Tip coordinates come from the untransformed tool at pointer-down.
-    // Avoid a synchronous layout read on every pointer movement.
     let current={x:initialTip.x+dx,y:initialTip.y+dy};
     let valid=tipValid(current);
     if(!valid&&entered){
@@ -517,8 +497,6 @@ function render(preserveScroll=false){
  else if(labStates[stage])right=labMarkup();
  else right=labScene(stage===0?'fruit':stage===6?'cell':'dna');
  content.innerHTML='<div class="stage-layout enhanced-stage '+(labStates[stage]?'interactive-layout':'')+'">'+left+'<div class="science-visual refined-visual '+(labStates[stage]?'interactive-visual':'')+'">'+right+'</div></div>';
- // Put instructions and progress with the explanatory text, BESIDE the workbench.
- // This is consistent for mash, ingredients, filtration and alcohol.
  if(labStates[stage]){
   const status=content.querySelector('.lab-status');
   const copy=content.querySelector('.stage-copy');
