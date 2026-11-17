@@ -1061,3 +1061,22 @@
   -webkit-mask-image:none;
   mask-image:none;
 }
+
+/* Masher depth: keep the entire tool behind the actual translucent glass
+   and pulp, including while it is dragged or animated. This submerges
+   the lower wooden shaft as well as the head without adding a fake layer. */
+.exhibit-modal .lab-workbench .lab-tool.masher,
+.exhibit-modal .lab-workbench .lab-tool.masher.dragging,
+.exhibit-modal .lab-workbench .lab-tool.masher.auto-mash{
+  z-index:1!important;
+}
+.exhibit-modal .lab-workbench .lab-vessel.mash-bowl{
+  z-index:2!important;
+  pointer-events:none!important;
+}
+.exhibit-modal .lab-workbench .masher .tool-base{
+  opacity:1;
+}
+.exhibit-modal .lab-workbench .mash-scene g[clip-path="url(#bowlInner)"] > path:first-child{
+  opacity:.72;
+}
