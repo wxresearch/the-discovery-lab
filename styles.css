@@ -1396,3 +1396,53 @@ footer{border-color:var(--line);color:#b3cbd5}
  .exhibit-modal .lab-workbench:has(.masher.dragging) .pulp-chunks,
  .exhibit-modal .lab-workbench.mash-in-progress .pulp-chunks{animation:none}
 }
+
+
+.exhibit-card,
+.step{
+ background:#162a3c;
+ box-shadow:none;
+}
+.exhibit-card:hover{
+ box-shadow:0 8px 24px rgba(0,10,22,.22);
+}
+.exhibit-card .exhibit-body,
+.exhibit-card .upcoming-body{
+ background:#14283a;
+}
+.upcoming-art,
+.upcoming-art.planets{
+ background:#21364e;
+}
+.upcoming-art.geometry,
+.geometry{
+ background:#183b49;
+}
+.geometry-shape{
+ box-shadow:none;
+}
+.geometry-shape.second{
+ box-shadow:none;
+}
+.strawberry-art{
+ background:#14283a;
+}
+.step-illustration{
+ background:#1c3648;
+}
+.hero-art{
+ background:#162f42;
+}
+.hero-art::before{
+ display:none;
+}
+.art-floor{
+ background:none;
+}
+.mission-orb{
+ background:#203a4b;
+ box-shadow:none;
+}
+.modal-shell{
+ background:#142a3c;
+}
