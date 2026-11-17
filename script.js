@@ -184,8 +184,8 @@ function runIngredientAnimation(type){
  const isSoap=type==='soap';
  const b=bottle.getBoundingClientRect();
  const angle=isSoap?65:-65;
- const start=g.toScreen(isSoap?94:190,isSoap?69:28);
- const end=g.toScreen(isSoap?100:185,139);
+ const start=g.toScreen(isSoap?53:190,isSoap?22:28);
+ const end=g.toScreen(isSoap?65:185,139);
  let dx,dy;
  if(isSoap){
   const pivotX=b.left+b.width*.5,pivotY=b.top+b.height*.15;
@@ -491,7 +491,7 @@ function bindHandsOn(){
  });
 }
 const microscopeViews=[
- {title:'Strawberry',caption:'A strawberry is made of many tiny cells.',graphic:'<g transform="translate(120 110) scale(.79) translate(-120 -110)"><path d="M121 51C88 45 73 71 79 117C83 151 99 172 120 187C142 172 158 148 162 115C168 70 151 47 121 51Z" fill="#E95B79" stroke="#FF9FB0" stroke-width="4"/><path d="M120 53C107 39 95 40 87 47M120 53C131 38 144 40 152 48M120 51V36" stroke="#7DDBBB" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M120 52L107 63M120 52L133 63" stroke="#7DDBBB" stroke-width="7" stroke-linecap="round"/>'+Array.from({length:17},(_,i)=>{const x=89+(i*23)%62,y=76+(i*31)%84;return '<ellipse cx="'+x+'" cy="'+y+'" rx="2.4" ry="3.1" fill="#FFE9BF" transform="rotate(-12 '+x+' '+y+')"/>'}).join('')+'</g>'},
+ {title:'Strawberry',caption:'A strawberry is made of many tiny cells.',graphic:'<g transform="translate(120 110) scale(.9) translate(-120 -110)"><path d="M120 52 C91 46 75 65 76 96 C76 131 94 164 120 185 C146 164 164 132 164 96 C165 65 149 46 120 52 Z" fill="#E95B79" stroke="#FF9FB0" stroke-width="4"/><path d="M120 51 C109 39 96 39 87 48 M120 51 C131 39 144 39 153 48 M120 49 V34" fill="none" stroke="#7DDBBB" stroke-width="8" stroke-linecap="round"/><path d="M120 51 L105 62 M120 51 L135 62" stroke="#7DDBBB" stroke-width="6" stroke-linecap="round"/><g fill="#FFE8A8">'+[[101,74],[120,72],[139,75],[94,91],[112,90],[130,91],[146,92],[90,110],[108,109],[125,109],[144,110],[96,128],[114,128],[132,128],[102,146],[121,146],[136,144],[113,164],[126,163]].map(([x,y])=>'<ellipse cx="'+x+'" cy="'+y+'" rx="2.6" ry="3.2"/>').join('')+'</g></g>'},
  {title:'Cells',caption:'Plant cells fit together like tiny rooms, each enclosed by a cell wall.',graphic:'<defs><clipPath id="microCellLens"><circle cx="120" cy="110" r="91"/></clipPath></defs><g clip-path="url(#microCellLens)" transform="translate(120 110) scale(.82) translate(-120 -110)"><g fill="#438080" fill-opacity=".43" stroke="#8CE4D4" stroke-width="4" stroke-linejoin="round"><path d="M56 59L117 48L121 111L71 123L45 94Z"/><path d="M126 48L188 64L198 119L123 115L121 111Z"/><path d="M71 125L121 114L137 177L74 178L49 147Z"/><path d="M124 118L198 122L186 177L139 180Z"/></g><g fill="#B3A7EF" stroke="#D6CAFF" stroke-width="2"><circle cx="87" cy="88" r="9"/><circle cx="164" cy="85" r="9"/><circle cx="95" cy="150" r="9"/><circle cx="164" cy="150" r="9"/></g></g>'},
  {title:'Nucleus',caption:'Inside a plant cell, the nucleus contains chromosomes made of DNA.',graphic:'<g><rect x="48" y="39" width="144" height="144" rx="25" fill="#44817F" fill-opacity=".26" stroke="#8AD7D0" stroke-width="4"/><path d="M59 62Q120 45 179 63M62 158Q119 175 181 157" fill="none" stroke="#9DD7DC" stroke-width="2" opacity=".45"/><circle cx="120" cy="110" r="52" fill="#665A9C" stroke="#C5B8F0" stroke-width="5"/><circle cx="120" cy="110" r="44" fill="#7565A8" fill-opacity=".48"/><g fill="none" stroke="#E1D8FF" stroke-width="4.5" stroke-linecap="round"><path d="M87 95Q104 75 118 97T150 97"/><path d="M91 125Q106 143 123 123T151 125"/><path d="M99 107Q113 91 133 109T142 137"/></g><circle cx="112" cy="115" r="8" fill="#BDADEB" opacity=".75"/></g>'},
  {title:'DNA',caption:'DNA is a double helix: two strands linked by paired bases.',graphic:(()=>{
