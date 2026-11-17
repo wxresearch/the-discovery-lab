@@ -599,7 +599,7 @@ function whatIfMarkup(){
 }
 function certificateMarkup(){
  const date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
- return '<div class="certificate-screen"><div class="dna-certificate" id="dnaCertificate"><div class="cert-icon">✧</div><span>THE DISCOVERY LAB · EXHIBIT 001</span><h3>DNA Detective</h3><p>Certificate of Discovery</p><strong>Strawberry DNA Extraction</strong><div class="cert-line"></div><small>Completed '+date+'</small><small>Explore · Experiment · Discover</small></div><p>You explored strawberry cells, extracted DNA, collected visible strands, and tested a scientific prediction.</p><div class="cert-actions"><button class="button secondary" id="restartBtn" type="button">↺ Try again</button></div></div>';
+ return '<div class="certificate-screen"><div class="dna-certificate" id="dnaCertificate"><div class="cert-icon">✧</div><span>THE DISCOVERY LAB · EXHIBIT 001</span><h3>DNA Detective</h3><p>Certificate of Discovery</p><strong>Strawberry DNA Extraction</strong><div class="cert-line"></div><small>Completed '+date+'</small><small>Explore · Experiment · Discover</small></div><p>You explored strawberry cells, extracted DNA, collected visible strands, and tested a scientific prediction.</p>'+dnaJourneyMarkup()+'<div class="cert-actions"><button class="button secondary" id="restartBtn" type="button">↺ Try again</button></div></div>';
 }
 function render(preserveScroll=false){
  const prior=content.scrollTop;
@@ -613,6 +613,9 @@ function render(preserveScroll=false){
  let left='<div class="stage-copy"><span class="stage-kicker">STEP '+String(stage+1).padStart(2,'0')+' / '+String(steps.length).padStart(2,'0')+'</span><h2 id="exhibitTitle">'+s.heading+'</h2><p>'+s.sub+'</p>';
  if(stage===0)left+=options(q1,prediction)+(prediction!==null?'<div class="feedback" role="status">'+(prediction===1?'That’s right!':'Interesting prediction!')+' Strawberry cells contain DNA, mainly inside their nuclei.</div>':'');
  if(stage===0)left+='<div class="lab-tip">Explore all four microscope views, then make your prediction to begin the experiment.</div>';
+ if(stage===2)left+='<section class="lab-science-note"><h3>Why soap and salt?</h3><p><strong>Dish soap</strong> helps break up the fatty membranes around cells and their nuclei, releasing DNA into the mixture.</p><p><strong>Salt</strong> provides positive ions that reduce repulsion between negatively charged DNA molecules, making it easier for DNA to gather when alcohol is added.</p></section>';
+ if(stage===4)left+='<section class="lab-safety-note" role="note"><strong>Safety in a real lab</strong><p>Rubbing alcohol is flammable and can irritate skin and eyes. Keep it away from heat and flames, never drink it, and have an adult supervise any real experiment in a well-ventilated space.</p></section>';
+ if(stage===6)left+=strawberryFactsMarkup();
  if(stage===5&&dnaRevealed)left+='<div class="lab-tip">Now collect five small samples with the virtual collection rod. The strands represent clumps of DNA-rich material, not single molecules.</div>';
  if(stage===6)left+='<div class="lab-tip">Answer the question, then explore one what-if scenario to complete the exhibit.</div>';
  if(stage===5)left+='<div class="lab-tip"><strong>What you actually see:</strong> Many DNA molecules clumped together, not an individual double helix. The extract can contain other material too. Do not stir the alcohol into the strawberry liquid.</div>';
