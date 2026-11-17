@@ -225,6 +225,40 @@ function startStirAnimation(){
  stirrer.addEventListener('animationend',finish,{once:true});
  setTimeout(finish,680);
 }
+function startFilterAnimation(){
+ if(pouring||stage!==3||actions.filter)return;
+ const bench=content.querySelector('#workbench');
+ const cup=bench&&bench.querySelector('.mixing-cup');
+ const filter=bench&&bench.querySelector('.filter-scene');
+ const stream=bench&&bench.querySelector('.filter-pour-stream');
+ if(!cup||!filter||!stream){applyAction('filter');return;}
+ pouring=true;
+ const m=filter.getScreenCTM();
+ const p=filter.createSVGPoint();p.x=73;p.y=28;
+ const target=p.matrixTransform(m);
+ const cupBox=cup.getBoundingClientRect();
+ const centerX=cupBox.left+cupBox.width*.5,centerY=cupBox.top+cupBox.height*.5;
+ const dx=target.x-centerX-12,dy=target.y-centerY-6;
+ const station=filter.getBoundingClientRect(),benchBox=bench.getBoundingClientRect();
+ stream.style.left=(station.left-benchBox.left)+'px';
+ stream.style.top=(station.top-benchBox.top)+'px';
+ stream.style.width=station.width+'px';
+ stream.style.height=station.height+'px';
+ bench.classList.add('filter-pouring');
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const duration=reduced?1:1150;
+ const pose=(x,y,deg)=>'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate('+deg+'deg)';
+ const animation=cup.animate([
+  {transform:pose(0,0,0),offset:0},
+  {transform:pose(dx,dy,0),offset:.26},
+  {transform:pose(dx,dy,58),offset:.43},
+  {transform:pose(dx,dy,58),offset:.74},
+  {transform:pose(dx,dy,0),offset:.87},
+  {transform:pose(0,0,0),offset:1}
+ ],{duration,easing:'ease-in-out',fill:'none'});
+ animation.onfinish=()=>{pouring=false;applyAction('filter')};
+ animation.oncancel=()=>{pouring=false};
+}
 function startPourAnimation(){
  if(pouring||stage!==4||actions.alcohol>=maxPour)return;
  const bench=content.querySelector('#workbench');
@@ -320,7 +354,7 @@ function bindHandsOn(){
  assist.addEventListener('click',()=>{
   if(stage===1)startMashAnimation();
   else if(stage===2){if(!actions.soap)runIngredientAnimation('soap');else if(!actions.salt)runIngredientAnimation('salt');else startStirAnimation();}
-  else if(stage===3)applyAction('filter');
+  else if(stage===3)startFilterAnimation();
   else startPourAnimation();
  });
  bench.querySelectorAll('.lab-tool').forEach(el=>{
@@ -421,7 +455,7 @@ function bindHandsOn(){
    }else if(hit){
     if(type==='soap'||type==='salt')runIngredientAnimation(type);
     else if(type==='alcohol')startPourAnimation();
-    else if(type==='filter')applyAction('filter');
+    else if(type==='filter')startFilterAnimation();
    }
   });
   el.addEventListener('pointercancel',cleanup);
@@ -432,7 +466,7 @@ function bindHandsOn(){
    else if(type==='stir')startStirAnimation();
    else if(type==='soap'||type==='salt')runIngredientAnimation(type);
    else if(type==='alcohol')startPourAnimation();
-   else if(type==='filter')applyAction('filter');
+   else if(type==='filter')startFilterAnimation();
   });
 
  });
