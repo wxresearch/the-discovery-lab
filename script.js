@@ -82,7 +82,7 @@ function labMarkup(){
  const vessel=(stage===1||stage===2)?bowlScene(stage===1?'mash':'mix'):
  stage===3?'<div class="lab-vessel filter-station" data-dropzone="filter"><svg class="filter-scene" viewBox="0 0 290 310" role="img" aria-label="Coffee filter in a funnel above a glass receiving jar. '+(actions.filter?'Strawberry residue remains in the filter and filtered extract collects in the jar.':'The filter is ready, and the receiving jar is still empty.')+'"><defs><linearGradient id="filGlass" x1="0" x2="1"><stop stop-color="#b7e4ff" stop-opacity=".32"/><stop offset=".5" stop-color="#cfeeff" stop-opacity=".06"/><stop offset="1" stop-color="#c4eaff" stop-opacity=".4"/></linearGradient><linearGradient id="filLiquid" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#d77b9e"/><stop offset="1" stop-color="#a33d71"/></linearGradient><clipPath id="jarInterior"><path d="M93 174H204L200 283Q200 296 187 298H110Q99 297 98 284Z"/></clipPath></defs><ellipse cx="151" cy="298" rx="101" ry="10" fill="#050f2e" opacity=".37"/><path d="M87 170H210L204 284Q202 302 187 303H109Q94 302 92 284Z" fill="url(#filGlass)" stroke="#d5edfc" stroke-width="5"/><g clip-path="url(#jarInterior)">'+(actions.filter?'<path d="M96 253Q148 250 205 253V313H96Z" fill="url(#filLiquid)"/><path d="M95 253Q151 248 205 253" fill="none" stroke="#f6b1c1" stroke-width="3"/>':'')+'</g><ellipse cx="148" cy="170" rx="61" ry="9" fill="#bfe8fb" fill-opacity=".13" stroke="#d5edfc" stroke-width="4"/><path d="M64 42H232L167 157H129Z" fill="#acd1df" fill-opacity=".37" stroke="#bedfee" stroke-width="5" stroke-linejoin="round"/><path d="M82 51H215L164 141H131Z" fill="#f5ebd8" stroke="#fff5e4" stroke-width="3" stroke-linejoin="round"/><path d="M86 64Q148 77 211 64" stroke="#d2c7af" stroke-width="2" fill="none"/>'+(actions.filter?'<path d="M91 72Q147 67 205 72L184 107Q166 113 147 108Q126 115 107 106Z" fill="#9e3f5e"/><path d="M111 82Q126 76 141 84T174 82" stroke="#da7b87" stroke-width="6" fill="none" opacity=".7"/><circle cx="145" cy="92" r="5" fill="#7a2a48"/><circle cx="164" cy="100" r="4" fill="#cc6b7f"/>':'')+'<path d="M148 153V170" stroke="#c1e0ef" stroke-width="5" opacity=".7"/>'+(actions.filter?'<path d="M148 155v18" stroke="#e1a6b7" stroke-width="3" stroke-dasharray="3 4"/>':'')+'</svg><span class="filter-residue-label">'+(actions.filter?'PULP REMAINS IN FILTER':'FILTER READY')+'</span></div>':
  '<div class="lab-vessel alcohol-station" data-dropzone="alcohol"><svg class="alcohol-scene" viewBox="0 0 260 260" role="img" aria-label="Open glass vessel with filtered strawberry extract and cold alcohol layered on top"><defs><linearGradient id="alcoholGlass" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#c4ebff" stop-opacity=".25"/><stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#b7dff4" stop-opacity=".35"/></linearGradient><linearGradient id="alcoholPink" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e58ba5"/><stop offset="1" stop-color="#a63866"/></linearGradient><clipPath id="alcoholInterior"><path d="M42 47V178Q42 227 130 227Q218 227 218 178V47Z"/></clipPath></defs><ellipse cx="130" cy="237" rx="100" ry="8" fill="#03112b" opacity=".36"/><g clip-path="url(#alcoholInterior)"><path d="M38 154Q130 151 222 154V233H38Z" fill="url(#alcoholPink)"/><rect x="39" y="'+(154-actions.alcohol/maxPour*49)+'" width="182" height="'+(actions.alcohol/maxPour*49)+'" fill="#c1e9f6" fill-opacity=".7"/>'+(actions.alcohol>=maxPour?'<path d="M75 155q16-12 29 0t27-1t27 0t27 1" fill="none" stroke="#fff8ed" stroke-width="3" opacity=".8"/>':'')+'</g><path d="M42 47V178Q42 227 130 227Q218 227 218 178V47Z" fill="url(#alcoholGlass)" stroke="none"/><path d="M42 47V178Q42 227 130 227Q218 227 218 178V47" fill="none" stroke="#c9e9f8" stroke-width="5"/><ellipse cx="130" cy="47" rx="88" ry="15" fill="#bedef2" fill-opacity=".09" stroke="#d4effb" stroke-width="5"/></svg></div>';
- return '<div class="hands-on"><div class="lab-status"><div class="lab-status-top"><span class="lab-status-label">'+(stage===1?'MASH THE STRAWBERRY':stage===2?'ADD SOAP · SALT · STIR':stage===3?'FILTER THE EXTRACT':'LAYER THE ALCOHOL')+'</span><strong class="lab-status-value">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-instruction">'+item.tip+'</div></div><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+(stage===1?'<svg class="bowl-liquid-front" viewBox="0 0 260 250" aria-hidden="true"><defs><clipPath id="mashLiquidFrontClip"><path d="M21 48 Q29 185 56 212 Q83 239 130 239 Q177 239 204 212 Q232 177 239 48Z"/></clipPath></defs><g clip-path="url(#mashLiquidFrontClip)"><path d="M21 138 Q70 129 130 137 Q182 128 239 138 L245 258 H15 Z" fill="#c94266" fill-opacity=".30"/></g></svg>':'')+(stage===1||stage===2?'<svg class="bowl-front-lip" viewBox="0 0 260 250" aria-hidden="true"><path d="M17 48 A113 23 0 0 0 243 48" fill="none" stroke="#d1edf8" stroke-width="7"/></svg>':'')+(stage===3?'<svg class="filter-pour-stream" viewBox="0 0 290 310" aria-hidden="true"><path d="M96 24 Q115 41 137 60" fill="none" stroke="#e6a2b5" stroke-width="8" stroke-linecap="round"/></svg>':'')+(stage===4?'<svg class="pour-stream" viewBox="0 0 260 260" aria-hidden="true"><path class="alcohol-flow" d="M74 3 Q89 31 111 76" fill="none" stroke="#c7f4ff" stroke-width="6" stroke-linecap="round"/></svg>':stage===2?'<div class="reagent-pour" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="mix-surface-ripple" aria-hidden="true"></div>':'')+'</div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?(actions.salt?'Stir mixture':'Add salt'):'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step complete. Continue when ready.':'Drag the tool, or use the action button.')+'</span></div></div>';
+ return '<div class="hands-on"><div class="lab-status"><div class="lab-status-top"><span class="lab-status-label">'+(stage===1?'MASH THE STRAWBERRY':stage===2?'ADD SOAP · SALT · STIR':stage===3?'FILTER THE EXTRACT':'LAYER THE ALCOHOL')+'</span><strong class="lab-status-value">'+progress+'%</strong></div><div class="activity-track"><div id="activityFill" style="width:'+progress+'%"></div></div><div class="lab-instruction">'+item.tip+'</div></div><div class="lab-workbench" id="workbench" aria-label="Interactive laboratory equipment"><div class="bench-surface"></div><div class="target-ring"></div>'+vessel+tool+(stage===1?'<svg class="bowl-liquid-front" viewBox="0 0 260 250" aria-hidden="true"><defs><clipPath id="mashLiquidFrontClip"><path d="M21 48 Q29 185 56 212 Q83 239 130 239 Q177 239 204 212 Q232 177 239 48Z"/></clipPath></defs><g clip-path="url(#mashLiquidFrontClip)"><path d="M21 138 Q70 129 130 137 Q182 128 239 138 L245 258 H15 Z" fill="#c94266" fill-opacity=".30"/></g></svg>':'')+(stage===1||stage===2?'<svg class="bowl-front-lip" viewBox="0 0 260 250" aria-hidden="true"><path d="M17 48 A113 23 0 0 0 243 48" fill="none" stroke="#d1edf8" stroke-width="7"/></svg>':'')+(stage===3?'<svg class="filter-pour-stream" viewBox="0 0 290 310" aria-hidden="true"><path d="M126 6 Q133 24 145 53" fill="none" stroke="#e6a2b5" stroke-width="9" stroke-linecap="round"/></svg>':'')+(stage===4?'<svg class="pour-stream" viewBox="0 0 260 260" aria-hidden="true"><path class="alcohol-flow" d="M74 3 Q89 31 111 76" fill="none" stroke="#c7f4ff" stroke-width="6" stroke-linecap="round"/></svg>':stage===2?'<div class="reagent-pour" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="mix-surface-ripple" aria-hidden="true"></div>':'')+'</div><div class="lab-controls"><button type="button" id="assistBtn" class="button secondary">'+(stage===1?'Mash once':stage===2?(actions.soap?(actions.salt?'Stir mixture':'Add salt'):'Add detergent'):stage===3?'Pour through filter':'Pour a little alcohol')+'</button><span class="lab-result" id="labResult" role="status">'+(ready?'✓ Step complete. Continue when ready.':'Drag the tool, or use the action button.')+'</span></div></div>';
 }
 function applyAction(type){
  if(type==='mash')actions.mash=Math.min(maxMash,actions.mash+1);
@@ -241,33 +241,48 @@ function startFilterAnimation(){
  const cup=bench&&bench.querySelector('.mixing-cup');
  const filter=bench&&bench.querySelector('.filter-scene');
  const stream=bench&&bench.querySelector('.filter-pour-stream');
- if(!cup||!filter||!stream){applyAction('filter');return;}
+ if(!bench||!cup||!filter||!stream){return;}
  pouring=true;
- const m=filter.getScreenCTM();
- const p=filter.createSVGPoint();p.x=73;p.y=28;
- const target=p.matrixTransform(m);
- const cupBox=cup.getBoundingClientRect();
- const centerX=cupBox.left+cupBox.width*.5,centerY=cupBox.top+cupBox.height*.5;
- const dx=target.x-centerX-12,dy=target.y-centerY-6;
- const station=filter.getBoundingClientRect(),benchBox=bench.getBoundingClientRect();
- stream.style.left=(station.left-benchBox.left)+'px';
- stream.style.top=(station.top-benchBox.top)+'px';
+ const matrix=filter.getScreenCTM();
+ if(!matrix){pouring=false;return;}
+ const svgPoint=(x,y)=>{const p=filter.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(matrix)};
+ // Keep the CUP ABOVE AND TO THE LEFT of the funnel mouth.
+ // Rotate the cup while pink extract flows into the paper-lined opening.
+ const spot=svgPoint(92,-5);
+ const cupRect=cup.getBoundingClientRect();
+ const dx=spot.x-(cupRect.left+cupRect.width/2);
+ const dy=spot.y-(cupRect.top+cupRect.height/2);
+ const station=filter.getBoundingClientRect(),benchRect=bench.getBoundingClientRect();
+ stream.style.left=(station.left-benchRect.left)+'px';
+ stream.style.top=(station.top-benchRect.top)+'px';
  stream.style.width=station.width+'px';
  stream.style.height=station.height+'px';
- bench.classList.add('filter-pouring');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const duration=reduced?1:1150;
+ const duration=reduced?1:1350;
  const pose=(x,y,deg)=>'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate('+deg+'deg)';
- const animation=cup.animate([
+ bench.classList.add('filter-pouring');
+ const motion=cup.animate([
   {transform:pose(0,0,0),offset:0},
-  {transform:pose(dx,dy,0),offset:.26},
-  {transform:pose(dx,dy,58),offset:.43},
-  {transform:pose(dx,dy,58),offset:.74},
-  {transform:pose(dx,dy,0),offset:.87},
+  {transform:pose(dx,dy,0),offset:.23},
+  {transform:pose(dx,dy,67),offset:.36},
+  {transform:pose(dx,dy,67),offset:.76},
+  {transform:pose(dx,dy,0),offset:.88},
   {transform:pose(0,0,0),offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
- animation.onfinish=()=>{pouring=false;applyAction('filter')};
- animation.oncancel=()=>{pouring=false};
+ // Run the actual fluid animation from the same timing as the cup.
+ const path=stream.querySelector('path');
+ if(path){
+  path.animate([
+   {opacity:0,strokeDashoffset:105,offset:0},
+   {opacity:0,strokeDashoffset:105,offset:.34},
+   {opacity:1,strokeDashoffset:0,offset:.43},
+   {opacity:1,strokeDashoffset:0,offset:.74},
+   {opacity:0,strokeDashoffset:105,offset:.84},
+   {opacity:0,strokeDashoffset:105,offset:1}
+  ],{duration,easing:'linear',fill:'none'});
+ }
+ motion.onfinish=()=>{pouring=false;applyAction('filter')};
+ motion.oncancel=()=>{pouring=false};
 }
 function startPourAnimation(){
  if(pouring||stage!==4||actions.alcohol>=maxPour)return;
