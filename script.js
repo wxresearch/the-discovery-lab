@@ -563,7 +563,29 @@ function render(preserveScroll=false){
  const microBack=content.querySelector('#microBack');if(microBack)microBack.addEventListener('click',()=>{microscopeLevel=Math.max(0,microscopeLevel-1);render(true)});
  const spool=()=>{if(spoolProgress>=5)return;spoolProgress++;render(true)};
  const collect=content.querySelector('#collectDna');if(collect)collect.addEventListener('click',spool);
- const rod=content.querySelector('#spoolTool');if(rod){rod.addEventListener('pointerup',spool);rod.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();spool()}})}
+ const rod=content.querySelector('#spoolTool');if(rod){
+  let pointer=null,originX=0,originY=0,moved=false;
+  rod.addEventListener('pointerdown',e=>{
+   if(spoolProgress>=5)return;
+   pointer=e.pointerId;originX=e.clientX;originY=e.clientY;moved=false;
+   rod.setPointerCapture(pointer);rod.classList.add('dragging');e.preventDefault();
+  });
+  rod.addEventListener('pointermove',e=>{
+   if(pointer!==e.pointerId)return;
+   const dx=Math.max(-22,Math.min(22,e.clientX-originX));
+   const dy=Math.max(-18,Math.min(25,e.clientY-originY));
+   if(Math.hypot(e.clientX-originX,e.clientY-originY)>12)moved=true;
+   rod.style.transform='translate('+dx+'px,'+dy+'px) rotate(15deg)';
+  });
+  const release=e=>{
+   if(pointer!==e.pointerId)return;
+   pointer=null;rod.classList.remove('dragging');rod.style.transform='';
+   spool();
+  };
+  rod.addEventListener('pointerup',release);
+  rod.addEventListener('pointercancel',()=>{pointer=null;rod.classList.remove('dragging');rod.style.transform=''});
+  rod.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();spool()}});
+ }
  content.querySelectorAll('[data-whatif]').forEach(b=>b.addEventListener('click',()=>{whatIfChoice=+b.dataset.whatif;whatIfPrediction=null;whatIfSeen=false;render(true)}));
  content.querySelectorAll('[data-whatif-predict]').forEach(b=>b.addEventListener('click',()=>{whatIfPrediction=+b.dataset.whatifPredict;whatIfSeen=false;render(true)}));
  const revealTest=content.querySelector('#revealWhatIf');if(revealTest)revealTest.addEventListener('click',()=>{if(whatIfChoice!==null&&whatIfPrediction!==null){whatIfSeen=true;render(true)}});
