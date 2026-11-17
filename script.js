@@ -181,20 +181,30 @@ function runIngredientAnimation(type){
  if(!bottle||!g){applyAction(type);return;}
  pouring=true;
  const isSoap=type==='soap';
- const rim=g.toScreen(isSoap?34:226,48);
  const b=bottle.getBoundingClientRect();
- const centerX=b.left+b.width/2,centerY=b.top+b.height/2;
- const targetX=rim.x+(isSoap?-20:20);
- const targetY=rim.y+3;
- const dx=targetX-centerX,dy=targetY-centerY;
  const angle=isSoap?65:-65;
+ const start=g.toScreen(isSoap?94:190,isSoap?69:28);
+ const end=g.toScreen(isSoap?100:185,139);
+ let dx,dy;
+ if(isSoap){
+  const pivotX=b.left+b.width*.5,pivotY=b.top+b.height*.15;
+  const nozzleX=b.left+b.width*(76/88),nozzleY=b.top+b.height*(16/166);
+  const rad=angle*Math.PI/180;
+  const rotatedX=pivotX+(nozzleX-pivotX)*Math.cos(rad)-(nozzleY-pivotY)*Math.sin(rad);
+  const rotatedY=pivotY+(nozzleX-pivotX)*Math.sin(rad)+(nozzleY-pivotY)*Math.cos(rad);
+  dx=start.x-rotatedX;
+  dy=start.y-rotatedY;
+ }else{
+  const rim=g.toScreen(226,48);
+  dx=rim.x+20-(b.left+b.width/2);
+  dy=rim.y+3-(b.top+b.height/2);
+ }
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const duration=reduced?1:1050;
  const stream=bench.querySelector('.reagent-pour');
- const start=g.toScreen(isSoap?70:190,28),end=g.toScreen(isSoap?75:185,139);
  if(stream){
   const br=bench.getBoundingClientRect();
-  stream.style.left=(start.x-br.left-10)+'px';
+  stream.style.left=(start.x-br.left-8)+'px';
   stream.style.top=(start.y-br.top)+'px';
   stream.style.height=Math.max(20,end.y-start.y)+'px';
   stream.style.setProperty('--drop-distance',Math.max(20,end.y-start.y)+'px');
