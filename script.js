@@ -535,13 +535,18 @@ function render(preserveScroll=false){
  nextBtn.textContent=completed?'Close exhibit':stage===6?'Finish exhibit →':'Next step →';
  let left='<div class="stage-copy"><span class="stage-kicker">STEP '+String(stage+1).padStart(2,'0')+' / '+String(steps.length).padStart(2,'0')+'</span><h2 id="exhibitTitle">'+s.heading+'</h2><p>'+s.sub+'</p>';
  if(stage===0)left+=options(q1,prediction)+(prediction!==null?'<div class="feedback" role="status">'+(prediction===1?'That’s right!':'Interesting prediction!')+' Strawberry cells contain DNA, mainly inside their nuclei.</div>':'');
+ if(stage===0)left+='<div class="lab-tip">Explore all four microscope views, then make your prediction to begin the experiment.</div>';
+ if(stage===5&&dnaRevealed)left+='<div class="lab-tip">Now collect five small samples with the virtual collection rod. The strands represent clumps of DNA-rich material, not single molecules.</div>';
+ if(stage===6)left+='<div class="lab-tip">Answer the question, then explore one what-if scenario to complete the exhibit.</div>';
  if(stage===5)left+='<div class="lab-tip"><strong>What you actually see:</strong> Many DNA molecules clumped together, not an individual double helix. The extract can contain other material too. Do not stir the alcohol into the strawberry liquid.</div>';
  if(stage===6)left+=options(q2,answer)+(answer!==null?'<div class="feedback" role="status">'+(answer===0?'Correct! ':'Not quite. ')+'Cold alcohol causes DNA to precipitate from the watery mixture.</div>':'');
- if(completed)left='<div class="stage-copy"><span class="stage-kicker">EXHIBIT COMPLETE</span><h2 id="exhibitTitle">You’re a DNA detective!</h2><p>You mashed the fruit, released the DNA, filtered the pulp, and made DNA precipitate. Every successful scientist starts with careful observations.</p><button class="button secondary" id="restartBtn" type="button">↺ Restart experiment</button></div>';
+ if(completed)left='<div class="stage-copy"><span class="stage-kicker">EXHIBIT COMPLETE</span><h2 id="exhibitTitle">Your discovery is complete!</h2><p>You explored the world inside a strawberry, extracted DNA, collected the strands, and tested a scientific prediction.</p></div>';
  else left+='</div>';
  let right;
- if(completed)right=labScene('dna');
- else if(stage===5)right='<div class="dna-reveal-scene"><div class="lab-workbench dna-watch-bench">'+alcoholVesselScene(true)+'</div><p class="dna-stage-caption">'+(dnaRevealed?'Cloudy strands collect at the interface.':'Two layers, not stirred together.')+'</p><button type="button" class="button primary" id="revealDna" '+(dnaRevealed?'disabled':'')+'>'+(dnaRevealed?'DNA visible ✓':'Watch DNA precipitate')+'</button></div>';
+ if(completed)right=certificateMarkup();
+ else if(stage===0)right=microscopeMarkup();
+ else if(stage===6)right=whatIfMarkup();
+ else if(stage===5)right='<div class="dna-reveal-scene">'+(dnaRevealed?spoolMarkup():'<div class="lab-workbench dna-watch-bench">'+alcoholVesselScene(true)+'</div><p class="dna-stage-caption">Two layers, not stirred together.</p><button type="button" class="button primary" id="revealDna">Watch DNA precipitate</button>')+'</div>';
  else if(labStates[stage])right=labMarkup();
  else right=labScene(stage===0?'fruit':stage===6?'cell':'dna');
  content.innerHTML='<div class="stage-layout enhanced-stage '+(labStates[stage]?'interactive-layout':'')+'">'+left+'<div class="science-visual refined-visual '+(labStates[stage]?'interactive-visual':'')+'">'+right+'</div></div>';
@@ -553,10 +558,19 @@ function render(preserveScroll=false){
  content.scrollTop=preserveScroll?Math.min(prior,Math.max(0,content.scrollHeight-content.clientHeight)):0;
  content.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(stage===0)prediction=+b.dataset.answer;else answer=+b.dataset.answer;render()}));
  const restart=content.querySelector('#restartBtn');if(restart)restart.addEventListener('click',reset);
+ const save=content.querySelector('#saveCertificate');if(save)save.addEventListener('click',saveCertificate);
+ const microNext=content.querySelector('#microNext');if(microNext)microNext.addEventListener('click',()=>{microscopeLevel=Math.min(3,microscopeLevel+1);render(true)});
+ const microBack=content.querySelector('#microBack');if(microBack)microBack.addEventListener('click',()=>{microscopeLevel=Math.max(0,microscopeLevel-1);render(true)});
+ const spool=()=>{if(spoolProgress>=5)return;spoolProgress++;render(true)};
+ const collect=content.querySelector('#collectDna');if(collect)collect.addEventListener('click',spool);
+ const rod=content.querySelector('#spoolTool');if(rod){rod.addEventListener('pointerup',spool);rod.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();spool()}})}
+ content.querySelectorAll('[data-whatif]').forEach(b=>b.addEventListener('click',()=>{whatIfChoice=+b.dataset.whatif;whatIfPrediction=null;whatIfSeen=false;render(true)}));
+ content.querySelectorAll('[data-whatif-predict]').forEach(b=>b.addEventListener('click',()=>{whatIfPrediction=+b.dataset.whatifPredict;whatIfSeen=false;render(true)}));
+ const revealTest=content.querySelector('#revealWhatIf');if(revealTest)revealTest.addEventListener('click',()=>{if(whatIfChoice!==null&&whatIfPrediction!==null){whatIfSeen=true;render(true)}});
  bindHandsOn();
  const reveal=content.querySelector('#revealDna');if(reveal)reveal.addEventListener('click',()=>{dnaRevealed=true;render(true)});
 }
-function reset(){stage=0;prediction=null;answer=null;completed=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
+function reset(){stage=0;prediction=null;answer=null;completed=false;microscopeLevel=0;spoolProgress=0;whatIfChoice=null;whatIfPrediction=null;whatIfSeen=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
 function openModal(){reset();modal.hidden=false;document.body.classList.add('modal-open');document.getElementById('closeModal').focus()}
 function closeModal(){modal.hidden=true;document.body.classList.remove('modal-open');document.getElementById('launchBtn').focus()}
 document.getElementById('launchBtn').addEventListener('click',openModal);
