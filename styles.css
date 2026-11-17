@@ -1796,3 +1796,24 @@ html,body{background:#101e30;color:var(--light)}
   top:18%;
  }
 }
+
+
+.exhibit-modal .spool-visual #spoolTool{
+ width:38px;
+ height:120px;
+ transform:none;
+ transition:none;
+ touch-action:none;
+}
+.exhibit-modal .spool-visual #spoolTool:hover,
+.exhibit-modal .spool-visual #spoolTool:focus-visible{
+ transform:none;
+}
+.exhibit-modal .spool-visual #spoolTool .spool-rod{
+ width:9px;
+ height:116px;
+}
+.exhibit-modal .spool-visual #spoolTool .spool-strands{
+ top:73px;
+ left:-6px;
+}
