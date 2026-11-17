@@ -1854,3 +1854,7 @@ html,body{background:#101e30;color:var(--light)}
   top:29%!important;
  }
 }
+
+.exhibit-modal .lab-workbench .mixing-cup{
+ top:40%;
+}
