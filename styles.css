@@ -1238,34 +1238,13 @@
  --aurora-deep:#101d30;
 }
 body{
- background:linear-gradient(180deg,#101d30 0%,#102639 38%,#112134 72%,#101d30 100%);
+ background:#101d30;
  color:var(--light);
 }
-.ambient{
- position:fixed;inset:0;z-index:-1;height:auto;overflow:hidden;
- background:
-  radial-gradient(ellipse 43% 42% at 82% 14%,rgba(98,227,194,.19),transparent 73%),
-  radial-gradient(ellipse 35% 42% at 12% 28%,rgba(182,163,248,.15),transparent 74%),
-  radial-gradient(ellipse 30% 40% at 62% 78%,rgba(83,172,207,.12),transparent 74%);
-}
-.ambient::before,.ambient::after{
- content:"";position:absolute;pointer-events:none;
- width:min(74vw,1000px);height:540px;border-radius:50%;
- opacity:.32;filter:blur(85px);transform:rotate(-24deg);
-}
-.ambient::before{
- top:-260px;right:-180px;
- background:linear-gradient(110deg,transparent 10%,rgba(98,227,194,.48),rgba(93,184,218,.24),rgba(182,163,248,.39),transparent 91%);
- animation:aurora-breathe 16s ease-in-out infinite alternate;
-}
-.ambient::after{
- left:-370px;top:450px;opacity:.18;
- background:linear-gradient(115deg,transparent,rgba(182,163,248,.46),rgba(98,227,194,.36),transparent);
- animation:aurora-breathe 19s ease-in-out infinite alternate-reverse;
-}
-@keyframes aurora-breathe{
- from{transform:translate3d(-2%,0,0) rotate(-24deg);opacity:.20}
- to{transform:translate3d(3%,4%,0) rotate(-18deg);opacity:.40}
+/* Keep the overall page background solid; aurora colors live in the
+   interface accents rather than behind the entire page. */
+.ambient,.ambient::before,.ambient::after{
+ display:none;
 }
 .site-header{
  border-bottom:1px solid rgba(152,226,213,.20);
@@ -1403,7 +1382,6 @@ body{
 }
 footer{border-color:var(--line);color:#b3cbd5}
 @media(prefers-reduced-motion:reduce){
- .ambient::before,.ambient::after{animation:none}
  .exhibit-card{transition:none}
  .exhibit-card:hover{transform:none}
 }
