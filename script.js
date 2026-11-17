@@ -302,13 +302,20 @@ function startPourAnimation(){
  const mouth=svgPoint(72,42);
  const b=bottle.getBoundingClientRect();
  const dx=mouth.x-28-(b.left+b.width/2),dy=mouth.y-(b.top+b.height/2);
- if(stream){
-  const v=vessel.getBoundingClientRect(),w=bench.getBoundingClientRect();
-  stream.style.left=(v.left-w.left)+'px';
-  stream.style.top=(v.top-w.top)+'px';
-  stream.style.width=v.width+'px';
-  stream.style.height=v.height+'px';
-  stream.classList.add('visible');
+ const lid=bottle.querySelector('.lid');
+ const flow=stream&&stream.querySelector('.alcohol-flow');
+ let flowFrame=0;
+ if(stream&&flow&&lid){
+  stream.style.position='absolute';
+  stream.style.left='0';
+  stream.style.top='0';
+  stream.style.width='100%';
+  stream.style.height='100%';
+  stream.style.transform='none';
+  stream.setAttribute('viewBox','0 0 '+bench.clientWidth+' '+bench.clientHeight);
+  flow.style.strokeDasharray='none';
+  flow.style.strokeDashoffset='0';
+  flow.style.opacity='1';
  }
  bench.classList.add('is-pouring');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -322,8 +329,37 @@ function startPourAnimation(){
   {transform:pose(dx,dy,0),offset:.88},
   {transform:pose(0,0,0),offset:1}
  ],{duration,easing:'ease-in-out',fill:'none'});
- motion.onfinish=()=>{if(ticket!==interactionEpoch)return;pouring=false;applyAction('alcohol')};
- motion.oncancel=()=>{pouring=false};
+ if(stream&&flow&&lid){
+  const benchRect=bench.getBoundingClientRect();
+  const origin=getComputedStyle(bottle).transformOrigin.split(' ').map(parseFloat);
+  const capX=lid.offsetLeft+lid.offsetWidth/2;
+  const capY=lid.offsetTop;
+  const target=svgPoint(130,114);
+  const draw=()=>{
+   if(ticket!==interactionEpoch||motion.playState==='finished'||motion.playState==='idle'){
+    stream.classList.remove('visible');
+    return;
+   }
+   const t=motion.currentTime/duration;
+   if(t>=.38&&t<=.76){
+    const transform=getComputedStyle(bottle).transform;
+    const matrix=new DOMMatrix(transform==='none'?undefined:transform);
+    const p=new DOMPoint(capX-origin[0],capY-origin[1]).matrixTransform(matrix);
+    const x=b.left+origin[0]+p.x-benchRect.left;
+    const y=b.top+origin[1]+p.y-benchRect.top;
+    const tx=target.x-benchRect.left,ty=target.y-benchRect.top;
+    const bendX=x+(tx-x)*.35;
+    const bendY=y+(ty-y)*.55;
+    flow.setAttribute('d','M'+x.toFixed(1)+' '+y.toFixed(1)+' Q'+bendX.toFixed(1)+' '+bendY.toFixed(1)+' '+tx.toFixed(1)+' '+ty.toFixed(1));
+    stream.classList.add('visible');
+   }else stream.classList.remove('visible');
+   flowFrame=requestAnimationFrame(draw);
+  };
+  flowFrame=requestAnimationFrame(draw);
+ }
+ const stopFlow=()=>{if(flowFrame)cancelAnimationFrame(flowFrame);if(stream)stream.classList.remove('visible')};
+ motion.onfinish=()=>{stopFlow();if(ticket!==interactionEpoch)return;pouring=false;applyAction('alcohol')};
+ motion.oncancel=()=>{stopFlow();pouring=false};
 }
 function placeStirrerInBowl(bench){
  const bowl=bench.querySelector('.mash-bowl');
