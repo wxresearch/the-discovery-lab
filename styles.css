@@ -1762,3 +1762,25 @@ html,body{background:#101e30;color:var(--light)}
   max-height:120px;
  }
 }
+
+
+.exhibit-modal .micro-controls{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ gap:10px;
+ width:100%;
+}
+.exhibit-modal .micro-controls .button{
+ min-width:0;
+ width:100%;
+ padding:11px 9px;
+ gap:5px;
+ font-size:12px;
+ line-height:1.2;
+ white-space:nowrap;
+ text-align:center;
+}
+.exhibit-modal .micro-window{overflow:hidden}
+@media(max-width:360px){
+ .exhibit-modal .micro-controls .button{font-size:11px;padding:10px 5px}
+}
