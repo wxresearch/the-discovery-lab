@@ -24,6 +24,7 @@ const steps=[
 let stage=0,prediction=null,answer=null,completed=false,dnaRevealed=false,pouring=false;
 let interactionEpoch=0;
 let microscopeLevel=0,spoolProgress=0,whatIfChoice=null,whatIfPrediction=null,whatIfSeen=false;
+let dnaBase='A',recapFocus=0;
 let mixStirs=0;const requiredStirs=4;
 const q1=['DNA is only found in animals','DNA is found inside strawberry cells','DNA is only found in strawberry seeds'];
 const q2=['DNA does not dissolve well in alcohol, so it clumps together','Alcohol creates new DNA','Alcohol turns strawberry juice into DNA'];
@@ -552,7 +553,7 @@ const microscopeViews=[
 ];
 function microscopeMarkup(){
  const v=microscopeViews[microscopeLevel];
- return '<div class="micro-card"><div class="micro-top"><span>MICROSCOPE STATION</span><span>'+String(microscopeLevel+1)+' / 4</span></div><svg class="micro-window" viewBox="0 0 240 220" role="img" aria-label="'+v.title+' illustration"><circle cx="120" cy="110" r="100" fill="#14293C" stroke="#71D8CB" stroke-width="5"/>'+v.graphic+'</svg><h3>'+v.title+'</h3><p>'+v.caption+'</p><div class="micro-explainer"><strong>Why it matters</strong><p>'+v.detail+'</p></div><div class="micro-controls"><button type="button" class="button secondary" id="microBack" '+(microscopeLevel===0?'disabled':'')+'>← Back</button><button type="button" class="button primary" id="microNext" '+(microscopeLevel===3?'disabled':'')+'>'+(microscopeLevel===3?'Finished ✓':'Zoom closer →')+'</button></div></div>';
+ return '<div class="micro-card"><div class="micro-top"><span>MICROSCOPE STATION</span><span>'+String(microscopeLevel+1)+' / 4</span></div><svg class="micro-window" viewBox="0 0 240 220" role="img" aria-label="'+v.title+' illustration"><circle cx="120" cy="110" r="100" fill="#14293C" stroke="#71D8CB" stroke-width="5"/>'+v.graphic+'</svg><h3>'+v.title+'</h3><p>'+v.caption+'</p><div class="micro-explainer"><strong>Why it matters</strong><p>'+v.detail+'</p></div>'+(microscopeLevel===3?dnaExplorerMarkup():'')+'<div class="micro-controls"><button type="button" class="button secondary" id="microBack" '+(microscopeLevel===0?'disabled':'')+'>← Back</button><button type="button" class="button primary" id="microNext" '+(microscopeLevel===3?'disabled':'')+'>'+(microscopeLevel===3?'Finished ✓':'Zoom closer →')+'</button></div></div>';
 }
 
 function spoolMarkup(){
@@ -605,6 +606,8 @@ function render(preserveScroll=false){
  content.scrollTop=preserveScroll?Math.min(prior,Math.max(0,content.scrollHeight-content.clientHeight)):0;
  content.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(stage===0)prediction=+b.dataset.answer;else answer=+b.dataset.answer;render()}));
  const restart=content.querySelector('#restartBtn');if(restart)restart.addEventListener('click',reset);
+ content.querySelectorAll('[data-dna-base]').forEach(b=>b.addEventListener('click',()=>{dnaBase=b.dataset.dnaBase;render(true)}));
+ content.querySelectorAll('[data-journey]').forEach(b=>b.addEventListener('click',()=>{recapFocus=+b.dataset.journey;render(true)}));
  const microNext=content.querySelector('#microNext');if(microNext)microNext.addEventListener('click',()=>{microscopeLevel=Math.min(3,microscopeLevel+1);render(true)});
  const microBack=content.querySelector('#microBack');if(microBack)microBack.addEventListener('click',()=>{microscopeLevel=Math.max(0,microscopeLevel-1);render(true)});
  const spool=()=>{if(spoolProgress>=5)return;spoolProgress++;render(true)};
@@ -672,7 +675,7 @@ function render(preserveScroll=false){
  bindHandsOn();
  const reveal=content.querySelector('#revealDna');if(reveal)reveal.addEventListener('click',()=>{dnaRevealed=true;render(true)});
 }
-function reset(){interactionEpoch++;stage=0;prediction=null;answer=null;completed=false;microscopeLevel=0;spoolProgress=0;whatIfChoice=null;whatIfPrediction=null;whatIfSeen=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
+function reset(){interactionEpoch++;dnaBase='A';recapFocus=0;stage=0;prediction=null;answer=null;completed=false;microscopeLevel=0;spoolProgress=0;whatIfChoice=null;whatIfPrediction=null;whatIfSeen=false;actions.mash=0;actions.soap=false;actions.salt=false;actions.filter=false;actions.alcohol=0;mixStirs=0;dnaRevealed=false;pouring=false;render()}
 function openModal(){reset();modal.hidden=false;document.body.classList.add('modal-open');document.getElementById('closeModal').focus()}
 function closeModal(){interactionEpoch++;pouring=false;modal.hidden=true;document.body.classList.remove('modal-open');document.getElementById('launchBtn').focus()}
 document.getElementById('launchBtn').addEventListener('click',openModal);
