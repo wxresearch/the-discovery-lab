@@ -1509,3 +1509,95 @@ footer{border-color:var(--line);color:#b3cbd5}
   opacity:1;
  }
 }
+
+
+.micro-card,.whatif-card,.certificate-screen{
+ width:100%;max-width:490px;margin:0 auto;
+ display:flex;flex-direction:column;gap:12px;
+ color:#eafbfa;
+}
+.micro-card,.whatif-card{
+ background:#162f42;border:1px solid #517b85;border-radius:18px;
+ padding:19px;box-shadow:0 14px 36px #07182955;
+}
+.micro-top{display:flex;justify-content:space-between;gap:12px;color:#91e9d4;font-size:11px;font-weight:700;letter-spacing:1.2px}
+.micro-window{width:100%;max-width:250px;height:190px;align-self:center}
+.micro-card h3,.whatif-card h3{font-size:22px;margin:0;color:#f6fffd}
+.micro-card p,.whatif-card p,.spool-controls p,.certificate-screen>p{font-size:13px;line-height:1.55;color:#c3dbe0;margin:0}
+.micro-controls,.cert-actions{display:flex;gap:10px;flex-wrap:wrap}
+.micro-controls .button{flex:1;min-width:120px;padding:11px 13px}
+.micro-controls button:disabled,.spool-controls button:disabled,.whatif-card button:disabled{opacity:.53;cursor:default;transform:none}
+.spool-station{width:100%;display:flex;flex-direction:column;gap:7px;align-items:center}
+.spool-visual{
+ position:relative;width:100%;height:clamp(235px,36dvh,320px);
+ background:#14283a;border:1px solid #405e70;border-radius:16px;
+ overflow:hidden;
+}
+.spool-visual .alcohol-station{
+ position:absolute!important;left:31%!important;top:2%!important;
+ width:65%!important;height:97%!important;z-index:2;pointer-events:none;
+}
+.spool-visual .alcohol-scene{width:100%;height:100%;display:block}
+.spool-tool{
+ position:absolute;z-index:5;left:58%;top:12%;width:55px;height:170px;
+ display:flex;align-items:center;justify-content:center;
+ cursor:pointer;touch-action:manipulation;transform:rotate(10deg);
+ transition:transform .18s ease;
+}
+.spool-tool:hover,.spool-tool:focus-visible{transform:translateY(7px) rotate(17deg)}
+.spool-rod{
+ width:11px;height:160px;border-radius:8px;
+ background:linear-gradient(90deg,#90bed0,#ebffff 55%,#98bdc9);
+ box-shadow:0 2px 6px #0008;
+}
+.spool-strands{
+ position:absolute;top:88px;left:3px;font-size:24px;
+ color:#fff6e7;opacity:calc(var(--spool)*.2);
+ text-shadow:0 0 5px #fff6e777;transform:rotate(70deg);
+}
+.spool-controls{display:flex;flex-direction:column;align-items:center;gap:7px;width:100%}
+.spool-controls p{text-align:center;max-width:430px}
+.spool-controls>span{font-size:11px;color:#a3ead8}
+.spool-controls button{padding:11px 16px}
+.spool-track{width:min(100%,360px);height:9px;overflow:hidden;background:#27465a;border-radius:20px}
+.spool-track>div{height:100%;background:#62e3c2;transition:width .23s}
+.whatif-options{display:flex;flex-wrap:wrap;gap:8px}
+.whatif-choice{
+ background:#24445a;color:#eafcf7;border:1px solid #577c87;
+ padding:10px 12px;border-radius:9px;cursor:pointer;font-weight:600;
+}
+.whatif-choice.active{background:#275e60;border-color:#62e3c2;color:#f3fffa}
+.whatif-predictions{display:grid;gap:8px}
+.whatif-predictions .choice{text-align:left}
+.whatif-result{
+ border-left:3px solid #62e3c2;background:#1a404c;
+ padding:12px;border-radius:8px;font-size:13px;line-height:1.6;color:#e9f9f5;
+}
+.whatif-empty{padding:10px 0}
+.certificate-screen{align-items:center;padding:5px 0 20px;max-width:540px}
+.dna-certificate{
+ width:100%;min-height:292px;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:7px;text-align:center;
+ background:#172f42;border:2px solid #62e3c2;border-radius:16px;
+ box-shadow:inset 0 0 0 8px #1b384b;padding:25px 15px;
+}
+.cert-icon{font-size:38px;color:#62e3c2}
+.dna-certificate>span{font-size:10px;letter-spacing:2px;color:#90e5d3;font-weight:700}
+.dna-certificate h3{font-size:clamp(30px,5vw,43px);color:#fff;margin:5px 0}
+.dna-certificate p{color:#d0e7e8;margin:0;font-size:16px}
+.dna-certificate>strong{font-size:16px;color:#b6a3f8}
+.dna-certificate small{font-size:11px;color:#bed4db}
+.cert-line{height:1px;background:#62e3c2;width:70%;margin:7px}
+.certificate-screen>p{text-align:center}
+.cert-actions{justify-content:center}
+@media(max-width:650px){
+ .micro-card,.whatif-card{padding:13px;gap:10px}
+ .micro-window{height:155px}
+ .spool-visual{height:230px}
+ .spool-tool{top:5%;height:155px}
+ .spool-rod{height:145px}
+ .cert-actions .button{padding:11px 12px}
+}
+@media(prefers-reduced-motion:reduce){
+ .spool-tool,.spool-track>div{transition:none}
+}
