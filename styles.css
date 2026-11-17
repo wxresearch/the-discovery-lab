@@ -1601,3 +1601,121 @@ footer{border-color:var(--line);color:#b3cbd5}
 @media(prefers-reduced-motion:reduce){
  .spool-tool,.spool-track>div{transition:none}
 }
+
+
+:root{
+ --bg:#0b2228;
+ --panel:#153d42;
+ --light:#e9faf5;
+ --muted:#b4d5d1;
+ --cyan:#59ddb5;
+ --purple:#6acdd5;
+ --line:rgba(106,205,213,.24);
+ --aurora-teal:#59ddb5;
+ --aurora-blue:#6acdd5;
+ --aurora-violet:#9be5cd;
+ --aurora-deep:#0b2228;
+}
+html,body{background:#0b2228;color:var(--light)}
+.ambient,.ambient::before,.ambient::after{display:none!important}
+.site-header{
+ background:#0d2930;
+ border-bottom-color:#28575c;
+ backdrop-filter:none;
+ -webkit-backdrop-filter:none;
+}
+.brand-mark span{background:#59ddb5;box-shadow:none}
+.hero h1 em,h2 em{
+ background:none!important;
+ -webkit-background-clip:initial;
+ background-clip:initial;
+ color:#59ddb5!important;
+}
+.eyebrow,.metric-icon,.step-num,.text-link,.brand b{color:#59ddb5}
+.eyebrow.muted,.soon{color:#6acdd5}
+.live-dot,.tag-dot,.label-dot{background:#59ddb5;box-shadow:none}
+.button.primary,.primary{
+ background:#59ddb5;
+ color:#0b252a;
+ box-shadow:none;
+}
+.button.primary:hover,.primary:hover{background:#80eccb}
+.button.secondary,.secondary{
+ background:#194148;
+ border-color:#38747b;
+ color:#e9faf5;
+}
+.button.secondary:hover,.secondary:hover{background:#24535a}
+.header-cta{background:#194148;border-color:#38747b}
+.header-cta:hover{background:#24535a}
+.hero-art,.strawberry-art{background:#12343c}
+.hero-art::before{display:none!important}
+.art-floor{background:none}
+.dna-rung{background:#6acdd5;box-shadow:none}
+.dna-model{filter:none}
+.art-grid{
+ background-image:linear-gradient(#3d777c30 1px,transparent 1px),linear-gradient(90deg,#3d777c30 1px,transparent 1px);
+}
+.orbit{border-color:#3a777d}
+.floating-label{
+ background:#163a42;
+ border-color:#407e7e;
+ box-shadow:none;
+ backdrop-filter:none;
+}
+.exhibit-card,.step{
+ background:#15363c;
+ border-color:#32676b;
+ box-shadow:none;
+}
+.exhibit-card:hover{border-color:#59ddb5;box-shadow:0 8px 22px #04151b55}
+.exhibit-card .exhibit-body,.exhibit-card .upcoming-body{background:#15363c}
+.upcoming-art,.upcoming-art.planets{background:#1a3c48}
+.upcoming-art.geometry,.geometry{background:#164740}
+.geometry-shape,.geometry-shape.second{box-shadow:none}
+.step-illustration{background:#1c4847}
+.step-symbol{color:#86e6cd;text-shadow:none}
+.mission-orb{
+ background:#1a4447;
+ border-color:#3c7776;
+ color:#98e7d5;
+ box-shadow:none;
+}
+.exhibit-modal{background:#06191de8}
+.modal-shell{
+ background:#12333b;
+ border-color:#3a7475;
+ box-shadow:0 22px 60px #020e13aa;
+}
+.progress-bar{background:#27545a}
+.progress-bar>div{background:#59ddb5}
+.progress-stages .active,.lab-status-value{color:#59ddb5}
+.icon-button{border-color:#397a7d}
+.icon-button:hover{background:#22565b}
+.exhibit-modal .interactive-layout .stage-copy .lab-status{background:#194049;border-color:#3c7478}
+.exhibit-modal .interactive-visual .bench-controls #assistBtn{
+ background:#194148;
+ border-color:#59ddb5;
+ color:#e9faf5;
+}
+.micro-card,.whatif-card{
+ background:#163c42;
+ border-color:#367174;
+ box-shadow:none;
+}
+.micro-top{color:#80e6c7}
+.micro-window{filter:none}
+.spool-visual{background:#153b43;border-color:#367174}
+.spool-track{background:#26565b}
+.spool-track>div{background:#59ddb5}
+.whatif-choice{background:#205056;border-color:#47848a}
+.whatif-choice.active{background:#25665d;border-color:#59ddb5}
+.whatif-result{background:#204a4b;border-left-color:#59ddb5}
+.dna-certificate{
+ background:#143b42;
+ border-color:#59ddb5;
+ box-shadow:inset 0 0 0 8px #17454a;
+}
+.cert-icon,.dna-certificate>span{color:#59ddb5}
+.dna-certificate>strong{color:#6acdd5}
+.cert-line{background:#59ddb5}
