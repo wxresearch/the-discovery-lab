@@ -1785,3 +1785,14 @@ html,body{background:#101e30;color:var(--light)}
  .exhibit-modal .micro-controls .button{font-size:11px;padding:10px 5px}
 }
 
+
+.exhibit-visual .strawberry-photo{
+ opacity:0;
+ transition:opacity .22s ease-out;
+}
+.exhibit-visual .strawberry-photo.image-ready{
+ opacity:1;
+}
+@media(prefers-reduced-motion:reduce){
+ .exhibit-visual .strawberry-photo{transition:none}
+}
