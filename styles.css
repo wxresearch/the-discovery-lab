@@ -1784,3 +1784,5 @@ html,body{background:#101e30;color:var(--light)}
 @media(max-width:360px){
  .exhibit-modal .micro-controls .button{font-size:11px;padding:10px 5px}
 }
+
+html.fonts-loading body{visibility:hidden}
